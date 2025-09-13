@@ -7,11 +7,22 @@ public class MazeTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        int randIndex = Random.Range(0, possibleRooms.Length);
-        possibleRooms[randIndex].transform.position += Vector3.up * 10.0f;
-        Debug.Log(possibleRooms[randIndex].transform.position);
+        if (other.CompareTag("Player")) 
+        {
+            // int randIndex = Random.Range(0, possibleRooms.Length);
+            for (int i = 0; i < possibleRooms.Length; i++)
+            {
+                float randX = Random.Range(-20f, 20f);
+                float randZ = Random.Range(-20f, 20f);
+                possibleRooms[i].transform.position = new Vector3(
+                    randX,
+                    possibleRooms[i].transform.position.y,
+                    randZ
+                );
+                Debug.Log("Moved: " + possibleRooms[i].name + " to " + possibleRooms[i].transform.position);
+            }
+        }
     }
-
     void Start()
     {
         
