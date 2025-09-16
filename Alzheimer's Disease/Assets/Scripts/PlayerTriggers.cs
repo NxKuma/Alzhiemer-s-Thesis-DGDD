@@ -3,9 +3,20 @@ using UnityEngine;
 public class PlayerTriggers : MonoBehaviour
 {
     [SerializeField] private Transform[] _triggerAreas;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Inventory inventory;
+    
+    private void Awake()
+    {
+        inventory = new Inventory();
+    }
 
-    private void OnTriggerEnter(Collider other) {
-        Debug.Log(other.gameObject.name);
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<TriggerAreaScript>(out TriggerAreaScript tas))
+        {
+            tas.DetectPlayer();
+        }
+
     }
 }

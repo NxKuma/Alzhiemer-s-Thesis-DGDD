@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2500930926151825885}
   - component: {fileID: 4495104780098159212}
   - component: {fileID: 4029935257883802738}
+  - component: {fileID: 5790320716208296550}
   m_Layer: 6
   m_Name: TriggerArea
   m_TagString: Untagged
@@ -108,3 +109,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5790320716208296550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2504359500904776159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e191882d70a24d468dd552562f3a39d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
