@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviour
 {
-
     [Header("Rooms Setup")]
     public Transform Hallway;
     public Transform[] PossibleRooms;
@@ -61,6 +60,7 @@ public class RoomManager : MonoBehaviour
 
                 int side = Random.Range(0, 4); 
                 Vector3 newPos = hallwayPos;
+                Quaternion targetRotation = Quaternion.identity;
 
                 switch (side)
                 {
@@ -71,6 +71,7 @@ public class RoomManager : MonoBehaviour
                         );
                         newPos = new Vector3(randXTop, room.position.y,
                             hallwayPos.z + (hallwaySize.z / 2f) + (roomSize.z / 2f) + minDistanceBetweenRooms);
+                        targetRotation = Quaternion.Euler(0, 0, 0); // Facing forward
                         break;
 
                     case 1: // Bottom side (random X)
@@ -80,6 +81,7 @@ public class RoomManager : MonoBehaviour
                         );
                         newPos = new Vector3(randXBot, room.position.y,
                             hallwayPos.z - (hallwaySize.z / 2f) - (roomSize.z / 2f) - minDistanceBetweenRooms);
+                        targetRotation = Quaternion.Euler(0, 180, 0); // Facing backward
                         break;
 
                     case 2: // Right side (random Z)
@@ -92,6 +94,7 @@ public class RoomManager : MonoBehaviour
                             room.position.y,
                             randZRight
                         );
+                        targetRotation = Quaternion.Euler(0, 90, 0); // Facing right
                         break;
 
                     case 3: // Left side (random Z)
@@ -104,6 +107,7 @@ public class RoomManager : MonoBehaviour
                             room.position.y,
                             randZLeft
                         );
+                        targetRotation = Quaternion.Euler(0, -90, 0); // Facing left
                         break;
                 }
                 
@@ -139,8 +143,9 @@ public class RoomManager : MonoBehaviour
                 {
                     occupied.Add(roomRect);
                     room.position = newPos;
+                    room.rotation = targetRotation;
                     placed = true;
-                    Debug.Log($"Placed {room.name} on side {side} at {newPos}");
+                    Debug.Log($"Placed {room.name} on side {side} at {newPos} with rotation {targetRotation.eulerAngles}");
                 }
             }
 
@@ -150,7 +155,6 @@ public class RoomManager : MonoBehaviour
             }
         }
     }
-
     void Start() {
         RandomizeOtherRooms();
     }
