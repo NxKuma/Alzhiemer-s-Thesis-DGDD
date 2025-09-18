@@ -270,10 +270,8 @@ MonoBehaviour:
   PossibleRooms: []
   CurrentRoom: {fileID: 0}
   minDistanceBetweenRooms: 1
-  DoorPrefab: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
-  CorridorWallPrefab: {fileID: 4621486016242954509, guid: 9b6acb9d76828f04b9261e1b22d4ecd2, type: 3}
-  wallSegmentLength: 1
-  doorWidth: 1
+  doorPrefab: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
+  doorYOffset: -1
 --- !u!1001 &766363185435079436
 PrefabInstance:
   m_ObjectHideFlags: 0

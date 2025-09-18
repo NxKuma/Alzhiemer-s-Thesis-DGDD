@@ -10,6 +10,10 @@ public class RoomManager : MonoBehaviour
     
     [Header("Placement Settings")]
     public float minDistanceBetweenRooms = 1.0f;
+    
+    [Header("Door Settings")]
+    public GameObject doorPrefab;
+    public float doorYOffset = -0.5f;
 
     public void RandomizeOtherRooms()
     {
@@ -45,6 +49,8 @@ public class RoomManager : MonoBehaviour
             bool placed = false;
             int attempts = 0;
             const int MAXATTEMPTS = 100;
+            int placedSide = -1;
+            Vector3 placedPosition = Vector3.zero;
 
             while (!placed && attempts < MAXATTEMPTS)
             {
@@ -124,15 +130,79 @@ public class RoomManager : MonoBehaviour
                     room.position = newPos;
                     room.rotation = targetRotation;
                     placed = true;
+                    placedSide = side;
+                    placedPosition = newPos;
                     Debug.Log($"Placed {room.name} on side {side} at {newPos} with rotation {targetRotation.eulerAngles}");
                 }
             }
 
-            if (!placed)
+            if (placed)
+            {
+                // Instantiate door at the connection point
+                InstantiateDoor(room, placedSide, placedPosition, roomBounds);
+            }
+            else
             {
                 Debug.LogWarning($"Could not place {room.name} after {attempts} attempts!");
             }
         }
+    }
+
+    private void InstantiateDoor(Transform room, int side, Vector3 roomPosition, Bounds roomBounds)
+    {
+        if (doorPrefab == null)
+        {
+            Debug.LogWarning("Door prefab not assigned!");
+            return;
+        }
+
+        Vector3 doorPosition = Vector3.zero;
+        Quaternion doorRotation = Quaternion.identity;
+
+        switch (side)
+        {
+            case 0: // Top side (North) - Door on south wall of room
+                doorPosition = new Vector3(
+                    roomPosition.x,
+                    roomPosition.y + doorYOffset,
+                    roomPosition.z - roomBounds.extents.z // Front edge of room
+                );
+                doorRotation = Quaternion.Euler(0, 0, 0); // Facing north
+                break;
+
+            case 1: // Bottom side (South) - Door on north wall of room
+                doorPosition = new Vector3(
+                    roomPosition.x,
+                    roomPosition.y + doorYOffset,
+                    roomPosition.z + roomBounds.extents.z // Back edge of room
+                );
+                doorRotation = Quaternion.Euler(0, 180, 0); // Facing south
+                break;
+
+            case 2: // Right side (East) - Door on west wall of room
+                doorPosition = new Vector3(
+                    roomPosition.x - roomBounds.extents.x, // Left edge of room
+                    roomPosition.y + doorYOffset,
+                    roomPosition.z
+                );
+                doorRotation = Quaternion.Euler(0, 90, 0); // Facing east
+                break;
+
+            case 3: // Left side (West) - Door on east wall of room
+                doorPosition = new Vector3(
+                    roomPosition.x + roomBounds.extents.x, // Right edge of room
+                    roomPosition.y + doorYOffset,
+                    roomPosition.z
+                );
+                doorRotation = Quaternion.Euler(0, -90, 0); // Facing west
+                break;
+        }
+
+        // Instantiate the door as a child of the room
+        GameObject door = Instantiate(doorPrefab, doorPosition, doorRotation, room);
+        door.name = "Door_" + room.name;
+        
+        Debug.Log($"Instantiated door for {room.name} at {doorPosition}");
     }
 
     void Start() {
