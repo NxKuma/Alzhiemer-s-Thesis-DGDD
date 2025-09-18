@@ -19,25 +19,17 @@ public class RoomManager : MonoBehaviour
             return;
         }
 
-        Vector3 hallwayPos = Hallway.position;
-        Vector3 hallwaySize = Hallway.GetComponent<Renderer>().bounds.size;
-
-        // Rect for the hallway (reserved space)
-        Rect hallwayRect = new Rect(
-            new Vector2(hallwayPos.x - hallwaySize.x / 2f, hallwayPos.z - hallwaySize.z / 2f),
-            new Vector2(hallwaySize.x, hallwaySize.z)
-        );
+        Bounds hallwayBounds = Hallway.GetComponent<Renderer>().bounds;
+        Vector3 hallwayPos = hallwayBounds.center;
 
         // Rect for the current room (reserved space)
         Rect currentRect = new Rect();
         if (CurrentRoom != null)
         {
-            Vector3 currentSize = CurrentRoom.GetComponent<Renderer>().bounds.size;
+            Bounds currentBounds = CurrentRoom.GetComponent<Renderer>().bounds;
             currentRect = new Rect(
-                new Vector2(CurrentRoom.position.x - currentSize.x / 2f - minDistanceBetweenRooms, 
-                            CurrentRoom.position.z - currentSize.z / 2f - minDistanceBetweenRooms),
-                new Vector2(currentSize.x + minDistanceBetweenRooms * 2f, 
-                            currentSize.z + minDistanceBetweenRooms * 2f)
+                new Vector2(currentBounds.min.x - minDistanceBetweenRooms, currentBounds.min.z - minDistanceBetweenRooms),
+                new Vector2(currentBounds.size.x + minDistanceBetweenRooms * 2f, currentBounds.size.z + minDistanceBetweenRooms * 2f)
             );
         }
 
@@ -48,7 +40,7 @@ public class RoomManager : MonoBehaviour
             if (room == Hallway || room == CurrentRoom)
                 continue;
             
-            Vector3 roomSize = room.GetComponent<Renderer>().bounds.size;
+            Bounds roomBounds = room.GetComponent<Renderer>().bounds;
 
             bool placed = false;
             int attempts = 0;
@@ -64,66 +56,53 @@ public class RoomManager : MonoBehaviour
 
                 switch (side)
                 {
-                    case 0: // Top side (random X)
-                        float randXTop = Random.Range(
-                            hallwayPos.x - hallwaySize.x / 2f + roomSize.x / 2f,
-                            hallwayPos.x + hallwaySize.x / 2f - roomSize.x / 2f
-                        );
-                        newPos = new Vector3(randXTop, room.position.y,
-                            hallwayPos.z + (hallwaySize.z / 2f) + (roomSize.z / 2f) + minDistanceBetweenRooms);
-                        targetRotation = Quaternion.Euler(0, 0, 0); // Facing forward
-                        break;
-
-                    case 1: // Bottom side (random X)
-                        float randXBot = Random.Range(
-                            hallwayPos.x - hallwaySize.x / 2f + roomSize.x / 2f,
-                            hallwayPos.x + hallwaySize.x / 2f - roomSize.x / 2f
-                        );
-                        newPos = new Vector3(randXBot, room.position.y,
-                            hallwayPos.z - (hallwaySize.z / 2f) - (roomSize.z / 2f) - minDistanceBetweenRooms);
-                        targetRotation = Quaternion.Euler(0, 180, 0); // Facing backward
-                        break;
-
-                    case 2: // Right side (random Z)
-                        float randZRight = Random.Range(
-                            hallwayPos.z - hallwaySize.z / 2f + roomSize.z / 2f,
-                            hallwayPos.z + hallwaySize.z / 2f - roomSize.z / 2f
-                        );
+                    case 0: // Top side (North)
                         newPos = new Vector3(
-                            hallwayPos.x + (hallwaySize.x / 2f) + (roomSize.x / 2f) + minDistanceBetweenRooms,
+                            Random.Range(hallwayBounds.min.x + roomBounds.extents.x, hallwayBounds.max.x - roomBounds.extents.x),
                             room.position.y,
-                            randZRight
+                            hallwayBounds.max.z + roomBounds.extents.z
                         );
-                        targetRotation = Quaternion.Euler(0, 90, 0); // Facing right
+                        targetRotation = Quaternion.Euler(0, 0, 0);
                         break;
 
-                    case 3: // Left side (random Z)
-                        float randZLeft = Random.Range(
-                            hallwayPos.z - hallwaySize.z / 2f + roomSize.z / 2f,
-                            hallwayPos.z + hallwaySize.z / 2f - roomSize.z / 2f
-                        );
+                    case 1: // Bottom side (South)
                         newPos = new Vector3(
-                            hallwayPos.x - (hallwaySize.x / 2f) - (roomSize.x / 2f) - minDistanceBetweenRooms,
+                            Random.Range(hallwayBounds.min.x + roomBounds.extents.x, hallwayBounds.max.x - roomBounds.extents.x),
                             room.position.y,
-                            randZLeft
+                            hallwayBounds.min.z - roomBounds.extents.z
                         );
-                        targetRotation = Quaternion.Euler(0, -90, 0); // Facing left
+                        targetRotation = Quaternion.Euler(0, 180, 0);
+                        break;
+
+                    case 2: // Right side (East)
+                        newPos = new Vector3(
+                            hallwayBounds.max.x + roomBounds.extents.x,
+                            room.position.y,
+                            Random.Range(hallwayBounds.min.z + roomBounds.extents.z, hallwayBounds.max.z - roomBounds.extents.z)
+                        );
+                        targetRotation = Quaternion.Euler(0, 90, 0);
+                        break;
+
+                    case 3: // Left side (West)
+                        newPos = new Vector3(
+                            hallwayBounds.min.x - roomBounds.extents.x,
+                            room.position.y,
+                            Random.Range(hallwayBounds.min.z + roomBounds.extents.z, hallwayBounds.max.z - roomBounds.extents.z)
+                        );
+                        targetRotation = Quaternion.Euler(0, -90, 0);
                         break;
                 }
                 
+                // Create collision rect with padding for minDistanceBetweenRooms
                 Rect roomRect = new Rect(
-                    new Vector2(newPos.x - roomSize.x / 2f - minDistanceBetweenRooms,
-                                newPos.z - roomSize.z / 2f - minDistanceBetweenRooms),
-                    new Vector2(roomSize.x + minDistanceBetweenRooms * 2f,
-                                roomSize.z + minDistanceBetweenRooms * 2f)
+                    new Vector2(newPos.x - roomBounds.extents.x - minDistanceBetweenRooms,
+                                newPos.z - roomBounds.extents.z - minDistanceBetweenRooms),
+                    new Vector2(roomBounds.size.x + minDistanceBetweenRooms * 2f,
+                                roomBounds.size.z + minDistanceBetweenRooms * 2f)
                 );
 
                 bool overlap = false;
-                if (roomRect.Overlaps(hallwayRect))
-                {
-                    overlap = true;
-                }
-                else if (CurrentRoom != null && roomRect.Overlaps(currentRect))
+                if (CurrentRoom != null && roomRect.Overlaps(currentRect))
                 {
                     overlap = true;
                 }
@@ -155,6 +134,7 @@ public class RoomManager : MonoBehaviour
             }
         }
     }
+
     void Start() {
         RandomizeOtherRooms();
     }
