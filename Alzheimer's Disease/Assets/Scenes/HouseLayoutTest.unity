@@ -3892,6 +3892,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2034463394}
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: wallPrefab
+      value: 
+      objectReference: {fileID: 4621486016242954509, guid: 9b6acb9d76828f04b9261e1b22d4ecd2, type: 3}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: PossibleRooms.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -3911,6 +3915,10 @@ PrefabInstance:
       propertyPath: 'PossibleRooms.Array.data[3]'
       value: 
       objectReference: {fileID: 2034463394}
+    - target: {fileID: 3293576184963626305, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4934366529321529978, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.82
@@ -3935,26 +3943,6 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 652107f36a28e44479c0b827dee5852a, type: 2}
-    - target: {fileID: 6966788145215436068, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 29.54
-      objectReference: {fileID: 0}
-    - target: {fileID: 6966788145215436068, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3.19
-      objectReference: {fileID: 0}
-    - target: {fileID: 6966788145215436068, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -9.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6966788145215436068, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 6966788145215436068, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8183450888943947593, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.01
@@ -3962,6 +3950,14 @@ PrefabInstance:
     - target: {fileID: 8183450888943947593, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: m_LocalPosition.z
       value: -4.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749203440473765865, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749203440473765865, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.27
       objectReference: {fileID: 0}
     - target: {fileID: 8874069006260731598, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: possibleRooms.Array.size
