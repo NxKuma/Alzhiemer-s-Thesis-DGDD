@@ -9,7 +9,7 @@ public class Inventory
     public Inventory()
     {
         itemList = new List<Item>();
-        AddItem(new Item { itemType = Item.ItemType.Keys });
+        AddItem(new Item { itemType = Item.eItemType.MainQuestItem});
         // Debug.Log(itemList.Count);
     }
 

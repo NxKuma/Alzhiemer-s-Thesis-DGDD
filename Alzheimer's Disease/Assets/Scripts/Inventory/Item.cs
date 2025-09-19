@@ -1,14 +1,23 @@
 using UnityEngine;
 
-public class Item
+[CreateAssetMenu(fileName = "Item", menuName = "Item", order = 0)]
+public class Item : ScriptableObject
 {
-    public enum ItemType
-    {
-        Keys,
-        Painting,
-        Remote
+    [SerializeField]
+    private string _itemName;
+    [SerializeField]
+    [TextAreaAttribute(5, 10)]
+    private string _itemDescription;
 
+    public enum eItemType
+    {
+        MainQuestItem,
+        PickUp
     }
 
-    public ItemType itemType;
+    public eItemType itemType;
+
+
+
+
 }
