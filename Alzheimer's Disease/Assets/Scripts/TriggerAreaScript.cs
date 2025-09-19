@@ -6,7 +6,7 @@ public class TriggerAreaScript : MonoBehaviour
     private enum eItemStatus { Dropped, Hidden, Spawned }
     Dictionary<Item, eItemStatus> _itemList = new Dictionary<Item, eItemStatus>();
     [SerializeField] private string _areaName;
-    private bool _hasPlayer = false;
+    private static bool _hasPlayer = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,7 +22,8 @@ public class TriggerAreaScript : MonoBehaviour
     }
 
     public void DetectPlayer()
-    {  
+    {
         Debug.Log("Player Entered: " + _areaName);
+        _hasPlayer = true;
     }
 }

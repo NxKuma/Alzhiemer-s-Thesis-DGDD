@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9310c7c7d1da47b4187cc0b485b2f98e, type: 3}
+  m_Name: Remote
+  m_EditorClassIdentifier: 
+  _itemName: Remote
+  _itemDescription: This is a standard remote
+  itemType: 1
+  _itemMesh: {fileID: 4300000, guid: c1f524b514939d84eb3839f5572b2e17, type: 2}
+  _itemMaterial: {fileID: 2100000, guid: 8cdaf1f18c605c7489d925ab60537716, type: 2}
+  _itemThumbnail: {fileID: 0}

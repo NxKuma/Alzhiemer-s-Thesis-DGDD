@@ -10,8 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9310c7c7d1da47b4187cc0b485b2f98e, type: 3}
-  m_Name: Item
+  m_Name: Key
   m_EditorClassIdentifier: 
-  _itemName: 
-  _itemDescription: 
+  _itemName: Key
+  _itemDescription: This is one of the key that opens the door for the living room.
   itemType: 0
+  _itemMesh: {fileID: 4300000, guid: ab974ba0187335f4488da0d5ff17274d, type: 2}
+  _itemMaterial: {fileID: 2100000, guid: f6d4d4566cf7fb241970a2865dc88c19, type: 2}
+  _itemThumbnail: {fileID: 0}
