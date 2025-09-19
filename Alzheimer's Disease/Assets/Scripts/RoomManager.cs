@@ -15,6 +15,66 @@ public class RoomManager : MonoBehaviour
     public GameObject doorPrefab;
     public float doorYOffset = -0.5f;
 
+    [Header("Wall Settings")]
+    public GameObject wallPrefab;
+    public float wallHeight = 3.0f;
+    public float wallThickness = 0.2f;
+    public float wallYPosition = 0f;
+
+    void OnDrawGizmos()
+    {
+        if (Hallway != null)
+        {
+            Bounds bounds = Hallway.GetComponent<Renderer>().bounds;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(bounds.center, bounds.size);
+        }
+    }
+
+    private void CreateHallwayWalls()
+    {
+        if (Hallway == null || wallPrefab == null)
+        {
+            Debug.LogWarning("Hallway or wall prefab not assigned!");
+            return;
+        }
+
+        Bounds hallwayBounds = Hallway.GetComponent<Renderer>().bounds;
+        
+        // North wall - faces south
+        CreateWallSegment(hallwayBounds, "North", 
+                        new Vector3(hallwayBounds.center.x, wallYPosition, hallwayBounds.max.z),
+                        new Vector3(hallwayBounds.size.x, wallHeight, wallThickness),
+                        Quaternion.identity);
+        
+        // South wall - faces north
+        CreateWallSegment(hallwayBounds, "South", 
+                        new Vector3(hallwayBounds.center.x, wallYPosition, hallwayBounds.min.z),
+                        new Vector3(hallwayBounds.size.x, wallHeight, wallThickness),
+                        Quaternion.Euler(0, 180, 0));
+        
+        // East wall - faces west 
+        CreateWallSegment(hallwayBounds, "East", 
+                        new Vector3(hallwayBounds.max.x, wallYPosition, hallwayBounds.center.z),
+                        new Vector3(hallwayBounds.size.z, wallHeight, wallThickness),
+                        Quaternion.Euler(0, 90, 0));
+        
+        // West wall - faces east
+        CreateWallSegment(hallwayBounds, "West", 
+                        new Vector3(hallwayBounds.min.x, wallYPosition, hallwayBounds.center.z),
+                        new Vector3(hallwayBounds.size.z, wallHeight, wallThickness),
+                        Quaternion.Euler(0, -90, 0));
+    }
+
+    private void CreateWallSegment(Bounds hallwayBounds, string wallName, Vector3 position, Vector3 scale, Quaternion rotation)
+    {
+        GameObject wall = Instantiate(wallPrefab, position, rotation, transform); 
+        wall.name = "HallwayWall_" + wallName;
+        wall.transform.localScale = scale;
+        
+        Debug.Log($"Created {wallName} wall at {position} with rotation {rotation.eulerAngles}");
+    }
+
     public void RandomizeOtherRooms()
     {
         if (Hallway == null || PossibleRooms == null || PossibleRooms.Length == 0)
@@ -99,7 +159,6 @@ public class RoomManager : MonoBehaviour
                         break;
                 }
                 
-                // Create collision rect with padding for minDistanceBetweenRooms
                 Rect roomRect = new Rect(
                     new Vector2(newPos.x - roomBounds.extents.x - minDistanceBetweenRooms,
                                 newPos.z - roomBounds.extents.z - minDistanceBetweenRooms),
@@ -138,7 +197,6 @@ public class RoomManager : MonoBehaviour
 
             if (placed)
             {
-                // Instantiate door at the connection point
                 InstantiateDoor(room, placedSide, placedPosition, roomBounds);
             }
             else
@@ -206,6 +264,7 @@ public class RoomManager : MonoBehaviour
     }
 
     void Start() {
+        CreateHallwayWalls();
         RandomizeOtherRooms();
     }
 }

@@ -3894,7 +3894,7 @@ PrefabInstance:
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: wallPrefab
       value: 
-      objectReference: {fileID: 4621486016242954509, guid: 9b6acb9d76828f04b9261e1b22d4ecd2, type: 3}
+      objectReference: {fileID: 5632533941249705700, guid: 9b6acb9d76828f04b9261e1b22d4ecd2, type: 3}
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: PossibleRooms.Array.size
       value: 4
