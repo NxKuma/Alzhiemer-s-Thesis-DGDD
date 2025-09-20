@@ -21,6 +21,9 @@ public class RoomManager : MonoBehaviour
     public float wallThickness = 0.2f;
     public float wallYPosition = 0f;
 
+    private List<GameObject> currentWalls = new List<GameObject>();
+    private List<GameObject> currentDoors = new List<GameObject>();
+
     void OnDrawGizmos()
     {
         if (Hallway != null)
@@ -31,7 +34,48 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    private void CreateHallwayWalls()
+    private void ClearExistingWallsAndDoors()
+    {
+        foreach (GameObject wall in currentWalls)
+        {
+            if (wall != null) Destroy(wall);
+        }
+        currentWalls.Clear();
+
+
+        List<GameObject> doorsToKeep = new List<GameObject>();
+        foreach (GameObject door in currentDoors)
+        {
+            if (door != null && CurrentRoom != null && door.transform.parent == CurrentRoom)
+            {
+                doorsToKeep.Add(door);
+            }
+            else if (door != null)
+            {
+                Destroy(door);
+            }
+        }
+
+        foreach (Transform room in PossibleRooms)
+        {
+            if (room != null && room != CurrentRoom)
+            {
+                for (int i = room.childCount - 1; i >= 0; i--)
+                {
+                    Transform child = room.GetChild(i);
+                    if (child.name.StartsWith("Door_"))
+                    {
+                        Destroy(child.gameObject);
+                    }
+                }
+            }
+        }
+
+        currentDoors.Clear();
+        currentDoors.AddRange(doorsToKeep);
+    }
+
+    private void CreateHallwayWallsFromDoors()
     {
         if (Hallway == null || wallPrefab == null)
         {
@@ -40,39 +84,210 @@ public class RoomManager : MonoBehaviour
         }
 
         Bounds hallwayBounds = Hallway.GetComponent<Renderer>().bounds;
-        
-        // North wall - faces south
-        CreateWallSegment(hallwayBounds, "North", 
-                        new Vector3(hallwayBounds.center.x, wallYPosition, hallwayBounds.max.z),
-                        new Vector3(hallwayBounds.size.x, wallHeight, wallThickness),
-                        Quaternion.identity);
-        
-        // South wall - faces north
-        CreateWallSegment(hallwayBounds, "South", 
-                        new Vector3(hallwayBounds.center.x, wallYPosition, hallwayBounds.min.z),
-                        new Vector3(hallwayBounds.size.x, wallHeight, wallThickness),
-                        Quaternion.Euler(0, 180, 0));
-        
-        // East wall - faces west 
-        CreateWallSegment(hallwayBounds, "East", 
-                        new Vector3(hallwayBounds.max.x, wallYPosition, hallwayBounds.center.z),
-                        new Vector3(hallwayBounds.size.z, wallHeight, wallThickness),
-                        Quaternion.Euler(0, 90, 0));
-        
-        // West wall - faces east
-        CreateWallSegment(hallwayBounds, "West", 
-                        new Vector3(hallwayBounds.min.x, wallYPosition, hallwayBounds.center.z),
-                        new Vector3(hallwayBounds.size.z, wallHeight, wallThickness),
-                        Quaternion.Euler(0, -90, 0));
+        List<DoorInfo> doorInfos = new List<DoorInfo>();
+
+        // First, collect all door information
+        foreach (Transform room in PossibleRooms)
+        {
+            if (room == Hallway)
+                continue;
+
+            // Check if this room has a door
+            foreach (Transform child in room)
+            {
+                if (child.name.StartsWith("Door_"))
+                {
+                    DoorInfo doorInfo = new DoorInfo
+                    {
+                        position = child.position,
+                        rotation = child.rotation,
+                        roomSide = GetDoorSide(child.position, hallwayBounds),
+                        room = room
+                    };
+                    doorInfos.Add(doorInfo);
+                    currentDoors.Add(child.gameObject);
+                }
+            }
+        }
+
+        // Create walls based on door positions
+        CreateWallsFromDoorPositions(hallwayBounds, doorInfos);
     }
 
-    private void CreateWallSegment(Bounds hallwayBounds, string wallName, Vector3 position, Vector3 scale, Quaternion rotation)
+    private int GetDoorSide(Vector3 doorPosition, Bounds hallwayBounds)
     {
-        GameObject wall = Instantiate(wallPrefab, position, rotation, transform); 
-        wall.name = "HallwayWall_" + wallName;
+        // Determine which side of the hallway this door is on
+        float northDist = Mathf.Abs(doorPosition.z - hallwayBounds.max.z);
+        float southDist = Mathf.Abs(doorPosition.z - hallwayBounds.min.z);
+        float eastDist = Mathf.Abs(doorPosition.x - hallwayBounds.max.x);
+        float westDist = Mathf.Abs(doorPosition.x - hallwayBounds.min.x);
+
+        float minDist = Mathf.Min(northDist, southDist, eastDist, westDist);
+
+        if (minDist == northDist) return 0; // North
+        if (minDist == southDist) return 1; // South
+        if (minDist == eastDist) return 2;  // East
+        return 3; // West
+    }
+
+    private void CreateWallsFromDoorPositions(Bounds hallwayBounds, List<DoorInfo> doorInfos)
+    {
+        // Group doors by side
+        List<Vector3> northDoors = new List<Vector3>();
+        List<Vector3> southDoors = new List<Vector3>();
+        List<Vector3> eastDoors = new List<Vector3>();
+        List<Vector3> westDoors = new List<Vector3>();
+
+        foreach (DoorInfo doorInfo in doorInfos)
+        {
+            switch (doorInfo.roomSide)
+            {
+                case 0: northDoors.Add(doorInfo.position); break;
+                case 1: southDoors.Add(doorInfo.position); break;
+                case 2: eastDoors.Add(doorInfo.position); break;
+                case 3: westDoors.Add(doorInfo.position); break;
+            }
+        }
+
+        // Create walls for each side with gaps for doors
+        CreateWallSegmentWithDoors(hallwayBounds, "North", hallwayBounds.max.z, northDoors, true);
+        CreateWallSegmentWithDoors(hallwayBounds, "South", hallwayBounds.min.z, southDoors, true);
+        CreateWallSegmentWithDoors(hallwayBounds, "East", hallwayBounds.max.x, eastDoors, false);
+        CreateWallSegmentWithDoors(hallwayBounds, "West", hallwayBounds.min.x, westDoors, false);
+    }
+
+    private void CreateWallSegmentWithDoors(Bounds hallwayBounds, string sideName, float wallPosition, List<Vector3> doors, bool isHorizontal)
+    {
+        if (doors.Count == 0)
+        {
+            // No doors on this side, create full wall
+            CreateFullWallSegment(hallwayBounds, sideName, wallPosition, isHorizontal);
+            return;
+        }
+
+        // Sort doors by position along the wall
+        if (isHorizontal)
+            doors.Sort((a, b) => a.x.CompareTo(b.x));
+        else
+            doors.Sort((a, b) => a.z.CompareTo(b.z));
+
+        float wallStart, wallEnd;
+        float doorWidth = 1.0f; // Adjust this based on your door prefab size
+
+        if (isHorizontal)
+        {
+            wallStart = hallwayBounds.min.x;
+            wallEnd = hallwayBounds.max.x;
+
+            // Create wall segments between doors
+            float currentPos = wallStart;
+            
+            foreach (Vector3 doorPos in doors)
+            {
+                // Wall segment before door
+                if (doorPos.x - doorWidth / 2 > currentPos)
+                {
+                    CreatePartialWallSegment(hallwayBounds, sideName + "_BeforeDoor_" + doorPos.x, 
+                        currentPos, doorPos.x - doorWidth / 2, wallPosition, isHorizontal, true);
+                }
+
+                currentPos = doorPos.x + doorWidth / 2;
+            }
+
+            // Final wall segment after last door
+            if (currentPos < wallEnd)
+            {
+                CreatePartialWallSegment(hallwayBounds, sideName + "_AfterLastDoor", 
+                    currentPos, wallEnd, wallPosition, isHorizontal, true);
+            }
+        }
+        else
+        {
+            wallStart = hallwayBounds.min.z;
+            wallEnd = hallwayBounds.max.z;
+
+            // Create wall segments between doors
+            float currentPos = wallStart;
+            
+            foreach (Vector3 doorPos in doors)
+            {
+                // Wall segment before door
+                if (doorPos.z - doorWidth / 2 > currentPos)
+                {
+                    CreatePartialWallSegment(hallwayBounds, sideName + "_BeforeDoor_" + doorPos.z, 
+                        currentPos, doorPos.z - doorWidth / 2, wallPosition, isHorizontal, false);
+                }
+
+                currentPos = doorPos.z + doorWidth / 2;
+            }
+
+            // Final wall segment after last door
+            if (currentPos < wallEnd)
+            {
+                CreatePartialWallSegment(hallwayBounds, sideName + "_AfterLastDoor", 
+                    currentPos, wallEnd, wallPosition, isHorizontal, false);
+            }
+        }
+    }
+
+    private void CreateFullWallSegment(Bounds hallwayBounds, string sideName, float wallPosition, bool isHorizontal)
+    {
+        Vector3 position;
+        Vector3 scale;
+        Quaternion rotation;
+
+        if (isHorizontal)
+        {
+            position = new Vector3(hallwayBounds.center.x, wallYPosition, wallPosition);
+            scale = new Vector3(hallwayBounds.size.x, wallHeight, wallThickness);
+            rotation = sideName == "North" ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
+        }
+        else
+        {
+            position = new Vector3(wallPosition, wallYPosition, hallwayBounds.center.z);
+            scale = new Vector3(hallwayBounds.size.z, wallHeight, wallThickness);
+            rotation = sideName == "East" ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, -90, 0);
+        }
+
+        CreateWall(position, scale, rotation, "HallwayWall_" + sideName);
+    }
+
+    private void CreatePartialWallSegment(Bounds hallwayBounds, string segmentName, float start, float end, float wallPosition, bool isHorizontal, bool isNorthSouth)
+    {
+        Vector3 position;
+        Vector3 scale;
+        Quaternion rotation;
+
+        if (isHorizontal)
+        {
+            float centerX = (start + end) / 2;
+            float length = end - start;
+            
+            position = new Vector3(centerX, wallYPosition, wallPosition);
+            scale = new Vector3(length, wallHeight, wallThickness);
+            rotation = isNorthSouth ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
+        }
+        else
+        {
+            float centerZ = (start + end) / 2;
+            float length = end - start;
+            
+            position = new Vector3(wallPosition, wallYPosition, centerZ);
+            scale = new Vector3(length, wallHeight, wallThickness);
+            rotation = isNorthSouth ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, -90, 0);
+        }
+
+        CreateWall(position, scale, rotation, "HallwayWall_" + segmentName);
+    }
+
+    private void CreateWall(Vector3 position, Vector3 scale, Quaternion rotation, string name)
+    {
+        GameObject wall = Instantiate(wallPrefab, position, rotation, transform);
+        wall.name = name;
         wall.transform.localScale = scale;
+        currentWalls.Add(wall);
         
-        Debug.Log($"Created {wallName} wall at {position} with rotation {rotation.eulerAngles}");
+        Debug.Log($"Created wall {name} at {position} with scale {scale}");
     }
 
     public void RandomizeOtherRooms()
@@ -82,6 +297,8 @@ public class RoomManager : MonoBehaviour
             Debug.LogWarning("RoomManager not set up properly!");
             return;
         }
+
+        ClearExistingWallsAndDoors();
 
         Bounds hallwayBounds = Hallway.GetComponent<Renderer>().bounds;
         Vector3 hallwayPos = hallwayBounds.center;
@@ -204,6 +421,8 @@ public class RoomManager : MonoBehaviour
                 Debug.LogWarning($"Could not place {room.name} after {attempts} attempts!");
             }
         }
+
+        CreateHallwayWallsFromDoors();
     }
 
     private void InstantiateDoor(Transform room, int side, Vector3 roomPosition, Bounds roomBounds)
@@ -259,12 +478,21 @@ public class RoomManager : MonoBehaviour
         // Instantiate the door as a child of the room
         GameObject door = Instantiate(doorPrefab, doorPosition, doorRotation, room);
         door.name = "Door_" + room.name;
+        currentDoors.Add(door);
         
         Debug.Log($"Instantiated door for {room.name} at {doorPosition}");
     }
 
     void Start() {
-        CreateHallwayWalls();
         RandomizeOtherRooms();
+    }
+
+    // Helper class to store door information
+    private class DoorInfo
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+        public int roomSide;
+        public Transform room;
     }
 }
