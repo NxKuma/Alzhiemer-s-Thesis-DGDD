@@ -124,11 +124,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4459864851310106424, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
   m_PrefabInstance: {fileID: 195899903}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &187363715 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4459864851310106429, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
-  m_PrefabInstance: {fileID: 195899903}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &187363718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,8 +475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc77be35ecfe28458d72b4a5d5be8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractorSource: {fileID: 187363715}
-  InteractRange: 5
 --- !u!1 &1568947730
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,6 +804,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1621365522829268505, guid: 12797f20610131f429a232f26ae34924, type: 3}
+      propertyPath: dialogue
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1975061412442517457, guid: 12797f20610131f429a232f26ae34924, type: 3}
       propertyPath: m_Name
       value: NPC
@@ -871,6 +868,10 @@ PrefabInstance:
     - target: {fileID: 2100071052787851238, guid: c23dbcb46806c424bb1a279d9cd9e9f4, type: 3}
       propertyPath: m_Name
       value: DialogueCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3757879927807470987, guid: c23dbcb46806c424bb1a279d9cd9e9f4, type: 3}
+      propertyPath: TypeSpeed
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5737701564151572241, guid: c23dbcb46806c424bb1a279d9cd9e9f4, type: 3}
       propertyPath: m_Pivot.x
