@@ -35,6 +35,7 @@ public class DialogueManager : MonoBehaviour
             //disable character movement
             if (Input.GetMouseButtonDown(0)) //if possible try to check if text is done writing
             {
+                _lines.Dequeue();
                 DisplayNextLine();
             }
         }
@@ -63,7 +64,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        DialogueLine currLine = _lines.Dequeue();
+        DialogueLine currLine = _lines.Peek();
 
         CharIcon.sprite = currLine.Character.Icon;
         CharName.text = currLine.Character.Name;
@@ -71,6 +72,8 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
 
         StartCoroutine(TypeSentence(currLine));
+
+        // _lines.Dequeue();
     }
 
     IEnumerator TypeSentence(DialogueLine dl)
