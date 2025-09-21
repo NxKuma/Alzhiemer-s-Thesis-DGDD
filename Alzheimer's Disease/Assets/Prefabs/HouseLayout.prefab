@@ -270,8 +270,8 @@ MonoBehaviour:
   PossibleRooms: []
   CurrentRoom: {fileID: 0}
   minDistanceBetweenRooms: 1
-  doorPrefab: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
   doorYOffset: -1
+  PossibleDoors: []
   wallPrefab: {fileID: 5632533941249705700, guid: 9b6acb9d76828f04b9261e1b22d4ecd2, type: 3}
   wallHeight: 1
   wallThickness: 0.5

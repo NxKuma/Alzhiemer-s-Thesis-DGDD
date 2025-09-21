@@ -12,8 +12,8 @@ public class RoomManager : MonoBehaviour
     public float minDistanceBetweenRooms = 1.0f;
     
     [Header("Door Settings")]
-    public GameObject doorPrefab;
     public float doorYOffset = -0.5f;
+    public GameObject[] PossibleDoors; // Array of door prefabs where index corresponds to room index
 
     [Header("Wall Settings")]
     public GameObject wallPrefab;
@@ -41,7 +41,6 @@ public class RoomManager : MonoBehaviour
             if (wall != null) Destroy(wall);
         }
         currentWalls.Clear();
-
 
         List<GameObject> doorsToKeep = new List<GameObject>();
         foreach (GameObject door in currentDoors)
@@ -316,8 +315,9 @@ public class RoomManager : MonoBehaviour
 
         List<Rect> occupied = new List<Rect>();
         
-        foreach (Transform room in PossibleRooms)
+        for (int roomIndex = 0; roomIndex < PossibleRooms.Length; roomIndex++)
         {
+            Transform room = PossibleRooms[roomIndex];
             if (room == Hallway || room == CurrentRoom)
                 continue;
             
@@ -414,7 +414,7 @@ public class RoomManager : MonoBehaviour
 
             if (placed)
             {
-                InstantiateDoor(room, placedSide, placedPosition, roomBounds);
+                InstantiateDoor(room, placedSide, placedPosition, roomBounds, roomIndex);
             }
             else
             {
@@ -425,12 +425,33 @@ public class RoomManager : MonoBehaviour
         CreateHallwayWallsFromDoors();
     }
 
-    private void InstantiateDoor(Transform room, int side, Vector3 roomPosition, Bounds roomBounds)
+    private void InstantiateDoor(Transform room, int side, Vector3 roomPosition, Bounds roomBounds, int roomIndex)
     {
-        if (doorPrefab == null)
+        if (PossibleDoors == null || PossibleDoors.Length == 0)
         {
-            Debug.LogWarning("Door prefab not assigned!");
+            Debug.LogWarning("No door prefabs assigned!");
             return;
+        }
+
+        // Get the appropriate door prefab based on room index
+        GameObject doorPrefabToUse;
+        if (roomIndex < PossibleDoors.Length && PossibleDoors[roomIndex] != null)
+        {
+            doorPrefabToUse = PossibleDoors[roomIndex];
+        }
+        else
+        {
+            // Fallback to first door prefab or log warning
+            if (PossibleDoors.Length > 0 && PossibleDoors[0] != null)
+            {
+                doorPrefabToUse = PossibleDoors[0];
+                Debug.LogWarning($"No door prefab assigned for room index {roomIndex}, using default door.");
+            }
+            else
+            {
+                Debug.LogWarning("No valid door prefabs available!");
+                return;
+            }
         }
 
         Vector3 doorPosition = Vector3.zero;
@@ -476,11 +497,11 @@ public class RoomManager : MonoBehaviour
         }
 
         // Instantiate the door as a child of the room
-        GameObject door = Instantiate(doorPrefab, doorPosition, doorRotation, room);
-        door.name = "Door_" + room.name;
+        GameObject door = Instantiate(doorPrefabToUse, doorPosition, doorRotation, room);
+        door.name = "Door_" + room.name + "_" + roomIndex;
         currentDoors.Add(door);
         
-        Debug.Log($"Instantiated door for {room.name} at {doorPosition}");
+        Debug.Log($"Instantiated door for {room.name} (index {roomIndex}) at {doorPosition} using prefab: {doorPrefabToUse.name}");
     }
 
     void Start() {

@@ -2379,6 +2379,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4459864850019384750, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1032969108}
     - targetCorrespondingSourceObject: {fileID: 4459864851310106424, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
       insertIndex: -1
       addedObject: {fileID: 917213368}
@@ -2815,6 +2818,29 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1032969101 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4459864850019384750, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+  m_PrefabInstance: {fileID: 902916786}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1032969108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032969101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637e60853741f5e44857adefe04b9677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractionDistance: 3
+  interactKey: 101
+  doorLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  InteractionUI: {fileID: 0}
 --- !u!1 &1039753630
 GameObject:
   m_ObjectHideFlags: 0
@@ -3896,9 +3922,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5632533941249705700, guid: 9b6acb9d76828f04b9261e1b22d4ecd2, type: 3}
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: doorYOffset
+      value: -1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: PossibleDoors.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: PossibleRooms.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: 'PossibleDoors.Array.data[0]'
+      value: 
+      objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: 'PossibleDoors.Array.data[1]'
+      value: 
+      objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: 'PossibleDoors.Array.data[2]'
+      value: 
+      objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: 'PossibleDoors.Array.data[3]'
+      value: 
+      objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: 'PossibleRooms.Array.data[0]'
       value: 
