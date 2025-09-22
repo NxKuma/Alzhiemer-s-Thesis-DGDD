@@ -500,6 +500,17 @@ public class RoomManager : MonoBehaviour
         GameObject door = Instantiate(doorPrefabToUse, doorPosition, doorRotation, room);
         door.name = "Door_" + room.name + "_" + roomIndex;
         currentDoors.Add(door);
+
+        DoorReference doorRef = door.AddComponent<DoorReference>();
+
+        if (door.transform.childCount > 0)
+        {
+            Transform doorFrame = door.transform.GetChild(0);
+            if (doorFrame.childCount > 0)
+            {
+                doorRef.actualDoor = doorFrame.GetChild(0);
+            }
+        }
         
         Debug.Log($"Instantiated door for {room.name} (index {roomIndex}) at {doorPosition} using prefab: {doorPrefabToUse.name}");
     }
@@ -516,4 +527,9 @@ public class RoomManager : MonoBehaviour
         public int roomSide;
         public Transform room;
     }
+}
+
+public class DoorReference : MonoBehaviour
+{
+    public Transform actualDoor;
 }
