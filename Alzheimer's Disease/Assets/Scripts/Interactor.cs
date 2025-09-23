@@ -18,7 +18,7 @@ public class Interactor : MonoBehaviour
             {
                 if (collider.TryGetComponent(out NPCInteractable npc))
                 {
-                    npc.Interact();
+                    npc.Interact(transform);
                 }
                 if (collider.TryGetComponent(out DialogueTrigger dialogue))
                 {
