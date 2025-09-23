@@ -3,19 +3,39 @@ using System.Collections.Generic;
 
 public class Inventory
 {
-
-    private List<Item> itemList;
+    private List<Item> _items;
 
     public Inventory()
     {
-        itemList = new List<Item>();
-        AddItem(new Item { itemType = Item.eItemType.MainQuestItem});
-        // Debug.Log(itemList.Count);
+        _items = new List<Item>();
     }
 
     public void AddItem(Item item)
     {
-        itemList.Add(item);
+        if (!_items.Contains(item)) // avoid duplicates if you want
+        {
+            _items.Add(item);
+            Debug.Log("Added: " + item.GetItemName());
+        }
+    }
+
+    public void RemoveItem(Item item)
+    {
+        if (_items.Contains(item))
+        {
+            _items.Remove(item);
+            Debug.Log("Removed: " + item.GetItemName());
+        }
+    }
+
+    public bool HasItem(Item item)
+    {
+        return _items.Contains(item);
+    }
+
+    public List<Item> GetItemList()
+    {
+        return _items;
     }
 
 }

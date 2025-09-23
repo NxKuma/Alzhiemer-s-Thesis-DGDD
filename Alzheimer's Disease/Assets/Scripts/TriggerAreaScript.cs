@@ -3,20 +3,27 @@ using System.Collections.Generic;
 
 public class TriggerAreaScript : MonoBehaviour
 {
-    // private enum eItemStatus { Dropped, Hidden, Spawned }
-    // private static Dictionary<Item, eItemStatus> _itemList = new Dictionary<Item, eItemStatus>();
+    private static Dictionary<Item, ItemStatus> _itemList = new Dictionary<Item, ItemStatus>();
     [SerializeField] private ItemDatabase _itemDatabase;
     [SerializeField] private string _areaName;
     private static bool _hasPlayer = false;
 
-    void Awake() {
-        this.GetComponent<Renderer>().enabled = false;  
+    void Awake()
+    {
+        this.GetComponent<Renderer>().enabled = false;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static ItemStatus GetItemStatus(Item item)
     {
+        if (_itemList.TryGetValue(item, out var status))
+            return status;
 
+        return ItemStatus.Hidden;
+    }
+
+    private static void SetItemStatus(Item item, ItemStatus status)
+    {
+        _itemList[item] = status;
     }
 
     // Update is called once per frame
@@ -31,21 +38,34 @@ public class TriggerAreaScript : MonoBehaviour
         _hasPlayer = true;
     }
 
-    public string GetAreaName()
-    {
-        return _areaName;
-    }
 
     public void DropItem(Item item)
     {
-        _itemDatabase.SetStatus(item, eItemStatus.Dropped);
-        Debug.Log($"{item.GetItemName()} dropped in {_areaName}");
+        if (GetItemStatus(item) == ItemStatus.Dropped || GetItemStatus(item) == ItemStatus.Spawned)
+        {
+            Debug.Log($"{item.GetItemName()} is already {GetItemStatus(item)}, skipping drop.");
+            return;
+        }
+
+        Debug.Log($"Dropped {item.GetItemName()} in {_areaName}");
+        SetItemStatus(item, ItemStatus.Dropped);
+
+        // TODO: Instantiate prefab
     }
 
     public void SpawnItem(Item item)
     {
-        _itemDatabase.SetStatus(item, eItemStatus.Spawned);
-        Debug.Log($"{item.GetItemName()} spawned in {_areaName}");
+
+        if (GetItemStatus(item) == ItemStatus.Spawned || GetItemStatus(item) == ItemStatus.Dropped)
+        {
+            Debug.Log($"{item.GetItemName()} is already {GetItemStatus(item)}, skipping spawn.");
+            return;
+        }
+
+        Debug.Log($"Spawned {item.GetItemName()} in {_areaName}");
+        SetItemStatus(item, ItemStatus.Spawned);
+
+        // TODO: Instantiate prefab
     }
 
     public void CheckItem(Item item)
@@ -54,4 +74,7 @@ public class TriggerAreaScript : MonoBehaviour
         Debug.Log($"{item.GetItemName()} is currently {status}");
     }
 
+    //Getters
+    public ItemDatabase GetItemDatabase() => _itemDatabase;
+    public string GetAreaName() => _areaName;
 }

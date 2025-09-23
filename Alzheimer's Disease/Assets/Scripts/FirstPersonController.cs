@@ -16,6 +16,9 @@ using UnityEngine.UI;
 
 public class FirstPersonController : MonoBehaviour
 {
+
+    private Vector3 _crosshairDefaultScale;
+    private Color _crosshairDefaultColor; // optional but useful
     private Rigidbody rb;
 
     #region Camera Movement Variables
@@ -147,6 +150,13 @@ public class FirstPersonController : MonoBehaviour
             sprintRemaining = sprintDuration;
             sprintCooldownReset = sprintCooldown;
         }
+
+        if (crosshairObject != null)
+        {
+            _crosshairDefaultColor = crosshairObject.color;
+            _crosshairDefaultScale = crosshairObject.rectTransform.localScale;
+        }
+
     }
 
     void Start()
@@ -199,13 +209,89 @@ public class FirstPersonController : MonoBehaviour
     }
 
     float camRotation;
+    
+    #region Item Detection
+    private void DetectAndPickupItem()
+    {
+        // safety checks
+        if (playerCamera == null || crosshairObject == null)
+            return;
+
+        // interaction distance (hardcoded so no new serialized fields are required)
+        float interactRange = 5f;
+        float hoverScale = 2.2f;
+        float lerpSpeed = 5.5f;
+        int mask = LayerMask.GetMask("Item");
+
+        if (playerCamera != null)
+        {
+            Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * interactRange, Color.green);
+        }
+        // raycast from camera forward
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, mask, QueryTriggerInteraction.Collide))
+        {
+            // try to find ItemScript on hit collider or its parent
+            ItemScript itemScript = null;
+            if (hit.collider.attachedRigidbody != null) itemScript = hit.collider.attachedRigidbody.GetComponent<ItemScript>();
+
+            if (itemScript == null) itemScript = hit.collider.GetComponentInParent<ItemScript>();
+            if (itemScript == null) itemScript = hit.collider.GetComponentInChildren<ItemScript>();
+
+            Debug.Log(itemScript);
+
+            if (itemScript != null)
+            {
+                Color highlightColor = Color.yellow;
+                
+                crosshairObject.color = Color.Lerp(crosshairObject.color, highlightColor, Time.deltaTime * lerpSpeed);
+                Vector3 hoverTarget = _crosshairDefaultScale * hoverScale;
+                    crosshairObject.rectTransform.localScale = Vector3.Lerp(
+                        crosshairObject.rectTransform.localScale,
+                        hoverTarget,
+                        Time.deltaTime * lerpSpeed
+                    );
+
+                // pickup on left mouse button (LMB)
+                if (Input.GetMouseButtonDown(0)) // 0 = LMB
+                {
+                    // add to the inventory
+                    if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null)
+                    {
+                        Item itemAsset = itemScript.GetItemResource();
+                        if (itemAsset != null)
+                        {
+                            TriggerHandler.Instance.PlayerInventory.AddItem(itemAsset);
+                            Debug.Log($"Picked up {itemAsset.GetItemName()}");
+
+                            // remove object from scene (use SetActive(false) if you want pooling)
+                            Destroy(itemScript.gameObject);
+                        }
+                    }
+                }
+
+                return; 
+            }
+        }
+
+        crosshairObject.color = Color.Lerp(crosshairObject.color, Color.white, Time.deltaTime * 8f);
+        crosshairObject.rectTransform.localScale = Vector3.Lerp(
+            crosshairObject.rectTransform.localScale,
+            _crosshairDefaultScale,
+            Time.deltaTime * lerpSpeed
+        );
+    }
+
+    #endregion
 
     private void Update()
     {
+        DetectAndPickupItem();
+
         #region Camera
 
         // Control camera movement
-        if(cameraCanMove)
+        if (cameraCanMove)
         {
             yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
 
@@ -232,7 +318,7 @@ public class FirstPersonController : MonoBehaviour
         {
             // Changes isZoomed when key is pressed
             // Behavior for toogle zoom
-            if(Input.GetKeyDown(zoomKey) && !holdToZoom && !isSprinting)
+            if (Input.GetKeyDown(zoomKey) && !holdToZoom && !isSprinting)
             {
                 if (!isZoomed)
                 {
@@ -246,24 +332,24 @@ public class FirstPersonController : MonoBehaviour
 
             // Changes isZoomed when key is pressed
             // Behavior for hold to zoom
-            if(holdToZoom && !isSprinting)
+            if (holdToZoom && !isSprinting)
             {
-                if(Input.GetKeyDown(zoomKey))
+                if (Input.GetKeyDown(zoomKey))
                 {
                     isZoomed = true;
                 }
-                else if(Input.GetKeyUp(zoomKey))
+                else if (Input.GetKeyUp(zoomKey))
                 {
                     isZoomed = false;
                 }
             }
 
             // Lerps camera.fieldOfView to allow for a smooth transistion
-            if(isZoomed)
+            if (isZoomed)
             {
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, zoomFOV, zoomStepTime * Time.deltaTime);
             }
-            else if(!isZoomed && !isSprinting)
+            else if (!isZoomed && !isSprinting)
             {
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
             }
@@ -274,15 +360,15 @@ public class FirstPersonController : MonoBehaviour
 
         #region Sprint
 
-        if(enableSprint)
+        if (enableSprint)
         {
-            if(isSprinting)
+            if (isSprinting)
             {
                 isZoomed = false;
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, sprintFOV, sprintFOVStepTime * Time.deltaTime);
 
                 // Drain sprint remaining while sprinting
-                if(!unlimitedSprint)
+                if (!unlimitedSprint)
                 {
                     sprintRemaining -= 1 * Time.deltaTime;
                     if (sprintRemaining <= 0)
@@ -300,7 +386,7 @@ public class FirstPersonController : MonoBehaviour
 
             // Handles sprint cooldown 
             // When sprint remaining == 0 stops sprint ability until hitting cooldown
-            if(isSprintCooldown)
+            if (isSprintCooldown)
             {
                 sprintCooldown -= 1 * Time.deltaTime;
                 if (sprintCooldown <= 0)
@@ -314,7 +400,7 @@ public class FirstPersonController : MonoBehaviour
             }
 
             // Handles sprintBar 
-            if(useSprintBar && !unlimitedSprint)
+            if (useSprintBar && !unlimitedSprint)
             {
                 float sprintRemainingPercent = sprintRemaining / sprintDuration;
                 sprintBar.transform.localScale = new Vector3(sprintRemainingPercent, 1f, 1f);
@@ -326,7 +412,7 @@ public class FirstPersonController : MonoBehaviour
         #region Jump
 
         // Gets input and calls jump method
-        if(enableJump && Input.GetKeyDown(jumpKey) && isGrounded)
+        if (enableJump && Input.GetKeyDown(jumpKey) && isGrounded)
         {
             Jump();
         }
@@ -337,17 +423,17 @@ public class FirstPersonController : MonoBehaviour
 
         if (enableCrouch)
         {
-            if(Input.GetKeyDown(crouchKey) && !holdToCrouch)
+            if (Input.GetKeyDown(crouchKey) && !holdToCrouch)
             {
                 Crouch();
             }
-            
-            if(Input.GetKeyDown(crouchKey) && holdToCrouch)
+
+            if (Input.GetKeyDown(crouchKey) && holdToCrouch)
             {
                 isCrouched = false;
                 Crouch();
             }
-            else if(Input.GetKeyUp(crouchKey) && holdToCrouch)
+            else if (Input.GetKeyUp(crouchKey) && holdToCrouch)
             {
                 isCrouched = true;
                 Crouch();
@@ -358,7 +444,7 @@ public class FirstPersonController : MonoBehaviour
 
         CheckGround();
 
-        if(enableHeadBob)
+        if (enableHeadBob)
         {
             HeadBob();
         }

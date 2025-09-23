@@ -26,6 +26,8 @@ public class ItemScript : MonoBehaviour
 
     }
 
+    public Item GetItemResource() => _itemResource;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
