@@ -25,9 +25,18 @@ public class Dialogue
 public class DialogueTrigger : MonoBehaviour
 {
     public Dialogue dialogue;
+    public DialogueManager dm;
 
     public void TriggerDialogue()
     {
         DialogueManager.Instance.StartDialogue(dialogue);
+    }
+
+    public bool IsDialogueDone()
+    {
+        if (DialogueManager.Instance._lines.Count > 0)
+            return false;
+        else
+            return true;
     }
 }
