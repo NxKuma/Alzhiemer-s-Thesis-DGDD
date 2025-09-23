@@ -3,7 +3,7 @@ using UnityEngine;
 public class TriggerHandler : MonoBehaviour
 {
     [SerializeField] private Transform _playerBounds;
-    [SerializeField] private Transform[] _triggerAreas;
+    [SerializeField] private TriggerAreaScript[] _triggerAreas;
 
     void Awake()
     {
@@ -23,13 +23,9 @@ public class TriggerHandler : MonoBehaviour
 
     }
 
+    public void PlayerInRoom()
+    {
 
-    private void OnTriggerEnter(Collider other) {
-        
     }
 
-    // bool PlayerIsInTrigger(int triggerID = 0)
-    // {
-
-    // }
 }

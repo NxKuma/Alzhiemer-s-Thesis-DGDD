@@ -13,7 +13,9 @@ public class Item : ScriptableObject
     public enum eItemType
     {
         MainQuestItem,
-        PickUp
+        IdleItem,
+        JigsawPuzzle,
+        Letter
     }
 
     public eItemType itemType;
