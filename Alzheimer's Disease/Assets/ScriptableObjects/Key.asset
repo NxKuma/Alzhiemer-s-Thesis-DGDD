@@ -15,6 +15,6 @@ MonoBehaviour:
   _itemName: Key
   _itemDescription: This is one of the key that opens the door for the living room.
   itemType: 0
-  _itemMesh: {fileID: 4300000, guid: ab974ba0187335f4488da0d5ff17274d, type: 2}
+  _itemMesh: {fileID: 4300000, guid: 70da51c09f8fb084c833d3ef216880a1, type: 2}
   _itemMaterial: {fileID: 2100000, guid: f6d4d4566cf7fb241970a2865dc88c19, type: 2}
   _itemThumbnail: {fileID: 0}

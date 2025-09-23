@@ -9,6 +9,9 @@ public class TriggerAreaScript : MonoBehaviour
     [SerializeField] private string _areaName;
     private static bool _hasPlayer = false;
 
+    void Awake() {
+        this.GetComponent<Renderer>().enabled = false;  
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

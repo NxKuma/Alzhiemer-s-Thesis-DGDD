@@ -6,15 +6,30 @@ public class ItemScript : MonoBehaviour
 
     void Awake()
     {
-        if (_itemResource.GetItemMesh() != null) { GetComponent<MeshFilter>().mesh = _itemResource.GetItemMesh(); }
-        if (_itemResource.GetItemMaterial() != null) { GetComponent<Renderer>().material = _itemResource.GetItemMaterial(); }
+        // this.gameObject.SetActive(false);
+
+        Mesh mesh = _itemResource.GetItemMesh();
+        if (_itemResource.GetItemMesh() != null)
+        {
+            GetComponent<MeshFilter>().mesh = mesh;
+
+            BoxCollider bc = GetComponent<BoxCollider>();
+            if (bc == null) bc = gameObject.AddComponent<BoxCollider>();
+            bc.center = mesh.bounds.center;
+            bc.size = mesh.bounds.size;
+        }
+
+        if (_itemResource.GetItemMaterial() != null)
+        {
+            GetComponent<Renderer>().material = _itemResource.GetItemMaterial();
+        }
 
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        this.gameObject.SetActive(false);
+        
     }
 
     // Update is called once per frame

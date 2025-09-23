@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9310c7c7d1da47b4187cc0b485b2f98e, type: 3}
-  m_Name: Item
+  m_Name: Jigsaw
   m_EditorClassIdentifier: 
-  _itemName: 
-  _itemDescription: 
-  itemType: 0
+  _itemName: Face1
+  _itemDescription: This looks familiar...
+  itemType: 2
   _itemMesh: {fileID: 0}
   _itemMaterial: {fileID: 0}
   _itemThumbnail: {fileID: 0}
