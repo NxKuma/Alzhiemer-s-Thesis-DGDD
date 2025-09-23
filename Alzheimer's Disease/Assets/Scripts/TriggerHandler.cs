@@ -9,6 +9,7 @@ public class TriggerHandler : MonoBehaviour
     [SerializeField] private TriggerAreaScript[] _triggerAreas;
 
     private TriggerAreaScript _currentArea;
+    private float _ran;
 
     void Awake()
     {
@@ -35,7 +36,7 @@ public class TriggerHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        _ran = Random.value;
     }
 
     public void PlayerInRoom(TriggerAreaScript area)
@@ -43,6 +44,7 @@ public class TriggerHandler : MonoBehaviour
         _currentArea = area;
         foreach (var item in PlayerInventory.GetItemList())
         {
+            Debug.Log(item);
              // Only process Main Quest items
             if (item.GetItemtype() != Item.eItemType.MainQuestItem)
                 continue;
@@ -56,8 +58,11 @@ public class TriggerHandler : MonoBehaviour
                 continue;
             }
 
+            
+            Debug.Log(_ran);
+
             // Roll chance to drop/spawn
-            if (Random.value < 0.5f)
+            if (_ran < 0.5f)
                 area.DropItem(item);
             else
                 area.SpawnItem(item);

@@ -28,15 +28,21 @@ public class ItemScript : MonoBehaviour
 
     public Item GetItemResource() => _itemResource;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+   public void Initialize(Item item)
     {
-        
-    }
+        _itemResource = item;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (_itemResource != null)
+        {
+            if (_itemResource.GetItemMesh() != null)
+            {
+                MeshFilter mf = GetComponent<MeshFilter>();
+                if (mf != null) mf.mesh = _itemResource.GetItemMesh();
+            }
+
+            Renderer rend = GetComponent<Renderer>();
+            if (rend != null && _itemResource.GetItemMaterial() != null)
+                rend.material = _itemResource.GetItemMaterial();
+        }
     }
 }
