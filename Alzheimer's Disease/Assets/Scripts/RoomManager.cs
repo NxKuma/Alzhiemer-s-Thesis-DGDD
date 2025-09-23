@@ -171,7 +171,7 @@ public class RoomManager : MonoBehaviour
             doors.Sort((a, b) => a.z.CompareTo(b.z));
 
         float wallStart, wallEnd;
-        float doorWidth = 1.0f; // Adjust this based on your door prefab size
+        float doorWidth = 1.33f; // Adjust this based on your door prefab size
 
         if (isHorizontal)
         {

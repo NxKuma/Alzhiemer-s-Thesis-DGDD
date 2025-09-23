@@ -11,6 +11,10 @@ public class DoorInteraction : MonoBehaviour
     [Header("Visual Feedback")]
     public GameObject InteractionUI;
 
+    [Header("Door Settings")]
+    public float openAngle = -90f; // Angle when door is open (-90 for clockwise from above)
+    public float animationDuration = 0.5f;
+
     private Camera playerCamera;
     private Transform currentLookedAtDoor;
     private bool isInteracting = false;
@@ -40,121 +44,109 @@ public class DoorInteraction : MonoBehaviour
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
-        bool isLookingAtDoor = Physics.Raycast(ray, out hit, InteractionDistance, doorLayerMask);
-        
+        bool isLookingAtDoor = Physics.Raycast(ray, out hit, InteractionDistance, doorLayerMask)
+            && hit.transform.name.StartsWith("Door_");
 
-        if (isLookingAtDoor)
+        if (InteractionUI != null) InteractionUI.SetActive(isLookingAtDoor && !isInteracting);
+
+        if (isLookingAtDoor && Input.GetKeyDown(interactKey) && !isInteracting)
         {
-            Transform doorTransform = GetDoorTransformFromHit(hit.transform);
-            
-            if (doorTransform != null && doorTransform.name.StartsWith("Door_"))
-            {
-                if (InteractionUI != null) InteractionUI.SetActive(!isInteracting);
+            currentLookedAtDoor = hit.transform;
+            ToggleDoor(currentLookedAtDoor);
+        }
+    }
 
-                if (Input.GetKeyDown(interactKey) && !isInteracting)
-                {
-                    currentLookedAtDoor = doorTransform;
-                    RotateDoor(currentLookedAtDoor);
-                }
-            }
-            else
-            {
-                if (InteractionUI != null) InteractionUI.SetActive(false);
-            }
+    private void ToggleDoor(Transform doorTransform)
+    {
+        if (isInteracting) return;
+
+        Transform actualDoor = GetActualDoorChild(doorTransform);
+        if (actualDoor == null) return;
+
+        bool isOpen = IsDoorOpen(actualDoor);
+        
+        if (isOpen)
+        {
+            CloseDoor(actualDoor);
         }
         else
         {
-            if (InteractionUI != null) InteractionUI.SetActive(false);
+            OpenDoor(actualDoor);
         }
     }
 
-    private Transform GetDoorTransformFromHit(Transform hitTransform)
-    {
-        if (hitTransform.name.StartsWith("Door_") && IsActualDoorChild(hitTransform))
-        {
-            return hitTransform;
-        }
-        
-        Transform current = hitTransform;
-        while (current != null)
-        {
-            if (current.name.StartsWith("Door_"))
-            {
-                Transform actualDoorChild = FindActualDoorChild(current);
-                return actualDoorChild != null ? actualDoorChild : current;
-            }
-            current = current.parent;
-        }
-        
-        return null;
-    }
-
-    private bool IsActualDoorChild(Transform transform)
-    {
-        return transform.name.Contains("Child") || 
-               transform.CompareTag("ActualDoor") || 
-               transform.GetComponent<DoorReference>() != null;
-    }
-
-    private Transform FindActualDoorChild(Transform doorParent)
+    private Transform GetActualDoorChild(Transform doorParent)
     {
         if (doorParent.childCount > 0)
         {
-            DoorReference doorRef = doorParent.GetComponent<DoorReference>();
-            if (doorRef != null && doorRef.actualDoor != null)
+            Transform doorFrame = doorParent.GetChild(0);
+            if (doorFrame.childCount > 0)
             {
-                return doorRef.actualDoor;
-            }
-            
-            foreach (Transform child in doorParent)
-            {
-                if (child.childCount > 0)
-                {
-                    foreach (Transform grandChild in child)
-                    {
-                        if (grandChild.name.Contains("Door") || 
-                            grandChild.CompareTag("ActualDoor") ||
-                            grandChild.GetComponent<BoxCollider>() != null)
-                        {
-                            return grandChild;
-                        }
-                    }
-                }
-                if (child.GetComponent<BoxCollider>() != null && 
-                   (child.name.Contains("Door") || child.CompareTag("ActualDoor")))
-                {
-                    return child;
-                }
+                return doorFrame.GetChild(0);
             }
         }
-        
-        return null;
+        return doorParent; // Fallback
     }
 
-    private void RotateDoor(Transform doorTransform)
+    private bool IsDoorOpen(Transform doorTransform)
+    {
+        float currentYRotation = doorTransform.localEulerAngles.y;
+        
+        if (currentYRotation > 180f)
+            currentYRotation -= 360f;
+        
+        return Mathf.Abs(currentYRotation + openAngle) < 10f;
+    }
+
+    private void OpenDoor(Transform doorTransform)
     {
         if (isInteracting) return;
         isInteracting = true;
 
-        Quaternion targetRotation = doorTransform.rotation * Quaternion.Euler(0, 0, 90);
-        StartCoroutine(RotateDoorSmoothly(doorTransform, targetRotation, 0.5f));
+        DoorState doorState = doorTransform.GetComponent<DoorState>();
+        if (doorState == null)
+        {
+            doorState = doorTransform.gameObject.AddComponent<DoorState>();
+            doorState.closedRotation = doorTransform.localRotation;
+        }
+
+        Quaternion targetRotation = doorState.closedRotation * Quaternion.Euler(0, 0, -openAngle);
+        StartCoroutine(RotateDoorSmoothly(doorTransform, targetRotation, animationDuration, true));
     }
 
-    private IEnumerator RotateDoorSmoothly(Transform doorTransform, Quaternion targetRotation, float duration)
+    private void CloseDoor(Transform doorTransform)
     {
-        Quaternion startRotation = doorTransform.rotation;
+        if (isInteracting) return;
+        isInteracting = true;
+
+        // Get the original closed rotation from DoorState component
+        DoorState doorState = doorTransform.GetComponent<DoorState>();
+        if (doorState == null)
+        {
+            // If no DoorState found, assume current rotation is closed
+            doorState = doorTransform.gameObject.AddComponent<DoorState>();
+            doorState.closedRotation = doorTransform.localRotation;
+        }
+
+        StartCoroutine(RotateDoorSmoothly(doorTransform, doorState.closedRotation, animationDuration, false));
+    }
+
+    private IEnumerator RotateDoorSmoothly(Transform doorTransform, Quaternion targetRotation, float duration, bool opening)
+    {
+        Quaternion startRotation = doorTransform.localRotation;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
-            doorTransform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / duration);
+            doorTransform.localRotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null; 
         }
 
-        doorTransform.rotation = targetRotation;
+        doorTransform.localRotation = targetRotation;
         isInteracting = false;
-        Debug.Log($"Door {doorTransform.name} rotated to {targetRotation.eulerAngles}");
+        
+        Debug.Log($"Door {(opening ? "opened" : "closed")} - Rotation: {doorTransform.localEulerAngles}");
     }
 
     void OnDrawGizmosSelected()
@@ -166,4 +158,10 @@ public class DoorInteraction : MonoBehaviour
             Gizmos.DrawRay(ray.origin, ray.direction * InteractionDistance);
         }
     }
+}
+
+public class DoorState : MonoBehaviour
+{
+    [HideInInspector]
+    public Quaternion closedRotation;
 }
