@@ -2818,6 +2818,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!4 &1015645927 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3320832222373090490, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+  m_PrefabInstance: {fileID: 1418710338}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1032969101 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4459864850019384750, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
@@ -2841,6 +2846,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   InteractionUI: {fileID: 0}
+  openAngle: -90
+  animationDuration: 0.5
 --- !u!1 &1039753630
 GameObject:
   m_ObjectHideFlags: 0
@@ -3916,7 +3923,7 @@ PrefabInstance:
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: Hallway
       value: 
-      objectReference: {fileID: 2034463394}
+      objectReference: {fileID: 1015645927}
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: wallPrefab
       value: 
@@ -3926,12 +3933,20 @@ PrefabInstance:
       value: -1.1
       objectReference: {fileID: 0}
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: hallwayShape
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: PossibleDoors.Array.size
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: PossibleRooms.Array.size
-      value: 4
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: hallwaySegments.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: 'PossibleDoors.Array.data[0]'
@@ -3964,7 +3979,7 @@ PrefabInstance:
     - target: {fileID: 3231641868346902926, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: 'PossibleRooms.Array.data[3]'
       value: 
-      objectReference: {fileID: 2034463394}
+      objectReference: {fileID: 1015645927}
     - target: {fileID: 3293576184963626305, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -3976,6 +3991,10 @@ PrefabInstance:
     - target: {fileID: 4934366529321529978, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: m_LocalPosition.z
       value: 4.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 4969785528118391379, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.49
       objectReference: {fileID: 0}
     - target: {fileID: 5677939276196332541, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       propertyPath: possibleRooms.Array.size
@@ -4022,7 +4041,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 241522107}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3293576184963626305, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+    - {fileID: 5743837061386890892, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+    - {fileID: 6857706214679694454, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
@@ -5092,11 +5114,6 @@ GameObject:
 --- !u!4 &1929505794 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8183450888943947593, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-  m_PrefabInstance: {fileID: 1418710338}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2034463394 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6966788145215436068, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
   m_PrefabInstance: {fileID: 1418710338}
   m_PrefabAsset: {fileID: 0}
 --- !u!43 &2043328524
