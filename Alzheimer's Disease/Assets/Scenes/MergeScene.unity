@@ -756,6 +756,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1838606100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &182405349 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+  m_PrefabInstance: {fileID: 1301648115}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &188194739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,7 +1182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3800001
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1211,6 +1216,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[0].CharLine
+      value: Hi, dear. Have you found the paint kit?
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[1].CharLine
+      value: Not yet.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[2].CharLine
+      value: Alright. I'll be right here when you do.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[0].Character.Name
+      value: Wife
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[1].Character.Name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[2].Character.Name
+      value: Wife
+      objectReference: {fileID: 0}
+    - target: {fileID: 8850505408797684183, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d304be75d3a1ba346a106402250fa616, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1878,6 +1911,11 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!4 &664295554 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+  m_PrefabInstance: {fileID: 1749031069}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4044,6 +4082,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e191882d70a24d468dd552562f3a39d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1301648115
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1418710339}
+    m_Modifications:
+    - target: {fileID: 2397297443613055976, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_Name
+      value: Daughter-In-Law
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.17364825
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9848078
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[0].CharLine
+      value: Hello.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[1].CharLine
+      value: Hi.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[2].CharLine
+      value: ...
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[0].Character.Name
+      value: Daughter-In-Law
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[1].Character.Name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[2].Character.Name
+      value: Daughter-In-Law
+      objectReference: {fileID: 0}
+    - target: {fileID: 8850505408797684183, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4b06e019302ae12498d114b7e85cc8f6, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
 --- !u!43 &1326660435
 Mesh:
   m_ObjectHideFlags: 0
@@ -4415,15 +4542,21 @@ PrefabInstance:
       addedObject: {fileID: 477132894}
     - targetCorrespondingSourceObject: {fileID: 1484229051858687729, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       insertIndex: 0
-      addedObject: {fileID: 85571303}
+      addedObject: {fileID: 664295554}
     - targetCorrespondingSourceObject: {fileID: 1484229051858687729, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       insertIndex: 1
+      addedObject: {fileID: 85571303}
+    - targetCorrespondingSourceObject: {fileID: 1484229051858687729, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      insertIndex: 2
       addedObject: {fileID: 1996833098}
     - targetCorrespondingSourceObject: {fileID: 649820694219071287, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       insertIndex: 0
-      addedObject: {fileID: 758934198}
+      addedObject: {fileID: 182405349}
     - targetCorrespondingSourceObject: {fileID: 649820694219071287, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
       insertIndex: 1
+      addedObject: {fileID: 758934198}
+    - targetCorrespondingSourceObject: {fileID: 649820694219071287, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
+      insertIndex: 2
       addedObject: {fileID: 1886282490}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
@@ -4559,13 +4692,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1148917398140714588, guid: c23dbcb46806c424bb1a279d9cd9e9f4, type: 3}
+      propertyPath: m_Color.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
     - target: {fileID: 2100071052787851238, guid: c23dbcb46806c424bb1a279d9cd9e9f4, type: 3}
       propertyPath: m_Name
       value: DialogueCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 3757879927807470987, guid: c23dbcb46806c424bb1a279d9cd9e9f4, type: 3}
       propertyPath: TypeSpeed
-      value: 0.1
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4275738593959016963, guid: c23dbcb46806c424bb1a279d9cd9e9f4, type: 3}
+      propertyPath: m_Color.a
+      value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 5737701564151572241, guid: c23dbcb46806c424bb1a279d9cd9e9f4, type: 3}
       propertyPath: m_Pivot.x
@@ -5149,6 +5290,87 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &1749031069
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1418710340}
+    m_Modifications:
+    - target: {fileID: 2397297443613055976, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_Name
+      value: Son
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.49999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.86602545
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625810329435847010, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[0].CharLine
+      value: Hey, dad. Can you get me the hammer. It should be in the garage.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[1].CharLine
+      value: Sure. Be right back.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[0].Character.Name
+      value: Son
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859104058040896640, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: dialogue.DialogueLines.Array.data[1].Character.Name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 8850505408797684183, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 907ffe684fceac3489c16dc0cd84dd6d, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
 --- !u!43 &1805283168
 Mesh:
   m_ObjectHideFlags: 0
