@@ -122,14 +122,12 @@ public class TriggerAreaScript : MonoBehaviour
         Debug.Log($"Dropped {item.GetItemName()} in {_areaName}");
         SetItemStatus(item, ItemStatus.Dropped);
         
-
-        SpawnItemInArea(item);
     }
 
     public void SpawnItem(Item item)
     {
 
-        if (GetItemStatus(item) == ItemStatus.Spawned || GetItemStatus(item) == ItemStatus.Dropped)
+        if (GetItemStatus(item) == ItemStatus.Spawned)
         {
             Debug.Log($"{item.GetItemName()} is already {GetItemStatus(item)}, skipping spawn.");
             return;
@@ -139,6 +137,7 @@ public class TriggerAreaScript : MonoBehaviour
         SetItemStatus(item, ItemStatus.Spawned);
 
         // TODO: Instantiate prefab
+        SpawnItemInArea(item);
     }
 
     public void CheckItem(Item item)
