@@ -23,14 +23,14 @@ public class Item : ScriptableObject
     [Header("Item Mesh Data")]
     [SerializeField] private Mesh _itemMesh;
     [SerializeField] private Material _itemMaterial;
-    [SerializeField] private Texture _itemThumbnail;
+    [SerializeField] private Texture2D _itemThumbnail;
 
     public string GetItemName() { return _itemName; }
     public string GetItemDesc() { return _itemDescription; }
     public eItemType GetItemtype() { return itemType; }
     public Mesh GetItemMesh() { return _itemMesh; }
     public Material GetItemMaterial() { return _itemMaterial; }
-    public Texture GetItemTexture() { return _itemThumbnail; }
+    public Texture2D GetItemTexture() { return _itemThumbnail; }
 
 
 

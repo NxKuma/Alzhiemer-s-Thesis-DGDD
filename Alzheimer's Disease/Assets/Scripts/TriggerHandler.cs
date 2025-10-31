@@ -63,7 +63,10 @@ public class TriggerHandler : MonoBehaviour
 
             // Roll chance to drop/spawn
             if (_ran < 0.5f)
+            {
                 area.DropItem(item);
+                PlayerInventory.DropItem(item);
+            }
             else
                 area.SpawnItem(item);
             }
@@ -72,14 +75,14 @@ public class TriggerHandler : MonoBehaviour
 
     public void DropItem(Item item)
     {
-        Debug.Log($"Dropping {item.GetItemName()} in {_currentArea.GetAreaName()}");
+        // Debug.Log($"Dropping {item.GetItemName()} in {_currentArea.GetAreaName()}");
         _currentArea.DropItem(item);
         // TODO: Instantiate the prefab, mark state, etc.
     }
 
     public void SpawnItem(Item item)
     {
-        Debug.Log($"Spawning {item.GetItemName()} in {_currentArea.GetAreaName()}");
+        // Debug.Log($"Spawning {item.GetItemName()} in {_currentArea.GetAreaName()}");
         _currentArea.SpawnItem(item);
         // TODO: Instantiate the prefab, mark state, etc.
     }   

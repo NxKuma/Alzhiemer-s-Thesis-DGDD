@@ -17,4 +17,4 @@ MonoBehaviour:
   itemType: 0
   _itemMesh: {fileID: 4300000, guid: 70da51c09f8fb084c833d3ef216880a1, type: 2}
   _itemMaterial: {fileID: 2100000, guid: f6d4d4566cf7fb241970a2865dc88c19, type: 2}
-  _itemThumbnail: {fileID: 0}
+  _itemThumbnail: {fileID: 2800000, guid: 1b86383d08c88c44ca14e4ecc4bfa159, type: 3}

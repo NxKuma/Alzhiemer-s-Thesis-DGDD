@@ -17,4 +17,4 @@ MonoBehaviour:
   itemType: 2
   _itemMesh: {fileID: 0}
   _itemMaterial: {fileID: 0}
-  _itemThumbnail: {fileID: 0}
+  _itemThumbnail: {fileID: 2800000, guid: 6239f84ecb877da418206b0934570ac0, type: 3}

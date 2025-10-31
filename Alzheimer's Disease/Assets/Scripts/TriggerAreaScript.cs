@@ -67,8 +67,6 @@ public class TriggerAreaScript : MonoBehaviour
         {
             return InstantiateItemAt(item, candidate);
         }
-        
-        return false;
     }
 
     private bool InstantiateItemAt(Item item, Vector3 pos)
@@ -123,6 +121,7 @@ public class TriggerAreaScript : MonoBehaviour
 
         Debug.Log($"Dropped {item.GetItemName()} in {_areaName}");
         SetItemStatus(item, ItemStatus.Dropped);
+        
 
         SpawnItemInArea(item);
     }
