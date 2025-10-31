@@ -60,7 +60,7 @@ public class InventoryManager : MonoBehaviour
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             if (_inventorySlots[i] == removedItem.GetItemTexture())
             {
-                _inventorySlots[i] = null;
+                // _inventorySlots[i] = null;
                 img.sprite = null;
                 Color c = img.color;
                 c.a = 0f;

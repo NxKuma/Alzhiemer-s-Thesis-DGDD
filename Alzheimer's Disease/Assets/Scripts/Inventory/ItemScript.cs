@@ -29,7 +29,7 @@ public class ItemScript : MonoBehaviour
 
     public Item GetItemResource() => _itemResource;
 
-   public void Initialize(Item item)
+    public void Initialize(Item item)
     {
         _itemResource = item;
 

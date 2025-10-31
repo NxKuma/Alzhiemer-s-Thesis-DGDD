@@ -8,7 +8,7 @@ public class TriggerAreaScript : MonoBehaviour
     [SerializeField] private ItemDatabase _itemDatabase;
     [SerializeField] private string _areaName;
     [SerializeField] private float _spawnClearRadius = 0.18f;
-    private static bool _hasPlayer = false;
+    // private static bool _hasPlayer = false;
     private Collider _areaCollider;
 
     void Awake()
@@ -98,17 +98,17 @@ public class TriggerAreaScript : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
-    {
+    // void Update()
+    // {
 
-    }
+    // }
 
-    public void DetectPlayer()
-    {
-        Debug.Log("Player Entered: " + _areaName);
-        _hasPlayer = true;
-        if(TriggerHandler.Instance != null) TriggerHandler.Instance.PlayerInRoom(this);
-    }
+    // public void DetectPlayer()
+    // {
+    //     Debug.Log("Player Entered: " + _areaName);
+    //     _hasPlayer = true;
+    //     if(TriggerHandler.Instance != null) TriggerHandler.Instance.PlayerInRoom(this);
+    // }
 
 
     public void DropItem(Item item)
@@ -137,7 +137,6 @@ public class TriggerAreaScript : MonoBehaviour
         SetItemStatus(item, ItemStatus.Spawned);
 
         // TODO: Instantiate prefab
-        SpawnItemInArea(item);
     }
 
     public void CheckItem(Item item)

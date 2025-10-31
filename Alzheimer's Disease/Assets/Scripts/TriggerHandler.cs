@@ -26,22 +26,16 @@ public class TriggerHandler : MonoBehaviour
 
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        _ran = Random.value;
-    }
+    // void Update()
+    // {
+    //     _ran = Random.value;
+    // }
 
     public void PlayerInRoom(TriggerAreaScript area)
     {
         _currentArea = area;
+        _ran = Random.value;
+
         foreach (Item item in PlayerInventory.GetItemList())
         {
             Debug.Log(item);

@@ -20,6 +20,11 @@ public class Inventory
             Debug.Log("Added: " + item.GetItemName());
             ItemAdded?.Invoke(item); // notify subscribers
             Debug.Log("Inventory now has added an item.");
+        } else
+        {
+            Debug.Log("Added: " + item.GetItemName());
+            ItemAdded?.Invoke(item); // notify subscribers
+            Debug.Log("Inventory now has added an item.");
         }
     }
 

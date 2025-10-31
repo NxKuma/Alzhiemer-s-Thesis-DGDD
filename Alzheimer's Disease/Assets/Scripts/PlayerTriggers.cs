@@ -11,12 +11,12 @@ public class PlayerTriggers : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent<TriggerAreaScript>(out TriggerAreaScript tas))
-        {
-            tas.DetectPlayer();
-        }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.TryGetComponent<TriggerAreaScript>(out TriggerAreaScript tas))
+    //     {
+    //         tas.DetectPlayer();
+    //     }
 
-    }
+    // }
 }

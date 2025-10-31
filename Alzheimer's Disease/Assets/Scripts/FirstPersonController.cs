@@ -238,7 +238,6 @@ public class FirstPersonController : MonoBehaviour
             if (itemScript == null) itemScript = hit.collider.GetComponentInParent<ItemScript>();
             if (itemScript == null) itemScript = hit.collider.GetComponentInChildren<ItemScript>();
 
-            Debug.Log(itemScript);
 
             if (itemScript != null)
             {
@@ -256,7 +255,7 @@ public class FirstPersonController : MonoBehaviour
                 if (Input.GetMouseButtonDown(0)) // 0 = LMB
                 {
                     // add to the inventory
-                    if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null)
+                    if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null && ItemPoolManagerScript.Instance != null)
                     {
                         Item itemAsset = itemScript.GetItemResource();
                         if (itemAsset != null)
@@ -265,7 +264,9 @@ public class FirstPersonController : MonoBehaviour
                             Debug.Log($"Picked up {itemAsset.GetItemName()}");
 
                             // remove object from scene (use SetActive(false) if you want pooling)
-                            Destroy(itemScript.gameObject);
+                            itemScript.gameObject.SetActive(false);
+                            ItemPoolManagerScript.UpdatePool();
+
                         }
                     }
                 }
