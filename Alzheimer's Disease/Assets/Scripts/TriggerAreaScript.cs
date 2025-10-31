@@ -27,7 +27,7 @@ public class TriggerAreaScript : MonoBehaviour
 
     public static ItemStatus GetItemStatus(Item item)
     {
-        if (_itemList.TryGetValue(item, out var status))
+        if (_itemList.TryGetValue(item, out ItemStatus status))
             return status;
 
         return ItemStatus.Hidden;
@@ -71,12 +71,12 @@ public class TriggerAreaScript : MonoBehaviour
 
     private bool InstantiateItemAt(Item item, Vector3 pos)
     {
-        var itemInst = Instantiate(_itemSpawnPrefab, pos, Quaternion.identity);
+        GameObject itemInst = Instantiate(_itemSpawnPrefab, pos, Quaternion.identity);
         // parent to area for organization
         itemInst.transform.SetParent(this.transform, true);
 
         // try to initialize via ItemScript if present
-        var itemScript = itemInst.GetComponent<ItemScript>();
+        ItemScript itemScript = itemInst.GetComponent<ItemScript>();
         if (itemScript != null)
         {
             itemScript.Initialize(item); // you added this earlier
@@ -84,9 +84,9 @@ public class TriggerAreaScript : MonoBehaviour
         else
         {
             // fallback: try to set mesh/material directly
-            var mf = itemInst.GetComponent<MeshFilter>();
+            MeshFilter mf = itemInst.GetComponent<MeshFilter>();
             if (mf != null && item.GetItemMesh() != null) mf.mesh = item.GetItemMesh();
-            var rend = itemInst.GetComponent<Renderer>();
+            Renderer rend = itemInst.GetComponent<Renderer>();
             if (rend != null && item.GetItemMaterial() != null) rend.material = item.GetItemMaterial();
         }
 
@@ -142,7 +142,7 @@ public class TriggerAreaScript : MonoBehaviour
 
     public void CheckItem(Item item)
     {
-        var status = _itemDatabase.GetStatus(item);
+        ItemStatus status = _itemDatabase.GetStatus(item);
         Debug.Log($"{item.GetItemName()} is currently {status}");
     }
 

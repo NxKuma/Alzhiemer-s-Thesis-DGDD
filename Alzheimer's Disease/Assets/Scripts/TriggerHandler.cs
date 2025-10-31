@@ -42,7 +42,7 @@ public class TriggerHandler : MonoBehaviour
     public void PlayerInRoom(TriggerAreaScript area)
     {
         _currentArea = area;
-        foreach (var item in PlayerInventory.GetItemList())
+        foreach (Item item in PlayerInventory.GetItemList())
         {
             Debug.Log(item);
              // Only process Main Quest items
@@ -50,25 +50,30 @@ public class TriggerHandler : MonoBehaviour
                 continue;
 
             // Check current status of the item
-            var status = TriggerAreaScript.GetItemStatus(item);
-
-            if (status == ItemStatus.Dropped || status == ItemStatus.Spawned)
-            {
-                Debug.Log($"{item.GetItemName()} is already {status}, skipping in {area.GetAreaName()}.");
-                continue;
-            }
-
-            
+            ItemStatus status = TriggerAreaScript.GetItemStatus(item);
             Debug.Log(_ran);
 
+            // if (status == ItemStatus.Dropped || status == ItemStatus.Spawned)
+            // {
+            //     Debug.Log($"{item.GetItemName()} is already {status}, skipping in {area.GetAreaName()}.");
+            //     continue;
+            // }
+
             // Roll chance to drop/spawn
-            if (_ran < 0.5f)
+            if (_ran < 0.5f && status == ItemStatus.Hidden)
             {
                 area.DropItem(item);
                 PlayerInventory.DropItem(item);
-            }
-            else
+                Debug.Log("Dropping...");
+            }else
+                Debug.Log($"{item.GetItemName()} is already {status}, skipping in {area.GetAreaName()}.");
+
+
+            if (_ran >= 0.5f && status == ItemStatus.Dropped && status != ItemStatus.Spawned)
+            {
                 area.SpawnItem(item);
+                Debug.Log("Spawning...");
             }
+        }
     }
 }

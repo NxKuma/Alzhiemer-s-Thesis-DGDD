@@ -6,9 +6,8 @@ public class ItemScript : MonoBehaviour
 
     void Awake()
     {
-        // this.gameObject.SetActive(false);
+        // this.gameObject.SetActive(false); //This is for future gameplay things
         float size = _itemResource.GetItemSize();
-        Vector3 scale = new Vector3(size, size, size);
         Mesh mesh = _itemResource.GetItemMesh();
         if (_itemResource.GetItemMesh() != null)
         {
@@ -24,8 +23,6 @@ public class ItemScript : MonoBehaviour
         {
             GetComponent<Renderer>().material = _itemResource.GetItemMaterial();
         }
-
-
         transform.localScale *= size;
 
     }

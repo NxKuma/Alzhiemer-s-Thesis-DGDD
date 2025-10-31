@@ -5,16 +5,20 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject _visibleInventory;
     private Texture2D[] _inventorySlots;
+    // private Image[] _visibleInventoryImages;
     private Inventory _internalInventory;
+    private int _inventorySlotCount;
 
     // Awake is called when the script instance is being loaded
     void Awake()
     {
-        
-        _inventorySlots = new Texture2D[5];
-        for (int i = 0; i < _visibleInventory.transform.childCount; i++)
+        _inventorySlotCount = _visibleInventory.transform.childCount;
+        _inventorySlots = new Texture2D[_inventorySlotCount];
+
+        for (int i = 0; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
+            
             Color c = img.color;
             c.a = 0f;
             img.color = c;
@@ -32,7 +36,7 @@ public class InventoryManager : MonoBehaviour
     }
     private void AddToInventoryUI(Item newItem)
     {
-        for (int i = 0; i < _visibleInventory.transform.childCount; i++)
+        for (int i = 0; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             if (_inventorySlots[i] != null && img.color.a == 0f)
@@ -51,7 +55,7 @@ public class InventoryManager : MonoBehaviour
 
     private void RemoveFromInventoryUI(Item removedItem)
     {
-        for (int i = 0; i < _visibleInventory.transform.childCount; i++)
+        for (int i = 0; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             if (_inventorySlots[i] == removedItem.GetItemTexture())

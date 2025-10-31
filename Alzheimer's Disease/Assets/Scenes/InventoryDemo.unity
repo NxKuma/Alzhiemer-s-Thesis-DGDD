@@ -455,7 +455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &485045357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1254,16 +1254,24 @@ PrefabInstance:
       value: BedRoom
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 15.561593
+      objectReference: {fileID: 0}
+    - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 7.026494
+      objectReference: {fileID: 0}
+    - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.09
+      value: 2.0900002
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.04
+      value: -3.5400019
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2272,16 +2280,24 @@ PrefabInstance:
       value: BathRoom
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 15.561593
+      objectReference: {fileID: 0}
+    - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 6.0266237
+      objectReference: {fileID: 0}
+    - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.8
+      value: -19.3
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.09
+      value: 2.0900002
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.04
+      value: -4.040001
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2914,16 +2930,24 @@ PrefabInstance:
       value: Kitchen
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 14.561252
+      objectReference: {fileID: 0}
+    - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 7.026494
+      objectReference: {fileID: 0}
+    - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.09
+      value: 2.0900002
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.27
+      value: 6.770001
       objectReference: {fileID: 0}
     - target: {fileID: 7895605297873502020, guid: df03eb6f2129dc543aebb708a13975a1, type: 3}
       propertyPath: m_LocalRotation.w
