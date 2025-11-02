@@ -8,7 +8,7 @@ public class TriggerAreaScript : MonoBehaviour
     [SerializeField] private ItemDatabase _itemDatabase;
     [SerializeField] private string _areaName;
     [SerializeField] private float _spawnClearRadius = 0.18f;
-    // private static bool _hasPlayer = false;
+    private static bool _hasPlayer = false;
     private Collider _areaCollider;
 
     void Awake()
@@ -16,12 +16,19 @@ public class TriggerAreaScript : MonoBehaviour
         this.GetComponent<Renderer>().enabled = false;
     }
 
+    public void DetectPlayer()
+    {
+        Debug.Log("Player Entered: " + _areaName);
+        _hasPlayer = true;
+        if(TriggerHandler.Instance != null) TriggerHandler.Instance.PlayerInRoom(this);
+    }
+
     private Vector3 RandomPointInBounds(Bounds b)
     {
         return new Vector3(
             Random.Range(b.min.x, b.max.x),
             Random.Range(b.min.y, b.max.y),
-            Random.Range(b.min.z, b.max.z)
+            Random.Range(b.min.z, b.max.z)  
         );
     }
 
@@ -33,13 +40,14 @@ public class TriggerAreaScript : MonoBehaviour
         return ItemStatus.Hidden;
     }
 
-    private static void SetItemStatus(Item item, ItemStatus status)
+    public static void SetItemStatus(Item item, ItemStatus status)
     {
         _itemList[item] = status;
     }
 
     public bool SpawnItemInArea(Item item)
     {
+        Debug.Log("Attempting to spawn " + item.GetItemName() + " in " + _areaName);
         if (_areaCollider == null) _areaCollider = GetComponent<Collider>();
 
         Bounds b = _areaCollider.bounds;
@@ -71,45 +79,30 @@ public class TriggerAreaScript : MonoBehaviour
 
     private bool InstantiateItemAt(Item item, Vector3 pos)
     {
-        GameObject itemInst = Instantiate(_itemSpawnPrefab, pos, Quaternion.identity);
-        // parent to area for organization
-        itemInst.transform.SetParent(this.transform, true);
-
-        // try to initialize via ItemScript if present
-        ItemScript itemScript = itemInst.GetComponent<ItemScript>();
-        if (itemScript != null)
+        foreach (ItemScript iS in ItemPoolManagerScript.Instance.GetItemPool())
         {
-            itemScript.Initialize(item); // you added this earlier
-        }
-        else
-        {
-            // fallback: try to set mesh/material directly
-            MeshFilter mf = itemInst.GetComponent<MeshFilter>();
-            if (mf != null && item.GetItemMesh() != null) mf.mesh = item.GetItemMesh();
-            Renderer rend = itemInst.GetComponent<Renderer>();
-            if (rend != null && item.GetItemMaterial() != null) rend.material = item.GetItemMaterial();
-        }
+            Debug.Log($"Checking item pool for {item.GetItemName()}");
+            if (iS.GetItemResource() == item)
+            {   
+                Debug.Log($"Item is found");
+                if (!ItemPoolManagerScript.Instance.ItemSpawnable(iS))
+                {
+                    Debug.Log($"{item.GetItemName()} is not spawnable right now.");
+                    return false;
+                }
+                else
+                {
+                    iS.gameObject.transform.position = pos;
+                    iS.gameObject.SetActive(true);
+                    SetItemStatus(item, ItemStatus.Spawned);
+                    Debug.Log($"Spawned {item.GetItemName()} in {_areaName}");
 
-        // update global status
-        SetItemStatus(item, ItemStatus.Spawned);
-
-        return true;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-
-
-    // Update is called once per frame
-    // void Update()
-    // {
-
-    // }
-
-    // public void DetectPlayer()
-    // {
-    //     Debug.Log("Player Entered: " + _areaName);
-    //     _hasPlayer = true;
-    //     if(TriggerHandler.Instance != null) TriggerHandler.Instance.PlayerInRoom(this);
-    // }
-
 
     public void DropItem(Item item)
     {
@@ -121,21 +114,16 @@ public class TriggerAreaScript : MonoBehaviour
 
         Debug.Log($"Dropped {item.GetItemName()} in {_areaName}");
         SetItemStatus(item, ItemStatus.Dropped);
-        
     }
 
     public void SpawnItem(Item item)
     {
-
         if (GetItemStatus(item) == ItemStatus.Spawned)
         {
             Debug.Log($"{item.GetItemName()} is already {GetItemStatus(item)}, skipping spawn.");
             return;
         }
-
-        Debug.Log($"Spawned {item.GetItemName()} in {_areaName}");
-        SetItemStatus(item, ItemStatus.Spawned);
-
+        SpawnItemInArea(item);
         // TODO: Instantiate prefab
     }
 

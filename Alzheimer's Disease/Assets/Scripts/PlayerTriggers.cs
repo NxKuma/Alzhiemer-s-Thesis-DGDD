@@ -3,20 +3,13 @@ using UnityEngine;
 public class PlayerTriggers : MonoBehaviour
 {
     [SerializeField] private Transform[] _triggerAreas;
-    private Inventory inventory;
-    
-    private void Awake()
+
+    private void OnTriggerEnter(Collider other)
     {
-        inventory = new Inventory();
+        if (other.TryGetComponent<TriggerAreaScript>(out TriggerAreaScript tas))
+        {
+            tas.DetectPlayer();
+        }
+
     }
-
-
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.TryGetComponent<TriggerAreaScript>(out TriggerAreaScript tas))
-    //     {
-    //         tas.DetectPlayer();
-    //     }
-
-    // }
 }

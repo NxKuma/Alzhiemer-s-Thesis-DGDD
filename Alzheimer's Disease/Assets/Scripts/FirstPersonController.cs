@@ -265,8 +265,6 @@ public class FirstPersonController : MonoBehaviour
 
                             // remove object from scene (use SetActive(false) if you want pooling)
                             itemScript.gameObject.SetActive(false);
-                            ItemPoolManagerScript.UpdatePool();
-
                         }
                     }
                 }
