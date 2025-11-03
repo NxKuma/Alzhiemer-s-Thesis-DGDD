@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class Inventory
 {
@@ -12,7 +11,7 @@ public class Inventory
         _items = new List<Item>();
     }
 
-    public void AddItem(Item item)
+    public void Inventory_AddItem(Item item)
     {
         if (!_items.Contains(item))
         {
@@ -29,7 +28,7 @@ public class Inventory
     }
 
     //This is to remove the item permanently if it is used
-    public void RemoveItem(Item item)
+    public void Inventory_RemoveItem(Item item)
     {
         if (_items.Contains(item))
         {
@@ -40,18 +39,13 @@ public class Inventory
     }
 
     //This is to remove the item from the inventory
-    public void DropItem(Item item)
+    public void Inventory_DropItem(Item item)
     {   
         if (_items.Contains(item))
         {
             ItemDropped?.Invoke(item);
             Debug.Log("Dropped: " + item.GetItemName());
         }
-    }
-
-    public bool HasItem(Item item)
-    {
-        return _items.Contains(item);
     }
 
     public List<Item> GetItemList()

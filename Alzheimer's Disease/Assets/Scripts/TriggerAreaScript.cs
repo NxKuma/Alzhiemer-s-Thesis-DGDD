@@ -3,11 +3,10 @@ using System.Collections.Generic;
 
 public class TriggerAreaScript : MonoBehaviour
 {
-    private static Dictionary<Item, ItemStatus> _itemList = new Dictionary<Item, ItemStatus>();
     [SerializeField] private GameObject _itemSpawnPrefab; 
     [SerializeField] private ItemDatabase _itemDatabase;
     [SerializeField] private string _areaName;
-    [SerializeField] private float _spawnClearRadius = 0.18f;
+    private static Dictionary<Item, ItemStatus> _itemList = new Dictionary<Item, ItemStatus>();
     private static bool _hasPlayer = false;
     private Collider _areaCollider;
 
@@ -16,6 +15,7 @@ public class TriggerAreaScript : MonoBehaviour
         this.GetComponent<Renderer>().enabled = false;
     }
 
+    //DON'T DELETE THIS: Used for triggering spawn and drop areas
     public void DetectPlayer()
     {
         Debug.Log("Player Entered: " + _areaName);
@@ -32,20 +32,12 @@ public class TriggerAreaScript : MonoBehaviour
         );
     }
 
-    public static ItemStatus GetItemStatus(Item item)
-    {
-        if (_itemList.TryGetValue(item, out ItemStatus status))
-            return status;
-
-        return ItemStatus.Hidden;
-    }
-
     public static void SetItemStatus(Item item, ItemStatus status)
     {
         _itemList[item] = status;
     }
 
-    public bool SpawnItemInArea(Item item)
+    private bool SpawnItemInArea(Item item)
     {
         Debug.Log("Attempting to spawn " + item.GetItemName() + " in " + _areaName);
         if (_areaCollider == null) _areaCollider = GetComponent<Collider>();
@@ -95,6 +87,7 @@ public class TriggerAreaScript : MonoBehaviour
                     iS.gameObject.transform.position = pos;
                     iS.gameObject.SetActive(true);
                     SetItemStatus(item, ItemStatus.Spawned);
+                    iS.TweenShadowThickness(0f, 8f);
                     Debug.Log($"Spawned {item.GetItemName()} in {_areaName}");
 
                     return true;
@@ -124,16 +117,19 @@ public class TriggerAreaScript : MonoBehaviour
             return;
         }
         SpawnItemInArea(item);
-        // TODO: Instantiate prefab
     }
 
-    public void CheckItem(Item item)
-    {
-        ItemStatus status = _itemDatabase.GetStatus(item);
-        Debug.Log($"{item.GetItemName()} is currently {status}");
-    }
-
+    #region GETTERS
     //Getters
     public ItemDatabase GetItemDatabase() => _itemDatabase;
     public string GetAreaName() => _areaName;
+
+    public static ItemStatus GetItemStatus(Item item)
+    {
+        if (_itemList.TryGetValue(item, out ItemStatus status))
+            return status;
+
+        return ItemStatus.Hidden;
+    }
+    #endregion
 }

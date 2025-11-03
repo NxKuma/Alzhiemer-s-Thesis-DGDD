@@ -26,11 +26,6 @@ public class TriggerHandler : MonoBehaviour
 
     }
 
-    // void Update()
-    // {
-    //     _ran = Random.value;
-    // }
-
     public void PlayerInRoom(TriggerAreaScript area)
     {
         _currentArea = area;
@@ -38,26 +33,18 @@ public class TriggerHandler : MonoBehaviour
 
         foreach (Item item in PlayerInventory.GetItemList())
         {
-            Debug.Log(item);
              // Only process Main Quest items
             if (item.GetItemtype() != Item.eItemType.MainQuestItem)
                 continue;
 
             // Check current status of the item
             ItemStatus status = TriggerAreaScript.GetItemStatus(item);
-            Debug.Log(_ran);
-
-            // if (status == ItemStatus.Dropped || status == ItemStatus.Spawned)
-            // {
-            //     Debug.Log($"{item.GetItemName()} is already {status}, skipping in {area.GetAreaName()}.");
-            //     continue;
-            // }
 
             // Roll chance to drop/spawn
             if (_ran < 0.5f && status == ItemStatus.Hidden)
             {
                 area.DropItem(item);
-                PlayerInventory.DropItem(item);
+                PlayerInventory.Inventory_DropItem(item);
                 Debug.Log("Dropping...");
             }else
                 Debug.Log($"{item.GetItemName()} is already {status}, skipping in {area.GetAreaName()}.");

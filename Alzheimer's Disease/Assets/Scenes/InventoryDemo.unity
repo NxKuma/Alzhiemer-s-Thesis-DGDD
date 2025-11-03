@@ -450,7 +450,7 @@ GameObject:
   - component: {fileID: 485045358}
   - component: {fileID: 485045357}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: InventoryCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1473,7 +1473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.092804
+      value: 1.0927734
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1744,7 +1744,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.092804
+      value: 1.0927734
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2238,7 +2238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.092804
+      value: 1.0927734
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2432,7 +2432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.092804
+      value: 1.0927734
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2822,7 +2822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.092804
+      value: 1.0927734
       objectReference: {fileID: 0}
     - target: {fileID: 8025330110167948559, guid: 114629939ce02464f9109c7520f34f74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
