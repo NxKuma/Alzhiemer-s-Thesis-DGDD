@@ -3,7 +3,7 @@ using UnityEngine;
 public class FloatingObject : MonoBehaviour
 {
     [SerializeField] private float _spinDegPerSec = 15.0f;
-    [SerializeField] private float _spinAmp= 1.0f;
+    [SerializeField] private float _spinAmp= 0.5f;
     [SerializeField] private float _spinFreq = 1.0f;
     private Transform _camera;
     private Vector3 _tempPos = new Vector3 ();
