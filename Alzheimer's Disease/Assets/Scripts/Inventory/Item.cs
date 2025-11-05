@@ -22,7 +22,7 @@ public class Item : ScriptableObject
 
     [Header("Item Mesh Data")]
     [SerializeField] private Mesh _itemMesh;
-    [SerializeField] private Material _itemMaterial;
+    [SerializeField] private Material[] _itemMaterial;
     [SerializeField] private Texture2D _itemThumbnail;
     [SerializeField] private float _itemSize;
 
@@ -31,7 +31,7 @@ public class Item : ScriptableObject
     public string GetItemDesc() => _itemDescription; 
     public eItemType GetItemtype() => itemType; 
     public Mesh GetItemMesh() => _itemMesh; 
-    public Material GetItemMaterial() => _itemMaterial; 
+    public Material[] GetItemMaterial() => _itemMaterial; 
     public Texture2D GetItemTexture() => _itemThumbnail; 
     public float GetItemSize() => _itemSize;
 

@@ -17,6 +17,7 @@ public class ItemScript : MonoBehaviour
         Mesh mesh = _itemResource.GetItemMesh();
 
         _itemShadow = this.transform.GetChild(0).gameObject;
+        _isSpinning = _itemResource.GetItemtype() == Item.eItemType.JigsawPuzzle;
 
         if (_itemResource.GetItemMesh() != null)
         {
@@ -35,11 +36,19 @@ public class ItemScript : MonoBehaviour
 
         if (_itemResource.GetItemMaterial() != null)
         {
-            GetComponent<Renderer>().material = _itemResource.GetItemMaterial();
+            Renderer rend = GetComponent<Renderer>();
+            int materialCount = _isSpinning ? (rend.materials.Length + 1) : rend.materials.Length;
+            Material[] mats = new Material[materialCount];
+            if (_isSpinning){
+                mats[0] = _itemResource.GetItemMaterial()[0];
+                mats[materialCount - 1] = _itemResource.GetItemMaterial()[1];
+                mats[1].SetTexture("_MainTexture", _itemResource.GetItemTexture());
+            } else mats[0] = _itemResource.GetItemMaterial()[0];
+            rend.materials = mats;
         }
         SetShadowThickness(0.0f);
         transform.localScale *= size;
-        _isSpinning = _itemResource.GetItemtype() == Item.eItemType.JigsawPuzzle;
+        
         if (_isSpinning){
             Destroy(GetComponent<Rigidbody>()); 
             gameObject.AddComponent<FloatingObject>(); 
@@ -57,23 +66,23 @@ public class ItemScript : MonoBehaviour
 
     public Item GetItemResource() => _itemResource;
 
-    public void Initialize(Item item)
-    {
-        _itemResource = item;
+    // public void Initialize(Item item)
+    // {
+    //     _itemResource = item;
 
-        if (_itemResource != null)
-        {
-            if (_itemResource.GetItemMesh() != null)
-            {
-                MeshFilter mf = GetComponent<MeshFilter>();
-                if (mf != null) mf.mesh = _itemResource.GetItemMesh();
-            }
+    //     if (_itemResource != null)
+    //     {
+    //         if (_itemResource.GetItemMesh() != null)
+    //         {
+    //             MeshFilter mf = GetComponent<MeshFilter>();
+    //             if (mf != null) mf.mesh = _itemResource.GetItemMesh();
+    //         }
 
-            Renderer rend = GetComponent<Renderer>();
-            if (rend != null && _itemResource.GetItemMaterial() != null)
-                rend.material = _itemResource.GetItemMaterial();
-        }
-    }
+    //         Renderer rend = GetComponent<Renderer>();
+    //         if (rend != null && _itemResource.GetItemMaterial() != null)
+    //             rend.material = _itemResource.GetItemMaterial()[0];
+    //     }
+    // }
 
     public void SetShadowThickness(float thickness)
     {
