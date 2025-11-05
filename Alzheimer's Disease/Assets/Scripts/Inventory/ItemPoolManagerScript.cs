@@ -20,14 +20,19 @@ public class ItemPoolManagerScript : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
-        _proxyInventory = TriggerHandler.Instance.PlayerInventory;
-        _proxyInventory.ItemAdded += UpdatePool;
-        _proxyInventory.ItemDropped += SetItemSpawnable;
+
 
         foreach (ItemScript iS in _itemPool)
         {
             _spawnPool[iS] = iS.gameObject.activeSelf;
         }
+    }
+
+    void Start()
+    {
+        _proxyInventory = TriggerHandler.Instance.PlayerInventory;
+        _proxyInventory.ItemAdded += UpdatePool;
+        _proxyInventory.ItemDropped += SetItemSpawnable;
     }
 
     public void UpdatePool(Item item)
