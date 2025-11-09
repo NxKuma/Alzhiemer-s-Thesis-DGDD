@@ -2,9 +2,15 @@ using UnityEngine;
 
 public class NPCInteractable : MonoBehaviour
 {
-    public void Interact()
+    private DialogueTrigger _dialogueScript;
+
+
+    public void Awake()
     {
-        Debug.Log("PRESSED");
-        //trigger dialogue here idrk how
+        _dialogueScript = GetComponent<DialogueTrigger>();
+    }
+    public void Interact(Transform interactorTransform)
+    {
+        //look at player
     }
 }

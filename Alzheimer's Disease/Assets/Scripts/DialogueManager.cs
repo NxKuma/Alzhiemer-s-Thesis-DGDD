@@ -14,12 +14,10 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI CharName;
     public TextMeshProUGUI DialogueText;
 
-    private Queue<DialogueLine> _lines;
+    public Queue<DialogueLine> _lines;
 
     public bool IsDialogueActive = false;
-    public float TypeSpeed = 0.2f;
-
-    
+    public float TypeSpeed = 20.0f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,14 +30,22 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
         if (IsDialogueActive)
+        {
             _dialogueContainer.SetActive(true);
-        else
-            _dialogueContainer.SetActive(false);
+            //disable character movement
+            if (Input.GetMouseButtonDown(0)) //if possible try to check if text is done writing
+            {
+                _lines.Dequeue();
+                DisplayNextLine();
+            }
+        }
+        else _dialogueContainer.SetActive(false);
     }
 
     public void StartDialogue(Dialogue d)
     {
         IsDialogueActive = true;
+        _lines = new Queue<DialogueLine>();
         _lines.Clear();
 
         foreach (DialogueLine dl in d.DialogueLines)
@@ -58,7 +64,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        DialogueLine currLine = _lines.Dequeue();
+        DialogueLine currLine = _lines.Peek();
 
         CharIcon.sprite = currLine.Character.Icon;
         CharName.text = currLine.Character.Name;
@@ -66,6 +72,8 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
 
         StartCoroutine(TypeSentence(currLine));
+
+        // _lines.Dequeue();
     }
 
     IEnumerator TypeSentence(DialogueLine dl)
@@ -81,5 +89,10 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         IsDialogueActive = false;
+    }
+
+    public bool GetIsDialogueActive()
+    {
+        return IsDialogueActive;
     }
 }
