@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryToggle : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class InventoryToggle : MonoBehaviour
     [SerializeField] private float toggleDuration = 0.25f;
     private bool _isOpen = true;
     private Coroutine _toggleRoutine;
+    private Coroutine _iconBlinkRoutine;
+    [SerializeField] private float iconBlinkDuration = 0.4f; // total time for one blink (to yellow and back)
 
     void Awake()
     {
@@ -92,14 +95,52 @@ public class InventoryToggle : MonoBehaviour
 
     private void IconAdd(Item item)
     {
-        if (!_isOpen)
-        {
-            ToggleInventory();
-        }
+        // start a blink coroutine (white -> yellow -> white)
+        if (_iconBlinkRoutine != null) StopCoroutine(_iconBlinkRoutine);
+        _iconBlinkRoutine = StartCoroutine(CoIconBlink(Color.yellow));
     }
 
     private void IconDropped(Item item)
     {
-        // You can add logic here if you want to close the inventory when an item is dropped
+        // start a blink coroutine (white -> yellow -> white)
+        if (_iconBlinkRoutine != null) StopCoroutine(_iconBlinkRoutine);
+        _iconBlinkRoutine = StartCoroutine(CoIconBlink(Color.red));
     }
+
+    private System.Collections.IEnumerator CoIconBlink(Color iconColor)
+    {
+        var img = _iconRect.GetComponent<Image>();
+        if (img == null) yield break;
+
+        Color from = new Color(Color.white.r, Color.white.g, Color.white.b, 0.3921f);
+        Color mid = new Color(iconColor.r, iconColor.g, iconColor.b, 0.8f);
+
+        float half = iconBlinkDuration * 0.5f;
+
+        // to yellow
+        float t = 0f;
+        while (t < half)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Clamp01(t / half);
+            float ease = Mathf.SmoothStep(0f, 1f, p);
+            img.color = Color.Lerp(from, mid, ease);
+            yield return null;
+        }
+
+        // back to white
+        t = 0f;
+        while (t < half)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Clamp01(t / half);
+            float ease = Mathf.SmoothStep(0f, 1f, p);
+            img.color = Color.Lerp(mid, from, ease);
+            yield return null;
+        }
+
+        img.color = from;
+        _iconBlinkRoutine = null;
+    }
+
 }
