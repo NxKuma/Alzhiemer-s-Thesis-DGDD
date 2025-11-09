@@ -109,7 +109,7 @@ public class InventoryToggle : MonoBehaviour
 
     private System.Collections.IEnumerator CoIconBlink(Color iconColor)
     {
-        var img = _iconRect.GetComponent<Image>();
+        Image img = _iconRect.GetComponent<Image>();
         if (img == null) yield break;
 
         Color from = new Color(Color.white.r, Color.white.g, Color.white.b, 0.3921f);
