@@ -454,6 +454,11 @@ public class FirstPersonController : MonoBehaviour
     {
         #region Movement
 
+        if (DialogueManager.GetInstance().DialogueIsPlaying)
+        {
+            return;
+        }
+
         if (playerCanMove)
         {
             // Calculate how fast we should be moving
