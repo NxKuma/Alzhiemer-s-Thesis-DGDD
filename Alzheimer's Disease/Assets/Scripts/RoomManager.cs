@@ -32,6 +32,16 @@ public class RoomManager : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(bounds.center, bounds.size);
         }
+
+        foreach (Transform room in PossibleRooms)
+        {
+            if (room != null && room != Hallway)
+            {
+                Bounds roomBounds = room.GetComponent<Renderer>().bounds;
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireCube(roomBounds.center, roomBounds.size);
+            }
+        }
     }
 
     private void ClearExistingWallsAndDoors()
@@ -333,48 +343,59 @@ public class RoomManager : MonoBehaviour
             {
                 attempts++;
 
-                int side = Random.Range(0, 4); 
-                Vector3 newPos = hallwayPos;
-                Quaternion targetRotation = Quaternion.identity;
+                int side = Random.Range(0, 4);
+                Quaternion rotation = Quaternion.identity;
 
                 switch (side)
                 {
-                    case 0: // Top side (North)
+                    case 0: rotation = Quaternion.Euler(0, 0, 0); break;    // North
+                    case 1: rotation = Quaternion.Euler(0, 180, 0); break;  // South
+                    case 2: rotation = Quaternion.Euler(0, 90, 0); break;   // East
+                    case 3: rotation = Quaternion.Euler(0, -90, 0); break;  // West
+                }
+
+                room.rotation = rotation; // Rotate first!
+                room.gameObject.SetActive(true);
+
+                Renderer rend = room.GetComponent<Renderer>();
+                Bounds rb = rend.bounds; // Now these bounds reflect rotation
+                Vector3 newPos = Vector3.zero;
+
+                switch (side)
+                {
+                    case 0: // North
                         newPos = new Vector3(
-                            Random.Range(hallwayBounds.min.x + roomBounds.extents.x, hallwayBounds.max.x - roomBounds.extents.x),
+                            Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
                             room.position.y,
-                            hallwayBounds.max.z + roomBounds.extents.z
+                            hallwayBounds.max.z + rb.extents.z
                         );
-                        targetRotation = Quaternion.Euler(0, 0, 0);
                         break;
 
-                    case 1: // Bottom side (South)
+                    case 1: // South
                         newPos = new Vector3(
-                            Random.Range(hallwayBounds.min.x + roomBounds.extents.x, hallwayBounds.max.x - roomBounds.extents.x),
+                            Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
                             room.position.y,
-                            hallwayBounds.min.z - roomBounds.extents.z
+                            hallwayBounds.min.z - rb.extents.z
                         );
-                        targetRotation = Quaternion.Euler(0, 180, 0);
                         break;
 
-                    case 2: // Right side (East)
+                    case 2: // East
                         newPos = new Vector3(
-                            hallwayBounds.max.x + roomBounds.extents.x,
+                            hallwayBounds.max.x + rb.extents.x,
                             room.position.y,
-                            Random.Range(hallwayBounds.min.z + roomBounds.extents.z, hallwayBounds.max.z - roomBounds.extents.z)
+                            Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
                         );
-                        targetRotation = Quaternion.Euler(0, 90, 0);
                         break;
 
-                    case 3: // Left side (West)
+                    case 3: // West
                         newPos = new Vector3(
-                            hallwayBounds.min.x - roomBounds.extents.x,
+                            hallwayBounds.min.x - rb.extents.x,
                             room.position.y,
-                            Random.Range(hallwayBounds.min.z + roomBounds.extents.z, hallwayBounds.max.z - roomBounds.extents.z)
+                            Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
                         );
-                        targetRotation = Quaternion.Euler(0, -90, 0);
                         break;
                 }
+                // room.position = newPos;
                 
                 Rect roomRect = new Rect(
                     new Vector2(newPos.x - roomBounds.extents.x - minDistanceBetweenRooms,
@@ -404,17 +425,17 @@ public class RoomManager : MonoBehaviour
                 {
                     occupied.Add(roomRect);
                     room.position = newPos;
-                    room.rotation = targetRotation;
+                    // room.rotation = targetRotation;
                     placed = true;
                     placedSide = side;
                     placedPosition = newPos;
-                    Debug.Log($"Placed {room.name} on side {side} at {newPos} with rotation {targetRotation.eulerAngles}");
+                    // Debug.Log($"Placed {room.name} on side {side} at {newPos} with rotation {targetRotation.eulerAngles}");
                 }
             }
 
             if (placed)
             {
-                InstantiateDoor(room, placedSide, placedPosition, roomBounds, roomIndex);
+                InstantiateDoor(room, placedSide, roomIndex);
             }
             else
             {
@@ -425,95 +446,50 @@ public class RoomManager : MonoBehaviour
         CreateHallwayWallsFromDoors();
     }
 
-    private void InstantiateDoor(Transform room, int side, Vector3 roomPosition, Bounds roomBounds, int roomIndex)
+private void InstantiateDoor(Transform room, int side, int roomIndex)
+{
+    if (PossibleDoors == null || PossibleDoors.Length == 0)
     {
-        if (PossibleDoors == null || PossibleDoors.Length == 0)
-        {
-            Debug.LogWarning("No door prefabs assigned!");
-            return;
-        }
-
-        // Get the appropriate door prefab based on room index
-        GameObject doorPrefabToUse;
-        if (roomIndex < PossibleDoors.Length && PossibleDoors[roomIndex] != null)
-        {
-            doorPrefabToUse = PossibleDoors[roomIndex];
-        }
-        else
-        {
-            // Fallback to first door prefab or log warning
-            if (PossibleDoors.Length > 0 && PossibleDoors[0] != null)
-            {
-                doorPrefabToUse = PossibleDoors[0];
-                Debug.LogWarning($"No door prefab assigned for room index {roomIndex}, using default door.");
-            }
-            else
-            {
-                Debug.LogWarning("No valid door prefabs available!");
-                return;
-            }
-        }
-
-        Vector3 doorPosition = Vector3.zero;
-        Quaternion doorRotation = Quaternion.identity;
-
-        switch (side)
-        {
-            case 0: // Top side (North) - Door on south wall of room
-                doorPosition = new Vector3(
-                    roomPosition.x,
-                    roomPosition.y + doorYOffset,
-                    roomPosition.z - roomBounds.extents.z // Front edge of room
-                );
-                doorRotation = Quaternion.Euler(0, 0, 0); // Facing north
-                break;
-
-            case 1: // Bottom side (South) - Door on north wall of room
-                doorPosition = new Vector3(
-                    roomPosition.x,
-                    roomPosition.y + doorYOffset,
-                    roomPosition.z + roomBounds.extents.z // Back edge of room
-                );
-                doorRotation = Quaternion.Euler(0, 180, 0); // Facing south
-                break;
-
-            case 2: // Right side (East) - Door on west wall of room
-                doorPosition = new Vector3(
-                    roomPosition.x - roomBounds.extents.x, // Left edge of room
-                    roomPosition.y + doorYOffset,
-                    roomPosition.z
-                );
-                doorRotation = Quaternion.Euler(0, 90, 0); // Facing east
-                break;
-
-            case 3: // Left side (West) - Door on east wall of room
-                doorPosition = new Vector3(
-                    roomPosition.x + roomBounds.extents.x, // Right edge of room
-                    roomPosition.y + doorYOffset,
-                    roomPosition.z
-                );
-                doorRotation = Quaternion.Euler(0, -90, 0); // Facing west
-                break;
-        }
-
-        // Instantiate the door as a child of the room
-        GameObject door = Instantiate(doorPrefabToUse, doorPosition, doorRotation, room);
-        door.name = "Door_" + room.name + "_" + roomIndex;
-        currentDoors.Add(door);
-
-        DoorReference doorRef = door.AddComponent<DoorReference>();
-
-        if (door.transform.childCount > 0)
-        {
-            Transform doorFrame = door.transform.GetChild(0);
-            if (doorFrame.childCount > 0)
-            {
-                doorRef.actualDoor = doorFrame.GetChild(0);
-            }
-        }
-        
-        Debug.Log($"Instantiated door for {room.name} (index {roomIndex}) at {doorPosition} using prefab: {doorPrefabToUse.name}");
+        Debug.LogWarning("No door prefabs assigned!");
+        return;
     }
+
+    GameObject doorPrefabToUse = (roomIndex < PossibleDoors.Length && PossibleDoors[roomIndex] != null)
+        ? PossibleDoors[roomIndex]
+        : PossibleDoors[0];
+
+    Renderer rend = room.GetComponent<Renderer>();
+    Bounds bounds = rend.bounds;
+
+    Vector3 doorPosition = bounds.center;
+
+    switch (side)
+    {
+        case 0: // North (front wall)
+            doorPosition += room.forward * -bounds.extents.z;
+            break;
+        case 1: // North (front wall)
+            doorPosition += room.forward * -bounds.extents.z;
+            break;
+        case 2: // North (front wall)
+            doorPosition += room.forward * -bounds.extents.x;
+            break;
+        case 3: // North (front wall)
+            doorPosition += room.forward * -bounds.extents.x;
+            break;
+    }
+
+    doorPosition.y = bounds.center.y + doorYOffset;
+
+    Quaternion doorRotation = room.rotation;
+
+    GameObject door = Instantiate(doorPrefabToUse, doorPosition, doorRotation);
+    door.name = "Door_" + room.name;
+    door.transform.SetParent(room, true);
+
+    Debug.Log($"Door placed for {room.name} at {doorPosition}");
+}
+
 
     void Start() {
         RandomizeOtherRooms();
