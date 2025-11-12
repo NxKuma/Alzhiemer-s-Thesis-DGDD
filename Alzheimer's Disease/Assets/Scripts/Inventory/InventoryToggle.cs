@@ -21,12 +21,14 @@ public class InventoryToggle : MonoBehaviour
     void Awake()
     {
         Transform child = this.transform.GetChild(0);
-        Transform iconChild = this.transform.GetChild(1);    
-        _iconRect = iconChild.GetComponent<RectTransform>();
-        _inventoryRect = child.GetComponent<RectTransform>();
+        Transform iconChild = this.transform.GetChild(1);
+        _iconRect = iconChild != null ? iconChild.GetComponent<RectTransform>() : null;
+        _inventoryRect = child != null ? child.GetComponent<RectTransform>() : null;
 
-        TriggerHandler.Instance.PlayerInventory.ItemAdded += IconAdd;
-        TriggerHandler.Instance.PlayerInventory.ItemDropped += IconDropped;
+        if (_iconRect == null || _inventoryRect == null)
+        {
+            Debug.LogWarning("InventoryToggle: missing RectTransform on expected children. Check hierarchy.");
+        }
     }
     void Start()
     {
@@ -40,6 +42,27 @@ public class InventoryToggle : MonoBehaviour
 
         _isOpen = true;
         ToggleInventory();
+
+        // Subscribe to inventory events safely (TriggerHandler may not be initialized in Awake of other systems)
+        if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null)
+        {
+            TriggerHandler.Instance.PlayerInventory.ItemAdded += IconAdd;
+            TriggerHandler.Instance.PlayerInventory.ItemDropped += IconDropped;
+        }
+        else
+        {
+            // Try to find PlayerInventory on the scene as a fallback
+            var th = Object.FindAnyObjectByType<TriggerHandler>();
+            if (th != null && th.PlayerInventory != null)
+            {
+                th.PlayerInventory.ItemAdded += IconAdd;
+                th.PlayerInventory.ItemDropped += IconDropped;
+            }
+            else
+            {
+                Debug.LogWarning("InventoryToggle: couldn't find TriggerHandler.PlayerInventory to subscribe to ItemAdded/ItemDropped events.");
+            }
+        }
     }
 
     void Update()
