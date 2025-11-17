@@ -479,10 +479,10 @@ public class FirstPersonController : MonoBehaviour
     {
         #region Movement
 
-        if (DialogueManager.GetInstance().DialogueIsPlaying)
-        {
-            return;
-        }
+        // if (DialogueManager.GetInstance().DialogueIsPlaying)
+        // {
+        //     return;
+        // }
 
         if (playerCanMove)
         {
