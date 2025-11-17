@@ -55,11 +55,24 @@ public class RoomManager : MonoBehaviour
         List<GameObject> doorsToKeep = new List<GameObject>();
         foreach (GameObject door in currentDoors)
         {
-            if (door != null && CurrentRoom != null && door.transform.parent == CurrentRoom)
+            if (door == null) continue;
+
+            Transform parentRoom = door.transform.parent;
+            MazeTrigger parentTrigger = parentRoom != null ? parentRoom.GetComponent<MazeTrigger>() : null;
+            bool parentIsLandmarked = parentTrigger != null && parentTrigger.isLandmarked;
+
+            // Keep doors that belong to the current room
+            if (CurrentRoom != null && parentRoom == CurrentRoom)
             {
                 doorsToKeep.Add(door);
             }
-            else if (door != null)
+            // Also keep doors that belong to landmarked rooms
+            else if (parentIsLandmarked)
+            {
+                if (!doorsToKeep.Contains(door))
+                    doorsToKeep.Add(door);
+            }
+            else
             {
                 Destroy(door);
             }
@@ -67,8 +80,32 @@ public class RoomManager : MonoBehaviour
 
         foreach (Transform room in PossibleRooms)
         {
-            if (room != null && room != CurrentRoom)
+            if (room == null)
+                continue;
+
+            // Determine if this room is a landmarked room
+            MazeTrigger mazeTrigger = room.GetComponent<MazeTrigger>();
+            bool isLandmarked = mazeTrigger != null && mazeTrigger.isLandmarked;
+
+            // Skip current room entirely
+            if (room == CurrentRoom)
+                continue;
+
+            if (isLandmarked)
             {
+                // Preserve any existing doors in landmarked rooms
+                for (int i = room.childCount - 1; i >= 0; i--)
+                {
+                    Transform child = room.GetChild(i);
+                    if (child.name.StartsWith("Door_") && child.gameObject != null && !doorsToKeep.Contains(child.gameObject))
+                    {
+                        doorsToKeep.Add(child.gameObject);
+                    }
+                }
+            }
+            else
+            {
+                // Remove doors from non-landmarked, non-current rooms
                 for (int i = room.childCount - 1; i >= 0; i--)
                 {
                     Transform child = room.GetChild(i);
@@ -312,6 +349,8 @@ public class RoomManager : MonoBehaviour
         Bounds hallwayBounds = Hallway.GetComponent<Renderer>().bounds;
         Vector3 hallwayPos = hallwayBounds.center;
 
+        List<Rect> occupied = new List<Rect>();
+
         // Rect for the current room (reserved space)
         Rect currentRect = new Rect();
         if (CurrentRoom != null)
@@ -323,12 +362,45 @@ public class RoomManager : MonoBehaviour
             );
         }
 
-        List<Rect> occupied = new List<Rect>();
+        occupied.Add(currentRect);
         
+        // Reserve space for landmarked rooms so randomized rooms won't be placed on top of them
+        if (PossibleRooms != null)
+        {
+            foreach (Transform lmRoom in PossibleRooms)
+            {
+                if (lmRoom == null || lmRoom == Hallway)
+                    continue;
+
+                MazeTrigger lmTrigger = lmRoom.GetComponent<MazeTrigger>();
+                bool lmIsLandmarked = lmTrigger != null && lmTrigger.isLandmarked;
+
+                if (lmIsLandmarked)
+                {
+                    Renderer lmRend = lmRoom.GetComponent<Renderer>();
+                    if (lmRend == null)
+                        continue;
+
+                    Bounds lmBounds = lmRend.bounds;
+                    Rect lmRect = new Rect(
+                        new Vector2(lmBounds.min.x - minDistanceBetweenRooms, lmBounds.min.z - minDistanceBetweenRooms),
+                        new Vector2(lmBounds.size.x + minDistanceBetweenRooms * 2f, lmBounds.size.z + minDistanceBetweenRooms * 2f)
+                    );
+
+                    occupied.Add(lmRect);
+                }
+            }
+        }
+
         for (int roomIndex = 0; roomIndex < PossibleRooms.Length; roomIndex++)
         {
             Transform room = PossibleRooms[roomIndex];
             if (room == Hallway || room == CurrentRoom)
+                continue;
+            
+            // Skip landmarked rooms - they should not be randomized
+            MazeTrigger mazeTrigger = room.GetComponent<MazeTrigger>();
+            if (mazeTrigger != null && mazeTrigger.isLandmarked)
                 continue;
             
             Bounds roomBounds = room.GetComponent<Renderer>().bounds;
