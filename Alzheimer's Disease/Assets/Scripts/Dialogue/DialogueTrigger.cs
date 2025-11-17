@@ -38,12 +38,13 @@ public class DialogueTrigger : MonoBehaviour
                 Ray r = new Ray(_interactorSource.position, _interactorSource.forward);
                 if (Physics.Raycast(r, out RaycastHit hitInfo, _interactRange))
                 {
-                    DialogueManager.GetInstance().EnterDialogueMode(_inkJSON);
-                    // if (hitInfo.collider.gameObject.TryGetComponent(out NPCInteractable npc))
-                    // {
-                    //     // npc.Interact();
-                    //     Debug.Log(_inkJSON.text);
-                    // }
+                    // DialogueManager.GetInstance().EnterDialogueMode(_inkJSON);
+                    NPC npc = hitInfo.collider.GetComponentInParent<NPC>();
+                    if (npc != null)
+                    {
+                        npc.Interact();
+                        DialogueManager.GetInstance().EnterDialogueMode(_inkJSON);
+                    }
                 }
             }
         }
