@@ -313,7 +313,6 @@ public class FirstPersonController : MonoBehaviour
     {
         DetectAndPickupItem();
 
-        return;
         #region Camera
 
         // Control camera movement
@@ -479,12 +478,11 @@ public class FirstPersonController : MonoBehaviour
     void FixedUpdate()
     {
         #region Movement
-        return;
         
-        if (DialogueManager.GetInstance().DialogueIsPlaying)
-        {
-            return;
-        }
+        // if (DialogueManager.GetInstance().DialogueIsPlaying)
+        // {
+        //     return;
+        // }
 
         if (playerCanMove)
         {

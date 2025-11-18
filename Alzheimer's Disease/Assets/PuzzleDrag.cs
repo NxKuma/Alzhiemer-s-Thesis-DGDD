@@ -30,7 +30,7 @@ public class PuzzleDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.SetParent(_parentAfterDrag);
-        image.raycastTarget = true;
+        image.raycastTarget = true; 
     }
 
 }

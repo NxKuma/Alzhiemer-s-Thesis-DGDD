@@ -41,10 +41,9 @@ public class InventoryManager : MonoBehaviour
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             if (_inventorySlots[i] != null && img.color.a == 0f)
             {
-                Texture2D itemSprite = newItem.GetItemTexture();
-                _inventorySlots[i] = itemSprite;
-                Sprite sprite = Sprite.Create(itemSprite, new Rect(0, 0, itemSprite.width, itemSprite.height), new Vector2(0.5f, 0.5f));
-                img.sprite = sprite;
+                Sprite itemSprite = newItem.GetItemSprite();
+                _inventorySlots[i] = itemSprite.texture;
+                img.sprite = itemSprite;
                 Color c = img.color;
                 c.a = 1f;
                 img.color = c;
@@ -58,7 +57,7 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
-            if (_inventorySlots[i] == removedItem.GetItemTexture())
+            if (_inventorySlots[i] == removedItem.GetItemSprite().texture)
             {
                 // _inventorySlots[i] = null;
                 img.sprite = null;

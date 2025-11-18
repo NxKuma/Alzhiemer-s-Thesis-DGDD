@@ -393,17 +393,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1039753631}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &55791269 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6905031437658678111, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
-  m_PrefabInstance: {fileID: 2826418685012529081}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &63460834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,40 +1015,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 252396625}
   m_CullTransparentMesh: 1
---- !u!1 &256518168 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4312710857992436401, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
-  m_PrefabInstance: {fileID: 2826418685012529081}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &256518169 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4668476797005953745, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
   m_PrefabInstance: {fileID: 2826418685012529081}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &256518170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 256518168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 2, y: 2}
-  m_Constraint: 1
-  m_ConstraintCount: 3
 --- !u!1 &263185908
 GameObject:
   m_ObjectHideFlags: 0
@@ -8142,7 +8102,7 @@ PrefabInstance:
     - target: {fileID: 3034809667472163453, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: image
       value: 
-      objectReference: {fileID: 55791269}
+      objectReference: {fileID: 0}
     - target: {fileID: 4668476797005953745, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_SizeDelta.x
       value: -56.00008
@@ -8287,10 +8247,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4668476797005953745, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1638517740}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4312710857992436401, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 256518170}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
