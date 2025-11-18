@@ -4,7 +4,7 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     [Header("Rooms Setup")]
-    public Transform Hallway;
+    public Transform[] Hallways; // For L-shaped: assign vertical and horizontal hallway GameObjects
     public Transform[] PossibleRooms;
     [HideInInspector] public Transform CurrentRoom;
     
@@ -26,20 +26,37 @@ public class RoomManager : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (Hallway != null)
+        if (Hallways != null)
         {
-            Bounds bounds = Hallway.GetComponent<Renderer>().bounds;
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(bounds.center, bounds.size);
+            foreach (Transform hallway in Hallways)
+            {
+                if (hallway != null)
+                {
+                    Bounds bounds = hallway.GetComponent<Renderer>().bounds;
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawWireCube(bounds.center, bounds.size);
+                }
+            }
         }
 
-        foreach (Transform room in PossibleRooms)
+        if (PossibleRooms != null)
         {
-            if (room != null && room != Hallway)
+            foreach (Transform room in PossibleRooms)
             {
-                Bounds roomBounds = room.GetComponent<Renderer>().bounds;
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireCube(roomBounds.center, roomBounds.size);
+                if (room != null)
+                {
+                    bool isHallway = false;
+                    if (Hallways != null)
+                        foreach (Transform h in Hallways)
+                            if (room == h) { isHallway = true; break; }
+                    
+                    if (!isHallway)
+                    {
+                        Bounds roomBounds = room.GetComponent<Renderer>().bounds;
+                        Gizmos.color = Color.blue;
+                        Gizmos.DrawWireCube(roomBounds.center, roomBounds.size);
+                    }
+                }
             }
         }
     }
@@ -123,41 +140,88 @@ public class RoomManager : MonoBehaviour
 
     private void CreateHallwayWallsFromDoors()
     {
-        if (Hallway == null || wallPrefab == null)
+        if (Hallways == null || Hallways.Length == 0 || wallPrefab == null)
         {
-            Debug.LogWarning("Hallway or wall prefab not assigned!");
+            Debug.LogWarning("Hallways array not set up properly or wall prefab not assigned!");
             return;
         }
 
-        Bounds hallwayBounds = Hallway.GetComponent<Renderer>().bounds;
-        List<DoorInfo> doorInfos = new List<DoorInfo>();
-
-        // First, collect all door information
-        foreach (Transform room in PossibleRooms)
+        // Compute intersection bounds if we have multiple hallways
+        Bounds? intersectionBounds = null;
+        if (Hallways.Length > 1)
         {
-            if (room == Hallway)
-                continue;
+            Bounds h0 = Hallways[0].GetComponent<Renderer>().bounds;
+            Bounds h1 = Hallways[1].GetComponent<Renderer>().bounds;
+            
+            float minX = Mathf.Max(h0.min.x, h1.min.x);
+            float maxX = Mathf.Min(h0.max.x, h1.max.x);
+            float minZ = Mathf.Max(h0.min.z, h1.min.z);
+            float maxZ = Mathf.Min(h0.max.z, h1.max.z);
 
-            // Check if this room has a door
-            foreach (Transform child in room)
+            if (minX < maxX && minZ < maxZ)
             {
-                if (child.name.StartsWith("Door_"))
-                {
-                    DoorInfo doorInfo = new DoorInfo
-                    {
-                        position = child.position,
-                        rotation = child.rotation,
-                        roomSide = GetDoorSide(child.position, hallwayBounds),
-                        room = room
-                    };
-                    doorInfos.Add(doorInfo);
-                    currentDoors.Add(child.gameObject);
-                }
+                Bounds intersection = new Bounds();
+                intersection.SetMinMax(new Vector3(minX, 0, minZ), new Vector3(maxX, 100, maxZ));
+                intersectionBounds = intersection;
             }
         }
 
-        // Create walls based on door positions
-        CreateWallsFromDoorPositions(hallwayBounds, doorInfos);
+        // Process each hallway independently
+        foreach (Transform hallway in Hallways)
+        {
+            if (hallway == null) continue;
+
+            Bounds hallwayBounds = hallway.GetComponent<Renderer>().bounds;
+            List<DoorInfo> doorInfos = new List<DoorInfo>();
+
+            // Collect doors for this hallway (doors from rooms placed around this hallway)
+            foreach (Transform room in PossibleRooms)
+            {
+                if (room == null) continue;
+                bool isHallway = false;
+                foreach (Transform h in Hallways)
+                    if (room == h) { isHallway = true; break; }
+                if (isHallway) continue;
+
+                // Check if this room has a door
+                foreach (Transform child in room)
+                {
+                    if (child.name.StartsWith("Door_"))
+                    {
+                        // Only include this door if it's on this hallway
+                        if (IsPointNearHallway(child.position, hallwayBounds))
+                        {
+                            DoorInfo doorInfo = new DoorInfo
+                            {
+                                position = child.position,
+                                rotation = child.rotation,
+                                roomSide = GetDoorSide(child.position, hallwayBounds),
+                                room = room
+                            };
+                            doorInfos.Add(doorInfo);
+                            if (!currentDoors.Contains(child.gameObject))
+                                currentDoors.Add(child.gameObject);
+                        }
+                    }
+                }
+            }
+
+            // Create walls based on door positions for this hallway, excluding intersection
+            CreateWallsFromDoorPositions(hallwayBounds, doorInfos, intersectionBounds);
+        }
+    }
+
+    // Helper: check if a point is near/on a hallway (within a threshold)
+    private bool IsPointNearHallway(Vector3 point, Bounds hallwayBounds)
+    {
+        Vector3 closest = hallwayBounds.ClosestPoint(point);
+        return Vector3.Distance(point, closest) < 2.0f; // 2 unit threshold
+    }
+
+    // Helper: check if a position is inside the intersection area
+    private bool IsPositionInIntersection(Vector3 position, Bounds intersectionBounds)
+    {
+        return intersectionBounds.Contains(position);
     }
 
     private int GetDoorSide(Vector3 doorPosition, Bounds hallwayBounds)
@@ -176,7 +240,7 @@ public class RoomManager : MonoBehaviour
         return 3; // West
     }
 
-    private void CreateWallsFromDoorPositions(Bounds hallwayBounds, List<DoorInfo> doorInfos)
+    private void CreateWallsFromDoorPositions(Bounds hallwayBounds, List<DoorInfo> doorInfos, Bounds? intersectionBounds = null)
     {
         // Group doors by side
         List<Vector3> northDoors = new List<Vector3>();
@@ -195,19 +259,25 @@ public class RoomManager : MonoBehaviour
             }
         }
 
-        // Create walls for each side with gaps for doors
-        CreateWallSegmentWithDoors(hallwayBounds, "North", hallwayBounds.max.z, northDoors, true);
-        CreateWallSegmentWithDoors(hallwayBounds, "South", hallwayBounds.min.z, southDoors, true);
-        CreateWallSegmentWithDoors(hallwayBounds, "East", hallwayBounds.max.x, eastDoors, false);
-        CreateWallSegmentWithDoors(hallwayBounds, "West", hallwayBounds.min.x, westDoors, false);
+        // Create walls for each side with gaps for doors, excluding intersection areas
+        CreateWallSegmentWithDoors(hallwayBounds, "North", hallwayBounds.max.z, northDoors, true, intersectionBounds);
+        CreateWallSegmentWithDoors(hallwayBounds, "South", hallwayBounds.min.z, southDoors, true, intersectionBounds);
+        CreateWallSegmentWithDoors(hallwayBounds, "East", hallwayBounds.max.x, eastDoors, false, intersectionBounds);
+        CreateWallSegmentWithDoors(hallwayBounds, "West", hallwayBounds.min.x, westDoors, false, intersectionBounds);
     }
 
-    private void CreateWallSegmentWithDoors(Bounds hallwayBounds, string sideName, float wallPosition, List<Vector3> doors, bool isHorizontal)
+    private void CreateWallSegmentWithDoors(Bounds hallwayBounds, string sideName, float wallPosition, List<Vector3> doors, bool isHorizontal, Bounds? intersectionBounds = null)
     {
+        // Determine the valid wall range(s), excluding intersection area
+        List<Vector2> validRanges = ComputeValidWallRanges(hallwayBounds, wallPosition, isHorizontal, intersectionBounds);
+
         if (doors.Count == 0)
         {
-            // No doors on this side, create full wall
-            CreateFullWallSegment(hallwayBounds, sideName, wallPosition, isHorizontal);
+            // No doors on this side, create full wall(s) in valid ranges (but skip intersection)
+            foreach (var range in validRanges)
+            {
+                CreatePartialWallSegment(hallwayBounds, sideName + "_Full", range.x, range.y, wallPosition, isHorizontal, isHorizontal, intersectionBounds);
+            }
             return;
         }
 
@@ -217,66 +287,105 @@ public class RoomManager : MonoBehaviour
         else
             doors.Sort((a, b) => a.z.CompareTo(b.z));
 
-        float wallStart, wallEnd;
         float doorWidth = 1.33f; // Adjust this based on your door prefab size
 
-        if (isHorizontal)
+        // For each valid range, create wall segments with door gaps
+        foreach (var range in validRanges)
         {
-            wallStart = hallwayBounds.min.x;
-            wallEnd = hallwayBounds.max.x;
-
-            // Create wall segments between doors
+            float wallStart = range.x;
+            float wallEnd = range.y;
             float currentPos = wallStart;
-            
+
             foreach (Vector3 doorPos in doors)
             {
+                float doorCoord = isHorizontal ? doorPos.x : doorPos.z;
+
+                // Skip doors outside this range
+                if (doorCoord < wallStart || doorCoord > wallEnd)
+                    continue;
+
                 // Wall segment before door
-                if (doorPos.x - doorWidth / 2 > currentPos)
+                if (doorCoord - doorWidth / 2 > currentPos)
                 {
-                    CreatePartialWallSegment(hallwayBounds, sideName + "_BeforeDoor_" + doorPos.x, 
-                        currentPos, doorPos.x - doorWidth / 2, wallPosition, isHorizontal, true);
+                    CreatePartialWallSegment(hallwayBounds, sideName + "_BeforeDoor_" + doorCoord, 
+                        currentPos, doorCoord - doorWidth / 2, wallPosition, isHorizontal, isHorizontal, intersectionBounds);
                 }
 
-                currentPos = doorPos.x + doorWidth / 2;
+                currentPos = doorCoord + doorWidth / 2;
             }
 
-            // Final wall segment after last door
+            // Final wall segment after last door (for this range)
             if (currentPos < wallEnd)
             {
                 CreatePartialWallSegment(hallwayBounds, sideName + "_AfterLastDoor", 
-                    currentPos, wallEnd, wallPosition, isHorizontal, true);
-            }
-        }
-        else
-        {
-            wallStart = hallwayBounds.min.z;
-            wallEnd = hallwayBounds.max.z;
-
-            // Create wall segments between doors
-            float currentPos = wallStart;
-            
-            foreach (Vector3 doorPos in doors)
-            {
-                // Wall segment before door
-                if (doorPos.z - doorWidth / 2 > currentPos)
-                {
-                    CreatePartialWallSegment(hallwayBounds, sideName + "_BeforeDoor_" + doorPos.z, 
-                        currentPos, doorPos.z - doorWidth / 2, wallPosition, isHorizontal, false);
-                }
-
-                currentPos = doorPos.z + doorWidth / 2;
-            }
-
-            // Final wall segment after last door
-            if (currentPos < wallEnd)
-            {
-                CreatePartialWallSegment(hallwayBounds, sideName + "_AfterLastDoor", 
-                    currentPos, wallEnd, wallPosition, isHorizontal, false);
+                    currentPos, wallEnd, wallPosition, isHorizontal, isHorizontal, intersectionBounds);
             }
         }
     }
 
-    private void CreateFullWallSegment(Bounds hallwayBounds, string sideName, float wallPosition, bool isHorizontal)
+    private List<Vector2> ComputeValidWallRanges(Bounds hallwayBounds, float wallPosition, bool isHorizontal, Bounds? intersectionBounds)
+    {
+        List<Vector2> ranges = new List<Vector2>();
+
+        if (!intersectionBounds.HasValue)
+        {
+            // No intersection, entire wall is valid
+            if (isHorizontal)
+            {
+                ranges.Add(new Vector2(hallwayBounds.min.x, hallwayBounds.max.x));
+            }
+            else
+            {
+                ranges.Add(new Vector2(hallwayBounds.min.z, hallwayBounds.max.z));
+            }
+            return ranges;
+        }
+
+        Bounds intersection = intersectionBounds.Value;
+
+        if (isHorizontal)
+        {
+            // Wall runs along X axis (North or South wall)
+            // Exclude the X range of the intersection
+            float wallStart = hallwayBounds.min.x;
+            float wallEnd = hallwayBounds.max.x;
+            float intersectXMin = intersection.min.x;
+            float intersectXMax = intersection.max.x;
+
+            if (wallStart < intersectXMin)
+                ranges.Add(new Vector2(wallStart, Mathf.Min(wallEnd, intersectXMin)));
+
+            if (wallEnd > intersectXMax)
+                ranges.Add(new Vector2(Mathf.Max(wallStart, intersectXMax), wallEnd));
+
+            // If intersection completely covers the wall, no valid ranges
+            if (ranges.Count == 0 && wallStart >= intersectXMin && wallEnd <= intersectXMax)
+                return ranges; // Empty list
+        }
+        else
+        {
+            // Wall runs along Z axis (East or West wall)
+            // Exclude the Z range of the intersection
+            float wallStart = hallwayBounds.min.z;
+            float wallEnd = hallwayBounds.max.z;
+            float intersectZMin = intersection.min.z;
+            float intersectZMax = intersection.max.z;
+
+            if (wallStart < intersectZMin)
+                ranges.Add(new Vector2(wallStart, Mathf.Min(wallEnd, intersectZMin)));
+
+            if (wallEnd > intersectZMax)
+                ranges.Add(new Vector2(Mathf.Max(wallStart, intersectZMax), wallEnd));
+
+            // If intersection completely covers the wall, no valid ranges
+            if (ranges.Count == 0 && wallStart >= intersectZMin && wallEnd <= intersectZMax)
+                return ranges; // Empty list
+        }
+
+        return ranges;
+    }
+
+    private void CreateFullWallSegment(Bounds hallwayBounds, string sideName, float wallPosition, bool isHorizontal, Bounds? intersectionBounds = null)
     {
         Vector3 position;
         Vector3 scale;
@@ -295,11 +404,19 @@ public class RoomManager : MonoBehaviour
             rotation = sideName == "East" ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, -90, 0);
         }
 
+        // Check if this wall position is in intersection; if so, skip it
+        if (intersectionBounds.HasValue && IsPositionInIntersection(position, intersectionBounds.Value))
+        {
+            return;
+        }
+
         CreateWall(position, scale, rotation, "HallwayWall_" + sideName);
     }
 
-    private void CreatePartialWallSegment(Bounds hallwayBounds, string segmentName, float start, float end, float wallPosition, bool isHorizontal, bool isNorthSouth)
+    private void CreatePartialWallSegment(Bounds hallwayBounds, string segmentName, float start, float end, float wallPosition, bool isHorizontal, bool isNorthSouth, Bounds? intersectionBounds = null)
     {
+        if (end - start < 0.01f) return; // Skip tiny segments
+
         Vector3 position;
         Vector3 scale;
         Quaternion rotation;
@@ -338,65 +455,103 @@ public class RoomManager : MonoBehaviour
 
     public void RandomizeOtherRooms()
     {
-        if (Hallway == null || PossibleRooms == null || PossibleRooms.Length == 0)
+        if (Hallways == null || Hallways.Length == 0 || PossibleRooms == null || PossibleRooms.Length == 0)
         {
-            Debug.LogWarning("RoomManager not set up properly!");
+            Debug.LogWarning("RoomManager not set up properly! Ensure Hallways array and PossibleRooms are assigned.");
             return;
         }
 
         ClearExistingWallsAndDoors();
 
-        Bounds hallwayBounds = Hallway.GetComponent<Renderer>().bounds;
-        Vector3 hallwayPos = hallwayBounds.center;
-
         List<Rect> occupied = new List<Rect>();
 
         // Rect for the current room (reserved space)
-        Rect currentRect = new Rect();
         if (CurrentRoom != null)
         {
             Bounds currentBounds = CurrentRoom.GetComponent<Renderer>().bounds;
-            currentRect = new Rect(
+            Rect currentRect = new Rect(
                 new Vector2(currentBounds.min.x - minDistanceBetweenRooms, currentBounds.min.z - minDistanceBetweenRooms),
                 new Vector2(currentBounds.size.x + minDistanceBetweenRooms * 2f, currentBounds.size.z + minDistanceBetweenRooms * 2f)
             );
+            occupied.Add(currentRect);
         }
 
-        occupied.Add(currentRect);
-        
-        // Reserve space for landmarked rooms so randomized rooms won't be placed on top of them
-        if (PossibleRooms != null)
+        // Reserve space for hallway intersection area (prevent rooms/walls from overlapping intersection)
+        if (Hallways.Length > 1)
         {
-            foreach (Transform lmRoom in PossibleRooms)
+            Bounds h0 = Hallways[0].GetComponent<Renderer>().bounds;
+            Bounds h1 = Hallways[1].GetComponent<Renderer>().bounds;
+            
+            // Compute intersection rect
+            float minX = Mathf.Max(h0.min.x, h1.min.x);
+            float maxX = Mathf.Min(h0.max.x, h1.max.x);
+            float minZ = Mathf.Max(h0.min.z, h1.min.z);
+            float maxZ = Mathf.Min(h0.max.z, h1.max.z);
+
+            if (minX < maxX && minZ < maxZ)
             {
-                if (lmRoom == null || lmRoom == Hallway)
-                    continue;
-
-                MazeTrigger lmTrigger = lmRoom.GetComponent<MazeTrigger>();
-                bool lmIsLandmarked = lmTrigger != null && lmTrigger.isLandmarked;
-
-                if (lmIsLandmarked)
-                {
-                    Renderer lmRend = lmRoom.GetComponent<Renderer>();
-                    if (lmRend == null)
-                        continue;
-
-                    Bounds lmBounds = lmRend.bounds;
-                    Rect lmRect = new Rect(
-                        new Vector2(lmBounds.min.x - minDistanceBetweenRooms, lmBounds.min.z - minDistanceBetweenRooms),
-                        new Vector2(lmBounds.size.x + minDistanceBetweenRooms * 2f, lmBounds.size.z + minDistanceBetweenRooms * 2f)
-                    );
-
-                    occupied.Add(lmRect);
-                }
+                Rect intersectionRect = new Rect(
+                    new Vector2(minX - minDistanceBetweenRooms, minZ - minDistanceBetweenRooms),
+                    new Vector2((maxX - minX) + minDistanceBetweenRooms * 2f, (maxZ - minZ) + minDistanceBetweenRooms * 2f)
+                );
+                occupied.Add(intersectionRect);
             }
         }
+        
+        // Reserve space for landmarked rooms so randomized rooms won't be placed on top of them
+        foreach (Transform lmRoom in PossibleRooms)
+        {
+            if (lmRoom == null)
+                continue;
+
+            bool isHallway = false;
+            foreach (Transform h in Hallways)
+                if (lmRoom == h) { isHallway = true; break; }
+            if (isHallway) continue;
+
+            MazeTrigger lmTrigger = lmRoom.GetComponent<MazeTrigger>();
+            bool lmIsLandmarked = lmTrigger != null && lmTrigger.isLandmarked;
+
+            if (lmIsLandmarked)
+            {
+                Renderer lmRend = lmRoom.GetComponent<Renderer>();
+                if (lmRend == null)
+                    continue;
+
+                Bounds lmBounds = lmRend.bounds;
+                Rect lmRect = new Rect(
+                    new Vector2(lmBounds.min.x - minDistanceBetweenRooms, lmBounds.min.z - minDistanceBetweenRooms),
+                    new Vector2(lmBounds.size.x + minDistanceBetweenRooms * 2f, lmBounds.size.z + minDistanceBetweenRooms * 2f)
+                );
+
+                occupied.Add(lmRect);
+            }
+        }
+
+        // Randomize rooms around all hallways
+        foreach (Transform hallway in Hallways)
+        {
+            if (hallway == null) continue;
+            RandomizeRoomsAroundHallway(hallway, occupied);
+        }
+
+        CreateHallwayWallsFromDoors();
+    }
+
+    private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied)
+    {
+        Bounds hallwayBounds = hallway.GetComponent<Renderer>().bounds;
 
         for (int roomIndex = 0; roomIndex < PossibleRooms.Length; roomIndex++)
         {
             Transform room = PossibleRooms[roomIndex];
-            if (room == Hallway || room == CurrentRoom)
+            if (room == CurrentRoom)
                 continue;
+
+            bool isHallway = false;
+            foreach (Transform h in Hallways)
+                if (room == h) { isHallway = true; break; }
+            if (isHallway) continue;
             
             // Skip landmarked rooms - they should not be randomized
             MazeTrigger mazeTrigger = room.GetComponent<MazeTrigger>();
@@ -477,19 +632,13 @@ public class RoomManager : MonoBehaviour
                 );
 
                 bool overlap = false;
-                if (CurrentRoom != null && roomRect.Overlaps(currentRect))
+
+                foreach (var other in occupied)
                 {
-                    overlap = true;
-                }
-                else
-                {
-                    foreach (var other in occupied)
+                    if (roomRect.Overlaps(other))
                     {
-                        if (roomRect.Overlaps(other))
-                        {
-                            overlap = true;
-                            break;
-                        }
+                        overlap = true;
+                        break;
                     }
                 }
 
@@ -511,11 +660,9 @@ public class RoomManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Could not place {room.name} after {attempts} attempts!");
+                Debug.LogWarning($"Could not place {room.name} around hallway {hallway.name} after {attempts} attempts!");
             }
         }
-
-        CreateHallwayWallsFromDoors();
     }
 
 private void InstantiateDoor(Transform room, int side, int roomIndex)
