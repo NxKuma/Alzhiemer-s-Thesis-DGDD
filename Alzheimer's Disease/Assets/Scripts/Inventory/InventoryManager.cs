@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject _visibleInventory;
     private Texture2D[] _inventorySlots;
+    private TextMeshProUGUI[] _puzzleCountTexts;
+    private int[] _puzzleCounts;
     // private Image[] _visibleInventoryImages;
     private Inventory _internalInventory;
     private int _inventorySlotCount;
@@ -14,8 +17,17 @@ public class InventoryManager : MonoBehaviour
     {
         _inventorySlotCount = _visibleInventory.transform.childCount;
         _inventorySlots = new Texture2D[_inventorySlotCount];
+        GameObject puzzleCountObj = _visibleInventory.transform.GetChild(0).GetChild(0).gameObject;
+        _puzzleCountTexts = new TextMeshProUGUI[puzzleCountObj.transform.childCount];
+        _puzzleCounts = new int[puzzleCountObj.transform.childCount];
 
-        for (int i = 0; i < _inventorySlotCount; i++)
+        for (int i = 0; i < puzzleCountObj.transform.childCount; i++)
+        {
+            _puzzleCountTexts[i] = puzzleCountObj.transform.GetChild(i).GetComponent<TextMeshProUGUI>();
+            _puzzleCounts[i] = 0;
+        }
+
+        for (int i = 1; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             
@@ -36,7 +48,7 @@ public class InventoryManager : MonoBehaviour
     }
     private void AddToInventoryUI(Item newItem)
     {
-        for (int i = 0; i < _inventorySlotCount; i++)
+        for (int i = 1; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             if (_inventorySlots[i] != null && img.color.a == 0f)
@@ -50,11 +62,39 @@ public class InventoryManager : MonoBehaviour
                 break;
             }
         }
+
+        for (int i = 0; i < _puzzleCountTexts.Length; i++)
+        {
+            if (newItem.GetItemtype() == Item.eItemType.JigsawPuzzle)
+            {
+                if (newItem.GetItemName().Contains("Wife"))
+                {   
+                    _puzzleCounts[0] = int.Parse(_puzzleCountTexts[0].text.Substring(0,1));
+                    _puzzleCounts[0]++;
+                    _puzzleCountTexts[0].text = _puzzleCounts[0].ToString() + "/9";
+                    break;
+                }
+                else if (newItem.GetItemName().Contains("Son")) 
+                {
+                    _puzzleCounts[1] = int.Parse(_puzzleCountTexts[1].text.Substring(0,1));
+                    _puzzleCounts[1]++;
+                    _puzzleCountTexts[1].text = _puzzleCounts[1].ToString() + "/9";
+                    break;
+                }
+                else if (newItem.GetItemName().Contains("DIL")) 
+                {
+                    _puzzleCounts[2] = int.Parse(_puzzleCountTexts[2].text.Substring(0,1));
+                    _puzzleCounts[2]++;
+                    _puzzleCountTexts[2].text = _puzzleCounts[2].ToString() + "/9";
+                    break;
+                }
+            }
+        }
     }
 
     private void RemoveFromInventoryUI(Item removedItem)
     {
-        for (int i = 0; i < _inventorySlotCount; i++)
+        for (int i = 1; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             if (_inventorySlots[i] == removedItem.GetItemSprite().texture)
@@ -65,6 +105,31 @@ public class InventoryManager : MonoBehaviour
                 c.a = 0f;
                 img.color = c;
                 break;
+            }
+        }
+
+        for (int i = 0; i < _puzzleCountTexts.Length; i++)
+        {
+            if (removedItem.GetItemtype() == Item.eItemType.JigsawPuzzle)
+            {
+                if (removedItem.GetItemName().Contains("Wife"))
+                {   
+                    _puzzleCounts[0] = int.Parse(_puzzleCountTexts[0].text.Substring(0,1));
+                    _puzzleCounts[0]--;
+                    _puzzleCountTexts[0].text = _puzzleCounts[0].ToString() + "/9";
+                }
+                else if (removedItem.GetItemName().Contains("Son")) 
+                {
+                    _puzzleCounts[1] = int.Parse(_puzzleCountTexts[1].text.Substring(0,1));
+                    _puzzleCounts[1]--;
+                    _puzzleCountTexts[1].text = _puzzleCounts[1].ToString() + "/9";
+                }
+                else if (removedItem.GetItemName().Contains("DIL")) 
+                {
+                    _puzzleCounts[2] = int.Parse(_puzzleCountTexts[2].text.Substring(0,1));
+                    _puzzleCounts[2]--;
+                    _puzzleCountTexts[2].text = _puzzleCounts[2].ToString() + "/9";
+                }
             }
         }
     }

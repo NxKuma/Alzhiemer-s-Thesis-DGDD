@@ -79,7 +79,6 @@ public class InventoryToggle : MonoBehaviour
         if (_dialogueManager != null && _dialogueManager.DialogueIsPlaying)
         {
             _iconCanvasGroup.alpha = 0f;
-            Debug.Log("Hello");
         }else{
             _iconCanvasGroup.alpha = 1f;
         }
