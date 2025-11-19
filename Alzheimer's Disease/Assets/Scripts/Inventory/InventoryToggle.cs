@@ -12,6 +12,8 @@ public class InventoryToggle : MonoBehaviour
     private Vector2 _iconCurrentPosition;
     private Vector2 _iconInitialPosition;
     private Vector2 _iconHiddenPosition;
+    private DialogueManager _dialogueManager;
+    private CanvasGroup _iconCanvasGroup;
     [SerializeField] private float toggleDuration = 0.25f;
     private bool _isOpen = true;
     private Coroutine _toggleRoutine;
@@ -32,6 +34,7 @@ public class InventoryToggle : MonoBehaviour
     }
     void Start()
     {
+        _dialogueManager = DialogueManager.GetInstance();
         _invCurrentPosition = _inventoryRect.anchoredPosition;
         _invInitialPosition = _invCurrentPosition;
         _invHiddenPosition = -_invInitialPosition; 
@@ -40,6 +43,7 @@ public class InventoryToggle : MonoBehaviour
         _iconInitialPosition = _iconCurrentPosition;
         _iconHiddenPosition = new Vector2(_iconInitialPosition.x, _iconInitialPosition.y -100f);
 
+        _iconCanvasGroup = this.GetComponent<CanvasGroup>();
         _isOpen = true;
         ToggleInventory();
 
@@ -70,6 +74,14 @@ public class InventoryToggle : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
+        }
+
+        if (_dialogueManager.DialogueIsPlaying)
+        {
+            _iconCanvasGroup.alpha = 0f;
+            Debug.Log("Hello");
+        }else{
+            _iconCanvasGroup.alpha = 1f;
         }
     }
 
