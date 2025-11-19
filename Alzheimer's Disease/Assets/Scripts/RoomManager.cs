@@ -453,217 +453,222 @@ public class RoomManager : MonoBehaviour
         Debug.Log($"Created wall {name} at {position} with scale {scale}");
     }
 
-    public void RandomizeOtherRooms()
+public void RandomizeOtherRooms()
+{
+    if (Hallways == null || Hallways.Length == 0 || PossibleRooms == null || PossibleRooms.Length == 0)
     {
-        if (Hallways == null || Hallways.Length == 0 || PossibleRooms == null || PossibleRooms.Length == 0)
-        {
-            Debug.LogWarning("RoomManager not set up properly! Ensure Hallways array and PossibleRooms are assigned.");
-            return;
-        }
+        Debug.LogWarning("RoomManager not set up properly! Ensure Hallways array and PossibleRooms are assigned.");
+        return;
+    }
 
-        ClearExistingWallsAndDoors();
+    ClearExistingWallsAndDoors();
 
-        List<Rect> occupied = new List<Rect>();
+    List<Rect> occupied = new List<Rect>();
+    HashSet<Transform> placedRooms = new HashSet<Transform>(); // Track placed rooms
 
-        // Rect for the current room (reserved space)
-        if (CurrentRoom != null)
-        {
-            Bounds currentBounds = CurrentRoom.GetComponent<Renderer>().bounds;
-            Rect currentRect = new Rect(
-                new Vector2(currentBounds.min.x - minDistanceBetweenRooms, currentBounds.min.z - minDistanceBetweenRooms),
-                new Vector2(currentBounds.size.x + minDistanceBetweenRooms * 2f, currentBounds.size.z + minDistanceBetweenRooms * 2f)
-            );
-            occupied.Add(currentRect);
-        }
+    // Rect for the current room (reserved space)
+    if (CurrentRoom != null)
+    {
+        Bounds currentBounds = CurrentRoom.GetComponent<Renderer>().bounds;
+        Rect currentRect = new Rect(
+            new Vector2(currentBounds.min.x - minDistanceBetweenRooms, currentBounds.min.z - minDistanceBetweenRooms),
+            new Vector2(currentBounds.size.x + minDistanceBetweenRooms * 2f, currentBounds.size.z + minDistanceBetweenRooms * 2f)
+        );
+        occupied.Add(currentRect);
+        placedRooms.Add(CurrentRoom); // Mark current room as placed
+    }
 
-        // Reserve space for hallway intersection area (prevent rooms/walls from overlapping intersection)
-        if (Hallways.Length > 1)
-        {
-            Bounds h0 = Hallways[0].GetComponent<Renderer>().bounds;
-            Bounds h1 = Hallways[1].GetComponent<Renderer>().bounds;
-            
-            // Compute intersection rect
-            float minX = Mathf.Max(h0.min.x, h1.min.x);
-            float maxX = Mathf.Min(h0.max.x, h1.max.x);
-            float minZ = Mathf.Max(h0.min.z, h1.min.z);
-            float maxZ = Mathf.Min(h0.max.z, h1.max.z);
-
-            if (minX < maxX && minZ < maxZ)
-            {
-                Rect intersectionRect = new Rect(
-                    new Vector2(minX - minDistanceBetweenRooms, minZ - minDistanceBetweenRooms),
-                    new Vector2((maxX - minX) + minDistanceBetweenRooms * 2f, (maxZ - minZ) + minDistanceBetweenRooms * 2f)
-                );
-                occupied.Add(intersectionRect);
-            }
-        }
+    // Reserve space for hallway intersection area
+    if (Hallways.Length > 1)
+    {
+        Bounds h0 = Hallways[0].GetComponent<Renderer>().bounds;
+        Bounds h1 = Hallways[1].GetComponent<Renderer>().bounds;
         
-        // Reserve space for landmarked rooms so randomized rooms won't be placed on top of them
-        foreach (Transform lmRoom in PossibleRooms)
+        float minX = Mathf.Max(h0.min.x, h1.min.x);
+        float maxX = Mathf.Min(h0.max.x, h1.max.x);
+        float minZ = Mathf.Max(h0.min.z, h1.min.z);
+        float maxZ = Mathf.Min(h0.max.z, h1.max.z);
+
+        if (minX < maxX && minZ < maxZ)
         {
-            if (lmRoom == null)
-                continue;
-
-            bool isHallway = false;
-            foreach (Transform h in Hallways)
-                if (lmRoom == h) { isHallway = true; break; }
-            if (isHallway) continue;
-
-            MazeTrigger lmTrigger = lmRoom.GetComponent<MazeTrigger>();
-            bool lmIsLandmarked = lmTrigger != null && lmTrigger.isLandmarked;
-
-            if (lmIsLandmarked)
-            {
-                Renderer lmRend = lmRoom.GetComponent<Renderer>();
-                if (lmRend == null)
-                    continue;
-
-                Bounds lmBounds = lmRend.bounds;
-                Rect lmRect = new Rect(
-                    new Vector2(lmBounds.min.x - minDistanceBetweenRooms, lmBounds.min.z - minDistanceBetweenRooms),
-                    new Vector2(lmBounds.size.x + minDistanceBetweenRooms * 2f, lmBounds.size.z + minDistanceBetweenRooms * 2f)
-                );
-
-                occupied.Add(lmRect);
-            }
+            Rect intersectionRect = new Rect(
+                new Vector2(minX - minDistanceBetweenRooms, minZ - minDistanceBetweenRooms),
+                new Vector2((maxX - minX) + minDistanceBetweenRooms * 2f, (maxZ - minZ) + minDistanceBetweenRooms * 2f)
+            );
+            occupied.Add(intersectionRect);
         }
-
-        // Randomize rooms around all hallways
-        foreach (Transform hallway in Hallways)
-        {
-            if (hallway == null) continue;
-            RandomizeRoomsAroundHallway(hallway, occupied);
-        }
-
-        CreateHallwayWallsFromDoors();
     }
-
-    private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied)
+    
+    // Reserve space for landmarked rooms
+    foreach (Transform lmRoom in PossibleRooms)
     {
-        Bounds hallwayBounds = hallway.GetComponent<Renderer>().bounds;
+        if (lmRoom == null)
+            continue;
 
-        for (int roomIndex = 0; roomIndex < PossibleRooms.Length; roomIndex++)
+        bool isHallway = false;
+        foreach (Transform h in Hallways)
+            if (lmRoom == h) { isHallway = true; break; }
+        if (isHallway) continue;
+
+        MazeTrigger lmTrigger = lmRoom.GetComponent<MazeTrigger>();
+        bool lmIsLandmarked = lmTrigger != null && lmTrigger.isLandmarked;
+
+        if (lmIsLandmarked)
         {
-            Transform room = PossibleRooms[roomIndex];
-            if (room == CurrentRoom)
+            Renderer lmRend = lmRoom.GetComponent<Renderer>();
+            if (lmRend == null)
                 continue;
 
-            bool isHallway = false;
-            foreach (Transform h in Hallways)
-                if (room == h) { isHallway = true; break; }
-            if (isHallway) continue;
-            
-            // Skip landmarked rooms - they should not be randomized
-            MazeTrigger mazeTrigger = room.GetComponent<MazeTrigger>();
-            if (mazeTrigger != null && mazeTrigger.isLandmarked)
-                continue;
-            
-            Bounds roomBounds = room.GetComponent<Renderer>().bounds;
+            Bounds lmBounds = lmRend.bounds;
+            Rect lmRect = new Rect(
+                new Vector2(lmBounds.min.x - minDistanceBetweenRooms, lmBounds.min.z - minDistanceBetweenRooms),
+                new Vector2(lmBounds.size.x + minDistanceBetweenRooms * 2f, lmBounds.size.z + minDistanceBetweenRooms * 2f)
+            );
 
-            bool placed = false;
-            int attempts = 0;
-            const int MAXATTEMPTS = 100;
-            int placedSide = -1;
-            Vector3 placedPosition = Vector3.zero;
-
-            while (!placed && attempts < MAXATTEMPTS)
-            {
-                attempts++;
-
-                int side = Random.Range(0, 4);
-                Quaternion rotation = Quaternion.identity;
-
-                switch (side)
-                {
-                    case 0: rotation = Quaternion.Euler(0, 0, 0); break;    // North
-                    case 1: rotation = Quaternion.Euler(0, 180, 0); break;  // South
-                    case 2: rotation = Quaternion.Euler(0, 90, 0); break;   // East
-                    case 3: rotation = Quaternion.Euler(0, -90, 0); break;  // West
-                }
-
-                room.rotation = rotation; // Rotate first!
-                room.gameObject.SetActive(true);
-
-                Renderer rend = room.GetComponent<Renderer>();
-                Bounds rb = rend.bounds; // Now these bounds reflect rotation
-                Vector3 newPos = Vector3.zero;
-
-                switch (side)
-                {
-                    case 0: // North
-                        newPos = new Vector3(
-                            Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
-                            room.position.y,
-                            hallwayBounds.max.z + rb.extents.z
-                        );
-                        break;
-
-                    case 1: // South
-                        newPos = new Vector3(
-                            Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
-                            room.position.y,
-                            hallwayBounds.min.z - rb.extents.z
-                        );
-                        break;
-
-                    case 2: // East
-                        newPos = new Vector3(
-                            hallwayBounds.max.x + rb.extents.x,
-                            room.position.y,
-                            Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
-                        );
-                        break;
-
-                    case 3: // West
-                        newPos = new Vector3(
-                            hallwayBounds.min.x - rb.extents.x,
-                            room.position.y,
-                            Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
-                        );
-                        break;
-                }
-                // room.position = newPos;
-                
-                Rect roomRect = new Rect(
-                    new Vector2(newPos.x - roomBounds.extents.x - minDistanceBetweenRooms,
-                                newPos.z - roomBounds.extents.z - minDistanceBetweenRooms),
-                    new Vector2(roomBounds.size.x + minDistanceBetweenRooms * 2f,
-                                roomBounds.size.z + minDistanceBetweenRooms * 2f)
-                );
-
-                bool overlap = false;
-
-                foreach (var other in occupied)
-                {
-                    if (roomRect.Overlaps(other))
-                    {
-                        overlap = true;
-                        break;
-                    }
-                }
-
-                if (!overlap)
-                {
-                    occupied.Add(roomRect);
-                    room.position = newPos;
-                    // room.rotation = targetRotation;
-                    placed = true;
-                    placedSide = side;
-                    placedPosition = newPos;
-                    // Debug.Log($"Placed {room.name} on side {side} at {newPos} with rotation {targetRotation.eulerAngles}");
-                }
-            }
-
-            if (placed)
-            {
-                InstantiateDoor(room, placedSide, roomIndex);
-            }
-            else
-            {
-                Debug.LogWarning($"Could not place {room.name} around hallway {hallway.name} after {attempts} attempts!");
-            }
+            occupied.Add(lmRect);
+            placedRooms.Add(lmRoom); // Mark landmarked room as placed
         }
     }
+
+    // Randomize rooms around all hallways
+    foreach (Transform hallway in Hallways)
+    {
+        if (hallway == null) continue;
+        RandomizeRoomsAroundHallway(hallway, occupied, placedRooms);
+    }
+
+    CreateHallwayWallsFromDoors();
+}
+
+private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied, HashSet<Transform> placedRooms)
+{
+    Bounds hallwayBounds = hallway.GetComponent<Renderer>().bounds;
+
+    for (int roomIndex = 0; roomIndex < PossibleRooms.Length; roomIndex++)
+    {
+        Transform room = PossibleRooms[roomIndex];
+        
+        // Skip if already placed
+        if (placedRooms.Contains(room))
+            continue;
+            
+        if (room == CurrentRoom)
+            continue;
+
+        bool isHallway = false;
+        foreach (Transform h in Hallways)
+            if (room == h) { isHallway = true; break; }
+        if (isHallway) continue;
+        
+        // Skip landmarked rooms - they should not be randomized
+        MazeTrigger mazeTrigger = room.GetComponent<MazeTrigger>();
+        if (mazeTrigger != null && mazeTrigger.isLandmarked)
+            continue;
+        
+        Bounds roomBounds = room.GetComponent<Renderer>().bounds;
+
+        bool placed = false;
+        int attempts = 0;
+        const int MAXATTEMPTS = 100;
+        int placedSide = -1;
+        Vector3 placedPosition = Vector3.zero;
+
+        while (!placed && attempts < MAXATTEMPTS)
+        {
+            attempts++;
+
+            int side = Random.Range(0, 4);
+            Quaternion rotation = Quaternion.identity;
+
+            switch (side)
+            {
+                case 0: rotation = Quaternion.Euler(0, 0, 0); break;    // North
+                case 1: rotation = Quaternion.Euler(0, 180, 0); break;  // South
+                case 2: rotation = Quaternion.Euler(0, 90, 0); break;   // East
+                case 3: rotation = Quaternion.Euler(0, -90, 0); break;  // West
+            }
+
+            room.rotation = rotation;
+            room.gameObject.SetActive(true);
+
+            Renderer rend = room.GetComponent<Renderer>();
+            Bounds rb = rend.bounds;
+            Vector3 newPos = Vector3.zero;
+
+            switch (side)
+            {
+                case 0: // North
+                    newPos = new Vector3(
+                        Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
+                        room.position.y,
+                        hallwayBounds.max.z + rb.extents.z
+                    );
+                    break;
+
+                case 1: // South
+                    newPos = new Vector3(
+                        Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
+                        room.position.y,
+                        hallwayBounds.min.z - rb.extents.z
+                    );
+                    break;
+
+                case 2: // East
+                    newPos = new Vector3(
+                        hallwayBounds.max.x + rb.extents.x,
+                        room.position.y,
+                        Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
+                    );
+                    break;
+
+                case 3: // West
+                    newPos = new Vector3(
+                        hallwayBounds.min.x - rb.extents.x,
+                        room.position.y,
+                        Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
+                    );
+                    break;
+            }
+            
+            Rect roomRect = new Rect(
+                new Vector2(newPos.x - roomBounds.extents.x - minDistanceBetweenRooms,
+                            newPos.z - roomBounds.extents.z - minDistanceBetweenRooms),
+                new Vector2(roomBounds.size.x + minDistanceBetweenRooms * 2f,
+                            roomBounds.size.z + minDistanceBetweenRooms * 2f)
+            );
+
+            bool overlap = false;
+
+            foreach (var other in occupied)
+            {
+                if (roomRect.Overlaps(other))
+                {
+                    overlap = true;
+                    break;
+                }
+            }
+
+            if (!overlap)
+            {
+                occupied.Add(roomRect);
+                room.position = newPos;
+                placed = true;
+                placedSide = side;
+                placedPosition = newPos;
+                placedRooms.Add(room); // Mark this room as placed
+            }
+        }
+
+        if (placed)
+        {
+            InstantiateDoor(room, placedSide, roomIndex);
+        }
+        else
+        {
+            Debug.LogWarning($"Could not place {room.name} around hallway {hallway.name} after {attempts} attempts!");
+        }
+    }
+}
 
 private void InstantiateDoor(Transform room, int side, int roomIndex)
 {
