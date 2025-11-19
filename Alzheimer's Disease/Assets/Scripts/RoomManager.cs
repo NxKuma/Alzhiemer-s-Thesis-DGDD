@@ -560,11 +560,20 @@ public void RandomizeOtherRooms()
     }
 
     // Randomize rooms around all hallways
-    foreach (Transform hallway in Hallways)
+    List<Transform> shuffledHallways = new List<Transform>(Hallways);
+
+    for (int i = shuffledHallways.Count - 1; i > 0; i--)
+    {
+        int j = Random.Range(0, i + 1);
+        (shuffledHallways[i], shuffledHallways[j]) = (shuffledHallways[j], shuffledHallways[i]);
+    }
+
+    foreach (Transform hallway in shuffledHallways)
     {
         if (hallway == null) continue;
         RandomizeRoomsAroundHallway(hallway, occupied, placedRooms);
     }
+
 
     CreateHallwayWallsFromDoors();
 }
