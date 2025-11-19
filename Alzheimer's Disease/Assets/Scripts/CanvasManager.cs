@@ -5,6 +5,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private Canvas[] _canvasList;
     private static CanvasManager _instance;
     private Canvas _activeCanvas;
+    private bool _isDialogueActive = false;
 
     void Awake()
     {

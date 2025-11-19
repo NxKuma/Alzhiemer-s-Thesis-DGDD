@@ -5,12 +5,14 @@ using System.Collections.Generic;
 public class PuzzleCAnvasScript : MonoBehaviour
 {
     [SerializeField] private GameObject _puzzlePiecePrefab;
+    private List<GameObject> _puzzlePiecesAvailable = new List<GameObject>();
+    private List<GameObject> _puzzlePiecesList = new List<GameObject>();
     private Transform _puzzleAreaParent;
     private CanvasGroup _canvasGroup;
-    private bool _hasRandomized = false;
     private DialogueManager _dialogueManager;
-    private List<GameObject> _puzzlePiecesAvailable = new List<GameObject>();
     private Inventory _puzzleInventory;
+    private string _nPCName;
+    private bool _hasRandomized = false;
     
     private void Awake() {
         
@@ -47,10 +49,11 @@ public class PuzzleCAnvasScript : MonoBehaviour
         if (newItem.GetItemtype() == Item.eItemType.JigsawPuzzle)
         {
             GameObject puzzlePiece = Instantiate(_puzzlePiecePrefab, _puzzleAreaParent);
+            puzzlePiece.name = newItem.GetItemName();
             puzzlePiece.GetComponent<RectTransform>().sizeDelta = new Vector2(60,60);
             Image img = puzzlePiece.GetComponent<Image>();
             img.sprite = newItem.GetItemSprite();
-            _puzzlePiecesAvailable.Add(puzzlePiece);
+            _puzzlePiecesList.Add(puzzlePiece);
         }
     }
 
@@ -60,6 +63,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
         if (!_hasRandomized)
         {
             RandomizeChildOrder(_puzzleAreaParent);
+            FilterPieces("Wife");
             _hasRandomized = true;
         }
         Cursor.lockState = CursorLockMode.None;
@@ -74,6 +78,22 @@ public class PuzzleCAnvasScript : MonoBehaviour
             Cursor.visible = false;
         }
         _hasRandomized = false;
+    }
+
+    private void FilterPieces(string npcName)
+    {
+        _puzzlePiecesAvailable.Clear();
+        foreach (GameObject piece in _puzzlePiecesList)
+        {
+            if(piece.name.Contains(npcName))
+            {
+                piece.SetActive(true);
+            }
+            else
+            {
+                piece.SetActive(false);
+            }
+        }
     }
 
     private void RandomizeChildOrder(Transform parent)
