@@ -323,67 +323,96 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    private List<Vector2> ComputeValidWallRanges(Bounds hallwayBounds, float wallPosition, bool isHorizontal, Bounds? intersectionBounds)
+    private List<Vector2> ComputeValidWallRanges(
+        Bounds hallwayBounds,
+        float wallPosition,
+        bool isHorizontal,
+        Bounds? intersectionBounds)
     {
-        List<Vector2> ranges = new List<Vector2>();
+        List<Vector2> result = new List<Vector2>();
 
         if (!intersectionBounds.HasValue)
         {
-            // No intersection, entire wall is valid
             if (isHorizontal)
-            {
-                ranges.Add(new Vector2(hallwayBounds.min.x, hallwayBounds.max.x));
-            }
+                result.Add(new Vector2(hallwayBounds.min.x, hallwayBounds.max.x));
             else
-            {
-                ranges.Add(new Vector2(hallwayBounds.min.z, hallwayBounds.max.z));
-            }
-            return ranges;
+                result.Add(new Vector2(hallwayBounds.min.z, hallwayBounds.max.z));
+            return result;
         }
 
-        Bounds intersection = intersectionBounds.Value;
+        Bounds inter = intersectionBounds.Value;
+        bool thisWallTouchesIntersection = false;
 
         if (isHorizontal)
         {
-            // Wall runs along X axis (North or South wall)
-            // Exclude the X range of the intersection
-            float wallStart = hallwayBounds.min.x;
-            float wallEnd = hallwayBounds.max.x;
-            float intersectXMin = intersection.min.x;
-            float intersectXMax = intersection.max.x;
-
-            if (wallStart < intersectXMin)
-                ranges.Add(new Vector2(wallStart, Mathf.Min(wallEnd, intersectXMin)));
-
-            if (wallEnd > intersectXMax)
-                ranges.Add(new Vector2(Mathf.Max(wallStart, intersectXMax), wallEnd));
-
-            // If intersection completely covers the wall, no valid ranges
-            if (ranges.Count == 0 && wallStart >= intersectXMin && wallEnd <= intersectXMax)
-                return ranges; // Empty list
+            // North or South → look at Z match
+            if (Mathf.Abs(wallPosition - inter.min.z) < 0.01f ||
+                Mathf.Abs(wallPosition - inter.max.z) < 0.01f)
+            {
+                thisWallTouchesIntersection = true;
+            }
         }
         else
         {
-            // Wall runs along Z axis (East or West wall)
-            // Exclude the Z range of the intersection
-            float wallStart = hallwayBounds.min.z;
-            float wallEnd = hallwayBounds.max.z;
-            float intersectZMin = intersection.min.z;
-            float intersectZMax = intersection.max.z;
-
-            if (wallStart < intersectZMin)
-                ranges.Add(new Vector2(wallStart, Mathf.Min(wallEnd, intersectZMin)));
-
-            if (wallEnd > intersectZMax)
-                ranges.Add(new Vector2(Mathf.Max(wallStart, intersectZMax), wallEnd));
-
-            // If intersection completely covers the wall, no valid ranges
-            if (ranges.Count == 0 && wallStart >= intersectZMin && wallEnd <= intersectZMax)
-                return ranges; // Empty list
+            // East or West → look at X match
+            if (Mathf.Abs(wallPosition - inter.min.x) < 0.01f ||
+                Mathf.Abs(wallPosition - inter.max.x) < 0.01f)
+            {
+                thisWallTouchesIntersection = true;
+            }
         }
 
-        return ranges;
+        if (!thisWallTouchesIntersection)
+        {
+            if (isHorizontal)
+                result.Add(new Vector2(hallwayBounds.min.x, hallwayBounds.max.x));
+            else
+                result.Add(new Vector2(hallwayBounds.min.z, hallwayBounds.max.z));
+
+            return result;
+        }
+
+        float excludeMin, excludeMax, fullMin, fullMax;
+
+        if (isHorizontal)
+        {
+            fullMin = hallwayBounds.min.x;
+            fullMax = hallwayBounds.max.x;
+
+            excludeMin = inter.min.x;
+            excludeMax = inter.max.x;
+        }
+        else
+        {
+            fullMin = hallwayBounds.min.z;
+            fullMax = hallwayBounds.max.z;
+
+            excludeMin = inter.min.z;
+            excludeMax = inter.max.z;
+        }
+
+        // Clamp the exclusion to the hallway wall range
+        excludeMin = Mathf.Clamp(excludeMin, fullMin, fullMax);
+        excludeMax = Mathf.Clamp(excludeMax, fullMin, fullMax);
+
+        // If the intersection does not overlap in-range, keep full length
+        if (excludeMax <= excludeMin)
+        {
+            result.Add(new Vector2(fullMin, fullMax));
+            return result;
+        }
+
+        // Left segment
+        if (excludeMin > fullMin)
+            result.Add(new Vector2(fullMin, excludeMin));
+
+        // Right segment
+        if (excludeMax < fullMax)
+            result.Add(new Vector2(excludeMax, fullMax));
+
+        return result;
     }
+
 
     private void CreateFullWallSegment(Bounds hallwayBounds, string sideName, float wallPosition, bool isHorizontal, Bounds? intersectionBounds = null)
     {
@@ -493,7 +522,7 @@ public void RandomizeOtherRooms()
         {
             Rect intersectionRect = new Rect(
                 new Vector2(minX - minDistanceBetweenRooms, minZ - minDistanceBetweenRooms),
-                new Vector2((maxX - minX) + minDistanceBetweenRooms * 2f, (maxZ - minZ) + minDistanceBetweenRooms * 2f)
+                new Vector2((maxX - minX) + minDistanceBetweenRooms * 2.5f, (maxZ - minZ) + minDistanceBetweenRooms * 2.5f)
             );
             occupied.Add(intersectionRect);
         }
