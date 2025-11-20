@@ -73,7 +73,7 @@ public class DialogueManager : MonoBehaviour
         // Enable the cursor and disable camera movement.
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        _controller.cameraCanMove = false;
+        _controller.StopStartPlayer(false);
 
         ContinueStory();
     }
@@ -86,7 +86,8 @@ public class DialogueManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        _controller.cameraCanMove = true;
+        _controller.StopStartPlayer(true);
+
     }
 
     private void ContinueStory()

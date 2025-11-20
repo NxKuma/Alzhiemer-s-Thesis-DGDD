@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class InventoryToggle : MonoBehaviour
 {
+    [SerializeField] private FirstPersonController _fps;
     private RectTransform _inventoryRect;
     private RectTransform _iconRect;
     private Vector2 _invCurrentPosition;
@@ -19,6 +20,16 @@ public class InventoryToggle : MonoBehaviour
     private Coroutine _toggleRoutine;
     private Coroutine _iconBlinkRoutine;
     [SerializeField] private float iconBlinkDuration = 0.4f; // total time for one blink (to yellow and back)
+
+    // Puzzle-area hover fields (transferred from InventoryManager)
+    [SerializeField] private float _hoverOffset = 200f; // how far up the count area moves
+    [SerializeField] private float _hoverSpeed = 8f;    // smoothing speed
+    private RectTransform _puzzleCountArea;
+    private RectTransform _puzzleHoverArea;
+    private Canvas _rootCanvas;
+    private Vector2 _puzzleCountOriginalAnchoredPos;
+    private Vector2 _puzzleCountTargetAnchoredPos;
+    private bool _isPuzzleHovered;
 
     void Awake()
     {
@@ -45,7 +56,27 @@ public class InventoryToggle : MonoBehaviour
 
         _iconCanvasGroup = this.GetComponent<CanvasGroup>();
         _isOpen = true;
+        _fps.StopStartPlayer(!_isOpen);
         ToggleInventory();
+
+        
+        Transform puzzleContainer = _inventoryRect.GetChild(0);
+        if (puzzleContainer != null && puzzleContainer.childCount >= 2)
+        {
+            GameObject puzzleCountObj = puzzleContainer.GetChild(0).gameObject;
+            _puzzleCountArea = puzzleCountObj.GetComponent<RectTransform>();
+            _puzzleHoverArea = puzzleContainer.GetChild(1).GetComponent<RectTransform>();
+
+            if (_puzzleCountArea != null)
+            {
+                _puzzleCountOriginalAnchoredPos = _puzzleCountArea.anchoredPosition;
+                _puzzleCountTargetAnchoredPos = _puzzleCountOriginalAnchoredPos + new Vector2(0f, _hoverOffset);
+            }
+
+            // find canvas (used for ScreenPoint conversions)
+            _rootCanvas = GetComponentInParent<Canvas>();
+        }
+        
 
         // Subscribe to inventory events safely (TriggerHandler may not be initialized in Awake of other systems)
         if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null)
@@ -74,6 +105,8 @@ public class InventoryToggle : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
+            Cursor.lockState = CursorLockMode.None;
+            
         }
 
         if (_dialogueManager != null && _dialogueManager.DialogueIsPlaying)
@@ -82,13 +115,26 @@ public class InventoryToggle : MonoBehaviour
         }else{
             _iconCanvasGroup.alpha = 1f;
         }
+
+        // Puzzle-area hover handling (transferred from InventoryManager)
+        if (_puzzleHoverArea != null && _puzzleCountArea != null)
+        {
+            bool hover = IsPointerOverRect(_puzzleHoverArea);
+            _isPuzzleHovered = hover;
+
+            Vector2 target = _isPuzzleHovered ? _puzzleCountTargetAnchoredPos : _puzzleCountOriginalAnchoredPos;
+            _puzzleCountArea.anchoredPosition = Vector2.Lerp(_puzzleCountArea.anchoredPosition, target, Time.deltaTime * _hoverSpeed);
+        }
     }
 
     public void ToggleInventory()
     {
         // flip target
         bool targetOpen = !_isOpen;
-
+        Cursor.visible = !_isOpen;
+        if (Cursor.visible) Cursor.lockState = CursorLockMode.None;
+        else Cursor.lockState = CursorLockMode.Locked;
+        _fps.StopStartPlayer(_isOpen);
         // stop any existing animation
         if (_toggleRoutine != null) StopCoroutine(_toggleRoutine);
         _toggleRoutine = StartCoroutine(CoToggle(targetOpen));
@@ -175,6 +221,16 @@ public class InventoryToggle : MonoBehaviour
 
         img.color = from;
         _iconBlinkRoutine = null;
+    }
+
+    // Helper copied from InventoryManager to detect pointer over a RectTransform
+    private bool IsPointerOverRect(RectTransform rect)
+    {
+        if (rect == null) return false;
+        Vector2 localPoint;
+        Camera cam = (_rootCanvas != null && _rootCanvas.renderMode != RenderMode.ScreenSpaceOverlay) ? _rootCanvas.worldCamera : null;
+        bool gotPoint = RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, Input.mousePosition, cam, out localPoint);
+        return gotPoint && rect.rect.Contains(localPoint);
     }
 
 }

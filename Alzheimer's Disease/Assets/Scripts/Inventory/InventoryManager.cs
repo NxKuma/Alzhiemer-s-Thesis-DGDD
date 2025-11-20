@@ -5,19 +5,17 @@ using TMPro;
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject _visibleInventory;
-    private Texture2D[] _inventorySlots;
     private TextMeshProUGUI[] _puzzleCountTexts;
+    private Texture2D[] _inventorySlots;
     private int[] _puzzleCounts;
-    // private Image[] _visibleInventoryImages;
     private Inventory _internalInventory;
     private int _inventorySlotCount;
-
-    // Awake is called when the script instance is being loaded
     void Awake()
     {
         _inventorySlotCount = _visibleInventory.transform.childCount;
         _inventorySlots = new Texture2D[_inventorySlotCount];
         GameObject puzzleCountObj = _visibleInventory.transform.GetChild(0).GetChild(0).gameObject;
+
         _puzzleCountTexts = new TextMeshProUGUI[puzzleCountObj.transform.childCount];
         _puzzleCounts = new int[puzzleCountObj.transform.childCount];
 
@@ -30,7 +28,6 @@ public class InventoryManager : MonoBehaviour
         for (int i = 1; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
-            
             Color c = img.color;
             c.a = 0f;
             img.color = c;
@@ -39,8 +36,14 @@ public class InventoryManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject); 
 
+        
+    }
+
+    void Start()
+    {  
         if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null)
         {
+            Debug.Log("Subscribing to inventory events in InventoryManager.");
             _internalInventory = TriggerHandler.Instance.PlayerInventory;
             _internalInventory.ItemAdded += AddToInventoryUI;
             _internalInventory.ItemDropped += RemoveFromInventoryUI;
@@ -48,23 +51,27 @@ public class InventoryManager : MonoBehaviour
     }
     private void AddToInventoryUI(Item newItem)
     {
-        for (int i = 1; i < _inventorySlotCount; i++)
+        if (newItem.GetItemtype() != Item.eItemType.JigsawPuzzle)
         {
-            Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
-            if (_inventorySlots[i] != null && img.color.a == 0f)
+            for (int i = 1; i < _inventorySlotCount; i++)
             {
-                Sprite itemSprite = newItem.GetItemSprite();
-                _inventorySlots[i] = itemSprite.texture;
-                img.sprite = itemSprite;
-                Color c = img.color;
-                c.a = 1f;
-                img.color = c;
-                break;
+                Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
+                if (_inventorySlots[i] != null && img.color.a == 0f)
+                {
+                    Sprite itemSprite = newItem.GetItemSprite();
+                    _inventorySlots[i] = itemSprite.texture;
+                    img.sprite = itemSprite;
+                    Color c = img.color;
+                    c.a = 1f;
+                    img.color = c;
+                    break;
+                }
             }
         }
-
+        
         for (int i = 0; i < _puzzleCountTexts.Length; i++)
         {
+            Debug.Log(_puzzleCounts[i]);
             if (newItem.GetItemtype() == Item.eItemType.JigsawPuzzle)
             {
                 if (newItem.GetItemName().Contains("Wife"))
