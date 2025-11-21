@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MazeTrigger : MonoBehaviour
 {
+    [SerializeField] public bool isLandmarked = false;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player")) 
