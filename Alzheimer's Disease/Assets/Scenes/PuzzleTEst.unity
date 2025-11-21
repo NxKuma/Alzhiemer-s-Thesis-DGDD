@@ -6636,6 +6636,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 813118297824904605, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1361809257032192281, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
       propertyPath: m_Name
       value: NPC (2)
