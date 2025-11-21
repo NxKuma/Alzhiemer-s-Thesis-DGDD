@@ -478,6 +478,11 @@ public class FirstPersonController : MonoBehaviour
     void FixedUpdate()
     {
         #region Movement
+        
+        // if (DialogueManager.GetInstance().DialogueIsPlaying)
+        // {
+        //     return;
+        // }
 
         if (playerCanMove)
         {
@@ -637,6 +642,15 @@ public class FirstPersonController : MonoBehaviour
             joint.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, jointOriginalPos.x, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, jointOriginalPos.z, Time.deltaTime * bobSpeed));
         }
     }
+
+    #region Public Methods
+    public void StopStartPlayer(bool _masterSwitch)
+    {
+        playerCanMove = _masterSwitch;
+        enableHeadBob = _masterSwitch;
+        cameraCanMove = _masterSwitch;
+    }
+    #endregion
 }
 
 

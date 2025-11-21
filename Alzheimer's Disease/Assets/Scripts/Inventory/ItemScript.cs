@@ -42,10 +42,10 @@ public class ItemScript : MonoBehaviour
             if (_isSpinning){
                 mats[0] = _itemResource.GetItemMaterial()[0];
                 mats[materialCount - 1] = _itemResource.GetItemMaterial()[1];
-                mats[1].SetTexture("_MainTexture", _itemResource.GetItemTexture());
+                mats[1].SetTexture("_MainTexture", _itemResource.GetItemSprite().texture);
             } else mats[0] = _itemResource.GetItemMaterial()[0];
             rend.materials = mats;
-        }
+        }   
         SetShadowThickness(0.0f);
         transform.localScale *= size;
         

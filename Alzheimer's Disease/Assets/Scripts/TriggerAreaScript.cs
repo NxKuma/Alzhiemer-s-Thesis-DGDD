@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class TriggerAreaScript : MonoBehaviour
 {
-    [SerializeField] private GameObject _itemSpawnPrefab; 
     [SerializeField] private ItemDatabase _itemDatabase;
     [SerializeField] private string _areaName;
     private static Dictionary<Item, ItemStatus> _itemList = new Dictionary<Item, ItemStatus>();
