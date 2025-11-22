@@ -71,7 +71,7 @@ public class DialogueManager : MonoBehaviour
         _dialoguePanel.SetActive(true);
 
         // Enable the cursor and disable camera movement.
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         _controller.StopStartPlayer(false);
 

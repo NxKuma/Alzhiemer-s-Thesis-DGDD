@@ -1,4 +1,4 @@
-using UnityEngine;
+            using UnityEngine;
 
 public class NPCScript : MonoBehaviour
 {
@@ -12,16 +12,13 @@ public class NPCScript : MonoBehaviour
         //Make sure the Model is facing forward
         if(_npcData.GetNPCName().Contains("Wife")) npcMesh.transform.rotation = Quaternion.Euler(0,45,0);
         else npcMesh.transform.rotation = Quaternion.Euler(0,90,0);
-        
+        this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y - 1.5f, this.transform.localPosition.z);
         if(_npcData.GetNPCName().Contains("Daughter")) 
         {
-            this.transform.localPosition = new Vector3(this.transform.localPosition.x, 1.0f, this.transform.localPosition.z);
             npcMesh.transform.localScale = Vector3.one * _npcData.GetNPCSize();  
             npcMesh.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material = _npcData.GetNPCMaterial();   
-
         }
         else {
-            this.transform.localPosition = new Vector3(this.transform.localPosition.x, 1.0f, this.transform.localPosition.z);
             npcMesh.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material = _npcData.GetNPCMaterial();   
         
         }

@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 4459864850019384741}
   - component: {fileID: 4459864850019384740}
   - component: {fileID: 6644058996483733946}
+  - component: {fileID: 1294964133293843658}
+  - component: {fileID: 8680656611198090326}
   m_Layer: 0
   m_Name: FirstPersonController
   m_TagString: Player
@@ -212,6 +214,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _triggerAreas: []
+--- !u!114 &1294964133293843658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4459864850019384750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637e60853741f5e44857adefe04b9677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractionDistance: 3
+  interactKey: 101
+  doorLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  InteractionUI: {fileID: 0}
+  openAngle: -90
+  animationDuration: 0.5
+--- !u!114 &8680656611198090326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4459864850019384750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc77be35ecfe28458d72b4a5d5be8fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactorSource: {fileID: 0}
+  _interactRange: 0
 --- !u!1 &4459864850190357393
 GameObject:
   m_ObjectHideFlags: 0

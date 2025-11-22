@@ -66,14 +66,14 @@ public class PuzzleCAnvasScript : MonoBehaviour
             FilterPieces("Wife");
             _hasRandomized = true;
         }
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
     }
 
     private void Hide()
     {
         _canvasGroup.alpha = 0f;
-        if(Cursor.lockState != CursorLockMode.None){  
+        if(Cursor.lockState != CursorLockMode.Confined){  
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
