@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc21f4218f883c445ac6fb31253edb8c, type: 3}
   m_Name: TestInteractQuest
   m_EditorClassIdentifier: 
-  <ID>k__BackingField: TestInteractQeust
+  <ID>k__BackingField: TestInteractQuest
   DisplayName: 
   PhaseRequirement: 0
   ItemRequirements: []

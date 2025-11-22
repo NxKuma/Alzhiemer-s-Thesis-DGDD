@@ -42,6 +42,7 @@ public class DialogueTrigger : MonoBehaviour
                     NPC npc = hitInfo.collider.GetComponentInParent<NPC>();
                     if (npc != null)
                     {
+                        GameEventsManager.instance.npcEvents.NPCInteracted();
                         npc.Interact();
                         DialogueManager.GetInstance().EnterDialogueMode(_inkJSON);
                     }
