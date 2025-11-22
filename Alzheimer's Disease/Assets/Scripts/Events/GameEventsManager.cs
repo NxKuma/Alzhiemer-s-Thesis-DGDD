@@ -4,7 +4,7 @@ public class GameEventsManager : MonoBehaviour
 {
     public static GameEventsManager instance { get; private set; }
 
-    public NPCEvents npcEvents;
+    public NPCEventBus npcEvents;
 
     private void Awake()
     {
@@ -14,6 +14,6 @@ public class GameEventsManager : MonoBehaviour
         }
         instance = this;
 
-        npcEvents = new NPCEvents();
+        npcEvents = new NPCEventBus();
     }
 }

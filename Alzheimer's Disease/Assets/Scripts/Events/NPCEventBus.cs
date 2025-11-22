@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCEvents
+public class NPCEventBus
 {
-    public static NPCEvents current;
+    public static NPCEventBus current;
 
     public event Action onNPCInteract;
     public void NPCInteracted()
