@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviour
 {
+    // Event invoked after rooms are randomized (subscribers should rescan their references)
+    public event System.Action RoomsRandomized;
     [Header("Rooms Setup")]
     public Transform[] Hallways; // For L-shaped: assign vertical and horizontal hallway GameObjects
     public Transform[] PossibleRooms;
@@ -576,6 +578,8 @@ public void RandomizeOtherRooms()
 
 
     CreateHallwayWallsFromDoors();
+        // Notify subscribers (e.g. RoomChildMover) that rooms have been randomized
+        RoomsRandomized?.Invoke();
 }
 
 private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied, HashSet<Transform> placedRooms)

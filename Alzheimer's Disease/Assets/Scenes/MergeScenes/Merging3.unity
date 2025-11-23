@@ -1211,71 +1211,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c60cee9f95b7cdf45a9963a03f5713e0, type: 3}
---- !u!1001 &1451590133
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.5751867
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.1395187
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1167016303876358772, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2969015407852029474, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_Name
-      value: HouseLayout
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190020713264078540, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8838048957713301478, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f40391c4546edc54bb128216e4a0d7e7, type: 3}
 --- !u!1001 &1736736175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1542,6 +1477,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1925245965}
   - component: {fileID: 1925245964}
+  - component: {fileID: 1925245966}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1629,6 +1565,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1925245966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925245963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1640,7 +1599,6 @@ SceneRoots:
   - {fileID: 136182705}
   - {fileID: 1925245965}
   - {fileID: 173322765}
-  - {fileID: 1451590133}
   - {fileID: 1812494291}
   - {fileID: 282097669}
   - {fileID: 721046364}

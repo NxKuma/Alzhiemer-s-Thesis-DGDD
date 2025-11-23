@@ -1660,6 +1660,11 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!4 &569929584 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8033194237298777740, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+  m_PrefabInstance: {fileID: 5453819715261992489}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &574370336
 GameObject:
   m_ObjectHideFlags: 0
@@ -5659,6 +5664,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!4 &1727913037 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6897542172884147261, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+  m_PrefabInstance: {fileID: 5453819715261992489}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1746328236
 GameObject:
   m_ObjectHideFlags: 0
@@ -6780,6 +6790,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: minDistanceBetweenRooms
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: PossibleDoors.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: PossibleRooms.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: 'PossibleDoors.Array.data[3]'
+      value: 
+      objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
+    - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: 'PossibleDoors.Array.data[4]'
+      value: 
+      objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
+    - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: 'PossibleRooms.Array.data[7]'
+      value: 
+      objectReference: {fileID: 569929584}
+    - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: 'PossibleRooms.Array.data[8]'
+      value: 
+      objectReference: {fileID: 1727913037}
     - target: {fileID: 4062384340003219998, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
       propertyPath: _interactUI
       value: 
