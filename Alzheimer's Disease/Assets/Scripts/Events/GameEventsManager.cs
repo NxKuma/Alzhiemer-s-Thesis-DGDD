@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class GameEventsManager : MonoBehaviour
 {
-    public static GameEventsManager instance { get; private set; }
+    public static GameEventsManager Instance { get; private set; }
 
     public NPCEventBus npcEvents;
 
     private void Awake()
     {
-        if (instance != null)
+        if (Instance != null)
         {
             Debug.LogError("More than one GameEventsManager found in scene");
         }
-        instance = this;
+        Instance = this;
 
         npcEvents = new NPCEventBus();
     }

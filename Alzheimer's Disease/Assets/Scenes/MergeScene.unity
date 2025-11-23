@@ -1581,7 +1581,8 @@ PrefabInstance:
       propertyPath: _interactorSource
       value: 
       objectReference: {fileID: 902916787}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3216735134384098898, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -3064,7 +3065,8 @@ PrefabInstance:
       propertyPath: _interactorSource
       value: 
       objectReference: {fileID: 902916787}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3216735134384098898, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

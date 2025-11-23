@@ -2,17 +2,21 @@ using UnityEngine;
 
 public class TestInteractQuestStep : QuestStep
 {
+    private GameEventsManager _gameEventsManager;
     private int _npcInteracted = 0;
     private int _npcsToInteract = 2;
 
-    private void OnEnable()
+    void Start()
     {
-        GameEventsManager.instance.npcEvents.onNPCInteract += NPCInteracted;
+        _gameEventsManager = GameEventsManager.Instance;
+        if (_gameEventsManager != null)
+            _gameEventsManager.npcEvents.onNPCInteract += NPCInteracted;
     }
 
     private void OnDisable()
     {
-        GameEventsManager.instance.npcEvents.onNPCInteract -= NPCInteracted;
+        if (_gameEventsManager != null)
+            _gameEventsManager.npcEvents.onNPCInteract -= NPCInteracted;
     }
 
     private void NPCInteracted()
