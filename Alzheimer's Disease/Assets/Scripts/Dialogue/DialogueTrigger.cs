@@ -36,7 +36,11 @@ public class DialogueTrigger : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 Ray r = new Ray(_interactorSource.position, _interactorSource.forward);
-                if (Physics.Raycast(r, out RaycastHit hitInfo, _interactRange))
+                Debug.DrawRay(r.origin, r.direction * _interactRange, Color.red, 2.0f);
+                int mask = LayerMask.GetMask("NPC");
+
+                // Debug.Log(r.hitInfo.collider.gameObject.name);
+                if (Physics.Raycast(r, out RaycastHit hitInfo, _interactRange, mask))
                 {
                     DialogueManager.GetInstance().EnterDialogueMode(_inkJSON);
                     // if (hitInfo.collider.gameObject.TryGetComponent(out NPCInteractable npc))
@@ -56,7 +60,7 @@ public class DialogueTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             _playerInRange = true;
-            Debug.Log("PLAYER ENTERED NPC TRIGGER");
+            Debug.Log("PLAYER ENTERED"+ this.transform.parent.name  +" TRIGGER");
         }
     }
 
@@ -65,7 +69,7 @@ public class DialogueTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             _playerInRange = false;
-            Debug.Log("PLAYER EXITED NPC TRIGGER");
+            Debug.Log("PLAYER EXITED"+ this.transform.parent.name  +" TRIGGER");
         }
     }
 }

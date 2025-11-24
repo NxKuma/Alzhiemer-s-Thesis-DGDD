@@ -1247,7 +1247,7 @@ MonoBehaviour:
   - {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
   - {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
   wallPrefab: {fileID: 5632533941249705700, guid: 9b6acb9d76828f04b9261e1b22d4ecd2, type: 3}
-  wallHeight: 1
+  wallHeight: 1.5
   wallThickness: 0.5
   wallYPosition: 1
 --- !u!114 &5789250153086266468
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6e679a44342d54a9154111cb86d38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchThreshold: 0.5
+  forceRemap: 0
 --- !u!1 &2569593326170340772
 GameObject:
   m_ObjectHideFlags: 0
