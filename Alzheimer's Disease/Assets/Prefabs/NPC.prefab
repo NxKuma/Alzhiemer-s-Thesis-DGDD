@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3202130121519659710}
   - component: {fileID: 1582600636361421192}
+  - component: {fileID: 3216735134384098898}
   m_Layer: 0
   m_Name: NPC
   m_TagString: NPC
