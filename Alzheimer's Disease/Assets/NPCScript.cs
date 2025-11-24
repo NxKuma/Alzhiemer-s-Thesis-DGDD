@@ -4,6 +4,9 @@ public class NPCScript : MonoBehaviour
 {
     [SerializeField] private NPC _npcData;
     private GameObject _nPCModel;
+    private Inventory _npcInventory;
+    private GameEventsManager _gameEventsManager;
+    private bool _hasInteracted = false;
 
     void Awake()
     {
@@ -49,23 +52,37 @@ public class NPCScript : MonoBehaviour
             if (child.GetComponent<Camera>() != null)
                 Destroy(child.gameObject);
         }
-
-        
-
-
-        // MeshFilter mf = _nPCModel.GetComponent<MeshFilter>();
-        // mf.mesh = _npcData.GetNPCMesh();
-        // Renderer rend = _nPCModel.GetComponent<Renderer>();
-        // rend.material = _npcData.GetNPCMaterial();
-        // _nPCModel.transform.localScale = Vector3.one * _npcData.GetNPCSize();
     }
 
-    
-
-    void Start()
+    private void Start()
     {
-        
+        _gameEventsManager = GameEventsManager.Instance;
+        if (_gameEventsManager != null) _gameEventsManager.npcEvents.onNPCInteract += OnInteract;
     }
 
+    private void OnDestroy()
+    {
+        if (_gameEventsManager != null)
+            _gameEventsManager.npcEvents.onNPCInteract -= OnInteract;
+    }
+
+    public void Interact()
+    {
+        // Debug.Log("NPC INTERACTED (sent from NPC.cs)"); 
+        // GameEventsManager.Instance.npcEvents.NPCInteracted();
+        // do something
+    }
+
+    public void OnInteract()
+    {   
+        if (_hasInteracted) return;
+        // mark as interacted before broadcasting to avoid re-entrant recursion
+        _hasInteracted = true;
+        Debug.Log("NPC ONINTERACT TRIGGERED (sent from NPC.cs)");
+        if (_gameEventsManager != null)
+            _gameEventsManager.npcEvents.NPCInteracted();
+    } 
+
+    public string GetNPCName() => _npcData.GetNPCName();
 
 }

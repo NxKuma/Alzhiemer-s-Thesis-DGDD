@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "QuestInfoSO", menuName = "Scriptable Objects/QuestInfoSO", order = 1)]
 public class QuestInfoSO : ScriptableObject
 {
-    [field: SerializeField] public string ID { get; private set; }
+    [field: SerializeField] public string questID { get; private set; }
 
     [Header("General")]
     public string DisplayName;
@@ -22,7 +22,7 @@ public class QuestInfoSO : ScriptableObject
     private void OnValidate()
     {
         #if UNITY_EDITOR
-        ID = this.name;
+        questID = this.name;
         UnityEditor.EditorUtility.SetDirty(this);
         #endif
     }

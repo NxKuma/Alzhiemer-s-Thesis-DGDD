@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class QuestPoint : MonoBehaviour
@@ -19,29 +21,29 @@ public class QuestPoint : MonoBehaviour
     private string questId;
     private QuestState currentQuestState;
 
-    private QuestIcon questIcon;
+    // private QuestIcon questIcon;
 
     private void Awake() 
     {
-        questId = questInfoForPoint.id;
-        questIcon = GetComponentInChildren<QuestIcon>();
+        questId = questInfoForPoint.questID;
+        // questIcon = GetComponentInChildren<QuestIcon>();
     }
 
     private void OnEnable()
     {
-        GameEventsManager.instance.questEvents.onQuestStateChange += QuestStateChange;
-        GameEventsManager.instance.inputEvents.onSubmitPressed += SubmitPressed;
+        GameEventsManager.Instance.questEvents.onQuestStateChange += QuestStateChange;
+        // GameEventsManager.Instance.inputEvents.onSubmitPressed += SubmitPressed;
     }
 
     private void OnDisable()
     {
-        GameEventsManager.instance.questEvents.onQuestStateChange -= QuestStateChange;
-        GameEventsManager.instance.inputEvents.onSubmitPressed -= SubmitPressed;
+        GameEventsManager.Instance.questEvents.onQuestStateChange -= QuestStateChange;
+        // GameEventsManager.Instance.inputEvents.onSubmitPressed -= SubmitPressed;
     }
 
-    private void SubmitPressed(InputEventContext inputEventContext)
+    private void SubmitPressed(InputAction inputEventContext)
     {
-        if (!playerIsNear || !inputEventContext.Equals(InputEventContext.DEFAULT))
+        if (!playerIsNear)
         {
             return;
         }
@@ -49,7 +51,8 @@ public class QuestPoint : MonoBehaviour
         // if we have a knot name defined, try to start dialogue with it
         if (!dialogueKnotName.Equals("")) 
         {
-            GameEventsManager.instance.dialogueEvents.EnterDialogue(dialogueKnotName);
+            // GameEventsManager.Instance.dialogueEvents.EnterDialogue(dialogueKnotName);
+            return;
         }
         // otherwise, start or finish the quest immediately without dialogue
         else 
@@ -57,11 +60,11 @@ public class QuestPoint : MonoBehaviour
             // start or finish a quest
             if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
             {
-                GameEventsManager.instance.questEvents.StartQuest(questId);
+                GameEventsManager.Instance.questEvents.StartQuest(questId);
             }
             else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
             {
-                GameEventsManager.instance.questEvents.FinishQuest(questId);
+                GameEventsManager.Instance.questEvents.FinishQuest(questId);
             }
         }
     }
@@ -69,10 +72,10 @@ public class QuestPoint : MonoBehaviour
     private void QuestStateChange(Quest quest)
     {
         // only update the quest state if this point has the corresponding quest
-        if (quest.info.id.Equals(questId))
+        if (quest.Info.questID.Equals(questId))
         {
-            currentQuestState = quest.state;
-            questIcon.SetState(currentQuestState, startPoint, finishPoint);
+            currentQuestState = quest.State;
+            //questIcon.SetState(currentQuestState, startPoint, finishPoint);
         }
     }
 

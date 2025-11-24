@@ -55,7 +55,7 @@ public class DialogueTrigger : MonoBehaviour
                 }
                 else if (Physics.Raycast(r, out RaycastHit hitInfo, _interactRange, mask))
                 {
-                    NPC npc = hitInfo.collider.GetComponentInParent<NPC>();
+                    NPCScript npc = hitInfo.collider.GetComponentInParent<NPCScript>();
                     if (npc != null)
                     {
                         if (_dbgCallEvent)
@@ -65,7 +65,7 @@ public class DialogueTrigger : MonoBehaviour
                         else Debug.Log("[DialogueTrigger] NPCInteracted skipped (debug)");
 
                         if (_dbgCallNpcInteract)
-                        {
+                        {   
                             npc.Interact();
                         }
                         else Debug.Log("[DialogueTrigger] npc.Interact skipped (debug)");

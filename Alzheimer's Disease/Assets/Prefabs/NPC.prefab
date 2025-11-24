@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3202130121519659710}
   - component: {fileID: 1582600636361421192}
-  - component: {fileID: 3216735134384098898}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: NPC
   m_TagString: NPC
   m_Icon: {fileID: 0}
@@ -118,6 +117,10 @@ MonoBehaviour:
   _interactorSource: {fileID: 0}
   _interactRange: 2
   _inkJSON: {fileID: 4900000, guid: 7b62c44e20b1cd14b949df1142bb0e8a, type: 3}
+  _dbgAllowRaycast: 1
+  _dbgCallEvent: 1
+  _dbgCallNpcInteract: 1
+  _dbgCallEnterDialogue: 1
 --- !u!1 &7167356476810912531
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +133,7 @@ GameObject:
   - component: {fileID: 8485446756350286093}
   - component: {fileID: 3623991993323653603}
   - component: {fileID: 119650328640017374}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +245,7 @@ GameObject:
   - component: {fileID: 1672727319090648804}
   - component: {fileID: 813118297824904605}
   - component: {fileID: 317515115430983247}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +353,7 @@ GameObject:
   - component: {fileID: 410269923587618612}
   - component: {fileID: 3777358255723451816}
   - component: {fileID: 8386594492193913902}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Blur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
