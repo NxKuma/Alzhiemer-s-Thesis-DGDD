@@ -3025,6 +3025,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1294964133293843658, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      propertyPath: InteractionUI
+      value: 
+      objectReference: {fileID: 591789846}
     - target: {fileID: 4459864850019384738, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3073,6 +3077,14 @@ PrefabInstance:
       propertyPath: _triggerAreas.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8680656611198090326, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      propertyPath: _interactRange
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8680656611198090326, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      propertyPath: _interactorSource
+      value: 
+      objectReference: {fileID: 902916787}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6796,7 +6808,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
       propertyPath: PossibleDoors.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
       propertyPath: PossibleRooms.Array.size
@@ -6808,6 +6820,10 @@ PrefabInstance:
       objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
     - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
       propertyPath: 'PossibleDoors.Array.data[4]'
+      value: 
+      objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
+    - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: 'PossibleDoors.Array.data[5]'
       value: 
       objectReference: {fileID: 83427313588849698, guid: 71dec9d4cf4b71b4c95bf57a0f0d6393, type: 3}
     - target: {fileID: 2307961904501488853, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
@@ -6834,9 +6850,29 @@ PrefabInstance:
       propertyPath: _interactorSource
       value: 
       objectReference: {fileID: 902916787}
+    - target: {fileID: 5379809974528363859, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 999.975
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379809974528363859, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7683007711459737287, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
       propertyPath: m_Name
       value: HouseLayout
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880239506071439390, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 999.975
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880239506071439390, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.2099999
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880239506071439390, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -11.699997
       objectReference: {fileID: 0}
     - target: {fileID: 8359350383845191322, guid: 196077b41e402cd4ca9905e5539732d9, type: 3}
       propertyPath: _interactUI
