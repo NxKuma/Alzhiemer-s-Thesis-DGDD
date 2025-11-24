@@ -26,7 +26,7 @@ public class TestInteractQuestStep : QuestStep
             _npcInteracted++;
         }
 
-        if (_npcInteracted >= _npcsToInteract)
+        if (_npcInteracted > _npcsToInteract)
         {
             FinishQuestStep();
         }
