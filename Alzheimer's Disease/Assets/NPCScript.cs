@@ -15,7 +15,7 @@ public class NPCScript : MonoBehaviour
         //Make sure the Model is facing forward
         if(_npcData.GetNPCName().Contains("Wife")) npcMesh.transform.rotation = Quaternion.Euler(0,45,0);
         else npcMesh.transform.rotation = Quaternion.Euler(0,90,0);
-        this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y - 1.5f, this.transform.localPosition.z);
+        this.transform.localPosition = new Vector3(this.transform.localPosition.x, -1.2f, this.transform.localPosition.z);
         if(_npcData.GetNPCName().Contains("Daughter")) 
         {
             npcMesh.transform.localScale = Vector3.one * _npcData.GetNPCSize();  
