@@ -2,7 +2,7 @@
 
 
 === main ===
-lets test the choices shall we
+lets test the choices shall we #speaker:Martha #portrait:martha
 humina humina
     + [omega]
         -> chosen("kekL")

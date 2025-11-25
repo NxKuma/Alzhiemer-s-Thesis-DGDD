@@ -10,6 +10,8 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue UI")]
     [SerializeField] private GameObject _dialoguePanel;
     [SerializeField] private TextMeshProUGUI _dialogueText;
+    [SerializeField] private TextMeshProUGUI _displayNameText;
+    // [SerializeField] private Animator _portraitAnimator;
 
     [Header("Choices UI")]
     [SerializeField] private GameObject[] _choices;
@@ -19,14 +21,19 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private FirstPersonController _controller;
 
     private static DialogueManager _instance;
+    private const string SPEAKER_TAG = "speaker";
+    private const string PORTRAIT_TAG = "portrait";
     private Story _currentStory;
     private bool _choicesAvailable;
     public bool DialogueIsPlaying { get; private set; }
+
+    private DialogueVariables _dialogueVar;
 
     private void Awake()
     {
         if (_instance != null) Debug.LogWarning("Found more than one Dialouge Manager in the scene.");
         _instance = this;
+        _dialogueVar = new DialogueVariables();
     }
 
     public static DialogueManager GetInstance()
@@ -70,16 +77,24 @@ public class DialogueManager : MonoBehaviour
         DialogueIsPlaying = true;
         _dialoguePanel.SetActive(true);
 
+        _dialogueVar.StartListening(_currentStory);
+
         // Enable the cursor and disable camera movement.
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         _controller.cameraCanMove = false;
+
+        // Default Values for Name and Portrait
+        _displayNameText.text = "???";
+        // _portraitAnimator
 
         ContinueStory();
     }
 
     private void ExitDialogueMode()
     {
+        _dialogueVar.StopListening(_currentStory);
+
         DialogueIsPlaying = false;
         _dialoguePanel.SetActive(false);
         _dialogueText.text = "";
@@ -98,10 +113,41 @@ public class DialogueManager : MonoBehaviour
 
             // Display choices if available.
             DisplayChoices();
+            HandleTags(_currentStory.currentTags);
         }
         else
         {
             ExitDialogueMode();
+        }
+    }
+
+    private void HandleTags(List<string> currentTags)
+    {
+        // loop through each tag and handle accordingly
+        foreach (string tag in currentTags)
+        {
+            // parse tag
+            string[] splitTag = tag.Split(':');
+            if (splitTag.Length != 2)
+            {
+                Debug.LogError("Tag could not be appropriately parsed: " + tag);
+            }
+            string tagKey = splitTag[0].Trim();
+            string tagValue = splitTag[1].Trim();
+
+            // handle tag
+            switch (tagKey)
+            {
+                case SPEAKER_TAG:
+                    _displayNameText.text = tagValue;
+                    break;
+                case PORTRAIT_TAG:
+                    Debug.Log("portrait= " + tagValue); //https://youtu.be/tVrxeUIEV9E?si=vu2NrIrVzmKJOjED&t=687
+                    break;
+                default:
+                    Debug.LogWarning("Tag is parsed, but not handled: " + tag);
+                    break;
+            }
         }
     }
 
