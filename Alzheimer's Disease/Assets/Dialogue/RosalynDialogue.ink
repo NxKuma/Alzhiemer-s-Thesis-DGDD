@@ -2,26 +2,31 @@ INCLUDE globals.ink
 
 { gamePhase:
 - 0: //tutorial
-- 0.1: -> dinner
+- 0.1: -> lunch
 - 1: -> phase1
 - 1.1: -> phase1check
 - 2: //phase2
 - 3: //phase3
 }
 
-=== dinner ===
-Anton, Mahal! It's time for dinner. #speaker:Rosalyn #portrait:rosalyn
+=== lunch ===
+Anton, Mahal! It's time for lunch. #speaker:Rosalyn #portrait:rosalyn
 I'm here. #speaker:Anton #portrait:anton
-Hi, Pa. #speaker:Benjie #portrait:benjie
+Hi, Pa. #speaker:Benji #portrait:benji
 Good evening, po. #speaker:L??? #portrait:liza
-What's for dinner? #speaker:Anton #portrait:anton
+What's for lunch? #speaker:Anton #portrait:anton
 Pork Adobo. Courtesy of our dear Liza. #speaker:Rosalyn #portrait:rosalyn
+Hm. #speaker:Anton #portrait:anton
 I hope you enjoy it. #speaker:Liza #portrait:liza
-I hope you didn't strain yourself too much. You know what your midwife said. #speaker:Ben?ie #portrait:benjie
-It's just some chopping and then letting it stew, Ben. Nothing too serious. #speaker:L?za #portrait:liza
-I'm just worried. You have to be careful. #speaker:Ben??e #portrait:benjie
-Oh, you worry too much, Benjie! She can handle herself. She's only 4 months in. #speaker:Rosalyn #portrait:rosalyn
-When I was pregnant with you, I was up and about the whole way until you were born!
+I hope you didn't strain yourself too much. You know what your midwife said. #speaker:Ben?i #portrait:benji
+It's just some chopping and then letting it stew, Ben. #speaker:L?za #portrait:liza
+Nothing too serious. 
+I'm just worried. You have to be careful. #speaker:Ben?? #portrait:benji
+Oh, you worry too much, Benji! #speaker:Rosalyn #portrait:rosalyn
+She can handle herself. 
+She's only 4 months in. 
+When I was pregnant with you, 
+I was up and about the whole way until you were born!
 Isn't that right, dear?
 + I don't remember. #speaker:Anton #portrait:anton
     ... #speaker:Rosalyn #portrait:rosalyn
@@ -34,37 +39,37 @@ Isn't that right, dear?
     Speaking of which, what's going on with the neighborhood nowadays?
     You haven't been doing your daily patrols around the Barangay as of late.
     ... #speaker:Rosalyn #portrait:rosalyn
-    ... #speaker:Benj?e #portrait:benjie
+    ... #speaker:Benj? #portrait:benji
     Mahal, we don't live in Barangay Calesa anymore, remember? #speaker:Rosalyn #portrait:rosalyn
     ...Huh? #speaker:Anton #portrait:anton
 - 
-\(sighs) It's okay, Pa. Don't worry about it too much. #speaker:Benj?? #portrait:benjie
+\(sighs) It's okay, Pa. Don't worry about it too much. #speaker:Benj? #portrait:benji
 Let's just eat, okay? #speaker:Rosalyn #portrait:rosalyn
 ...Okay #speaker:Anton #portrait:anton
-... #speaker:Benjie #portrait:benjie
+... #speaker:Benji #portrait:benji
 ... #speaker:Li?a #portrait:liza
 ... #speaker:Rosalyn #portrait:rosalyn
 ... #speaker:Anton #portrait:anton
 
-...Liza and I plan to push through with the move. #speaker:Benj?e #portrait:benjie
+...Liza and I plan to push through with the move. #speaker:Benj? #portrait:benji
 Oh. #speaker:Rosalyn #portrait:rosalyn
 ...Where are you moving to? #speaker:Anton #portrait:anton
-Closer to the city. About 40 minutes from here. #speaker:Benjie #portrait:benjie
+Closer to the city. About 40 minutes from here. #speaker:Benji #portrait:benji
 I'll write the address down later.
 ...
 Ma, are you sure you don't want a caretaker?
 I'm sure. #speaker:Rosalyn #portrait:rosalyn
 I can take care of your father myself.
 I can take care of myself too. #speaker:Anton #portrait:anton
-I'm sure you both can. #speaker:Be?jie #portrait:benjie
+I'm sure you both can. #speaker:Be?ji #portrait:benji
 But maybe you can get someone to help around the house.
 Just someone to help with cooking and cleaning. #speaker:Li?a #portrait:rosalyn
-Since Benjie and I won't be around as much anymore.
-We're worried about you. #speaker:Benji? #portrait:benjie
+Since Benji and I won't be around as much anymore.
+We're worried about you. #speaker:Be?ji #portrait:benji
 We'll be fine. #speaker:Anton #portrait:anton
 It just means you have to visit often! #speaker:Rosalyn #portrait:rosalyn
-\(chuckles) We will. #speaker:Benjie #portrait:benjie
-Come now. Let's finish dinner. #speaker:Rosalyn #portrait:rosalyn
+\(chuckles) We will. #speaker:Benji #portrait:benji
+Come now. Let's finish lunch. #speaker:Rosalyn #portrait:rosalyn
 ~ gamePhase = 1
 -> DONE
 
@@ -78,7 +83,7 @@ Do you like the color?
 + Yeah.
     Me too! I'm glad you like it.
 - 
-Oh, shoot. I'm almost out.
+Oh, shoot. I'm almost out of paint.
 I swear I bought another bucket.
 Mahal, can you be a dear and look for it? I'll just finish this up.
 + [Why should I?]

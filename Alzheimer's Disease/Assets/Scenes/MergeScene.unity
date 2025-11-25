@@ -1648,6 +1648,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7341745986944456964, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
+      propertyPath: _inkJSON
+      value: 
+      objectReference: {fileID: 4900000, guid: 38cd68e54b1458c4dae05bf26288657b, type: 3}
+    - target: {fileID: 7341745986944456964, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
       propertyPath: _interactUI
       value: 
       objectReference: {fileID: 818032784}
@@ -3132,7 +3136,7 @@ PrefabInstance:
     - target: {fileID: 7341745986944456964, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
       propertyPath: _inkJSON
       value: 
-      objectReference: {fileID: 4900000, guid: f5b35808e8aecc147bab28a6c6e12279, type: 3}
+      objectReference: {fileID: 4900000, guid: 46dead98d91103041adced3d00fc3b0e, type: 3}
     - target: {fileID: 7341745986944456964, guid: e5f064b7a34ba1444b5ffb4c3e78a399, type: 3}
       propertyPath: _interactUI
       value: 
@@ -3479,6 +3483,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5320e1f91823d9b4eb0e88d25c7f0252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _globalsInkFile:
+    inkAsset: {fileID: 102900000, guid: cb1f811887597e14ba648c6e0b25fe5e, type: 3}
+    jsonAssetDirectory: {fileID: 0}
+    jsonAsset: {fileID: 0}
+    unhandledCompileErrors: []
+    recursiveIncludeErrorPaths: []
+    errors: []
+    warnings: []
+    todos: []
+    masterInkAssets: []
+    localIncludePaths: []
+    includes: []
   _dialoguePanel: {fileID: 63460834}
   _dialogueText: {fileID: 1431298048}
   _displayNameText: {fileID: 1420671319}
@@ -4822,7 +4838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fd93b41dd8cf34e9d0a7eb3ad175e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _npcName: Martha
+  _npcName: Rosalyn
 --- !u!1 &1187101985
 GameObject:
   m_ObjectHideFlags: 0

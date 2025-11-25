@@ -4,9 +4,13 @@ using UnityEngine;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
+using Ink.UnityIntegration;
 
 public class DialogueManager : MonoBehaviour
 {
+    [Header("Globals Ink File")]
+    [SerializeField] private InkFile _globalsInkFile;
+
     [Header("Dialogue UI")]
     [SerializeField] private GameObject _dialoguePanel;
     [SerializeField] private TextMeshProUGUI _dialogueText;
@@ -33,7 +37,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (_instance != null) Debug.LogWarning("Found more than one Dialouge Manager in the scene.");
         _instance = this;
-        _dialogueVar = new DialogueVariables();
+        _dialogueVar = new DialogueVariables(_globalsInkFile.filePath);
     }
 
     public static DialogueManager GetInstance()
