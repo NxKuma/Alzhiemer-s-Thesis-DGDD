@@ -9,6 +9,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private List<GameObject> _puzzlePiecesAvailable = new List<GameObject>();
     private List<GameObject> _puzzlePiecesList = new List<GameObject>();
     private Transform _puzzleAreaParent;
+    private Transform _puzzleSlotsParent;
     private Transform _storageParent;
     private CanvasGroup _canvasGroup;
     private DialogueManager _dialogueManager;
@@ -23,6 +24,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private void Awake() {
         
         _puzzleAreaParent = this.transform.GetChild(1);
+        _puzzleSlotsParent = this.transform.GetChild(0).GetChild(0);
         // create a hidden storage parent for pieces so they aren't detected when talking to other NPCs
         GameObject storage = new GameObject("_PuzzleStorage");
         storage.transform.SetParent(this.transform, false);
@@ -71,7 +73,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
             puzzlePiece.name = newItem.GetItemName();
             puzzlePiece.GetComponent<RectTransform>().sizeDelta = new Vector2(60,60);
             Image img = puzzlePiece.GetComponent<Image>();
-            img.sprite = newItem.GetItemSprite();
+            img.sprite = newItem.GetItemSprite()[0];
             _puzzlePiecesList.Add(puzzlePiece);
         }
     }

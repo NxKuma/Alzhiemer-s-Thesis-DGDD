@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private FirstPersonController _controller;
 
     private static DialogueManager _instance;
+    private Sprite _NPCImage;
     private Story _currentStory;
     private bool _choicesAvailable;
     public bool DialogueIsPlaying { get; private set; }
@@ -69,6 +71,7 @@ public class DialogueManager : MonoBehaviour
         _currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
         _dialoguePanel.SetActive(true);
+        _dialoguePanel.transform.GetChild(0).GetComponent<Image>().sprite = _NPCImage;
 
         // Enable the cursor and disable camera movement.
         Cursor.lockState = CursorLockMode.Confined;
@@ -150,5 +153,10 @@ public class DialogueManager : MonoBehaviour
         _currentStory.ChooseChoiceIndex(choiceIndex);
         _choicesAvailable = false;
         ContinueStory();
+    }
+
+    public void SetCurrentNPC(Sprite npcImage)
+    {
+        _NPCImage = npcImage;
     }
 }

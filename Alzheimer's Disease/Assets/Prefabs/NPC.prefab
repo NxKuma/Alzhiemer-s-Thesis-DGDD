@@ -117,10 +117,7 @@ MonoBehaviour:
   _interactorSource: {fileID: 0}
   _interactRange: 2
   _inkJSON: {fileID: 4900000, guid: 7b62c44e20b1cd14b949df1142bb0e8a, type: 3}
-  _dbgAllowRaycast: 1
-  _dbgCallEvent: 1
-  _dbgCallNpcInteract: 1
-  _dbgCallEnterDialogue: 1
+  npcName: 
 --- !u!1 &7167356476810912531
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +403,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c3de4cad529e9d4894665c2322df762, type: 2}
+  - {fileID: 2100000, guid: adcb525e9587ffd489d467f828a60e84, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

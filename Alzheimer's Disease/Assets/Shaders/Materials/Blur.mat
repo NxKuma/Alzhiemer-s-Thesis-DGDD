@@ -271,7 +271,7 @@ Material:
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
     - _OcclusionStrength: 1
-    - _Offset: 0
+    - _Offset: 0.005
     - _OpaqueCullMode: 2
     - _OutlineMode: 0
     - _PPDLodThreshold: 5

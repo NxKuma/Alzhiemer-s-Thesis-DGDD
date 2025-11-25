@@ -52,11 +52,13 @@ public class DialogueTrigger : MonoBehaviour
             _interactUI.GetComponent<CanvasGroup>().alpha = 1f;
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Ray r = new Ray(_interactorSource.position, _interactorSource.forward);
+                Vector3 origin = _interactorSource.position + _interactorSource.forward * 0.2f;
+                Ray r = new Ray(origin, _interactorSource.forward);
                 Debug.DrawRay(r.origin, r.direction * _interactRange, Color.red, 2.0f);
                 int mask = LayerMask.GetMask("NPC");
-
-                if (Physics.Raycast(r, out RaycastHit hitInfo, _interactRange))
+                float radius = 0.5f; // Adjust the radius as needed
+                if (Physics.SphereCast(_interactorSource.position, radius, _interactorSource.forward,
+                       out RaycastHit hitInfo, _interactRange, mask))
                 {
                     Debug.Log("RAYCAST HIT: " + hitInfo.collider.name);
                     NPCScript npc = hitInfo.collider.GetComponentInParent<NPCScript>();
@@ -65,6 +67,7 @@ public class DialogueTrigger : MonoBehaviour
                             npcName = npc.GetNPCName();
                             _puzzleCanvasScript.SetNPCName(npcName);
                             _gameEventsManager.npcEvents.NPCInteracted();
+                            _dialogueManager.SetCurrentNPC(npc.GetNPCImage());
                             npc.Interact();
                             _dialogueManager.EnterDialogueMode(_inkJSON);
                         // if (_dbgCallEvent)

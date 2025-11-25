@@ -12,6 +12,7 @@ public class NPCScript : MonoBehaviour
     {
         _nPCModel = this.transform.GetChild(0).gameObject;
         GameObject npcMesh = Instantiate(_npcData.GetNPCPrefab(), this.transform);
+        
         //Make sure the Model is facing forward
         if(_npcData.GetNPCName().Contains("Wife")) npcMesh.transform.rotation = Quaternion.Euler(0,45,0);
         else npcMesh.transform.rotation = Quaternion.Euler(0,90,0);
@@ -84,5 +85,6 @@ public class NPCScript : MonoBehaviour
     } 
 
     public string GetNPCName() => _npcData.GetNPCName();
+    public Sprite GetNPCImage() => _npcData.GetNPCFace();
 
 }
