@@ -7,6 +7,8 @@ public class TalkToNPC : QuestStep
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        string status = "I need to talk to " + _npcName;
+        ChangeState("", status);
         _gameEventsManager = GameEventsManager.Instance;
         if (_gameEventsManager != null) _gameEventsManager.npcEvents.onNPCInteract += NPCInteracted;
     }
@@ -18,8 +20,13 @@ public class TalkToNPC : QuestStep
 
     private void NPCInteracted(string npcName)
     {
+        
         if (!npcName.Contains(_npcName)) return;
-        else FinishQuestStep();
+        else{
+            string status = _npcName + ". hmmm I remember talking to them.";
+            ChangeState("", status);
+            FinishQuestStep();
+        }
     }
 
     protected override void SetQuestStepState(string state)

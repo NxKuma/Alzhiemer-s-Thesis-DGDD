@@ -7,6 +7,8 @@ public class GetTheItemQuestStep: QuestStep
 
     void Start()
     {
+        string status = "I need to get the " + _itemRequired;;
+        ChangeState("", status);
         _triggerHandler = TriggerHandler.Instance;
         if (_triggerHandler != null) _triggerHandler.PlayerInventory.ItemAdded += ItemCollected;
     }
@@ -21,7 +23,12 @@ public class GetTheItemQuestStep: QuestStep
         Debug.Log("Item Collected: " + item.GetItemName());
         Debug.Log($"Required Item: {_itemRequired} isIn {item.GetItemName()} : {item.GetItemName().Contains(_itemRequired)}"); 
         if (!item.GetItemName().Contains(_itemRequired)) return;
-        else FinishQuestStep();
+        else
+        {
+            string status = "I have collected the " + _itemRequired + ".";
+            ChangeState("", status);
+            FinishQuestStep();
+        }
     }
 
     protected override void SetQuestStepState(string state)
