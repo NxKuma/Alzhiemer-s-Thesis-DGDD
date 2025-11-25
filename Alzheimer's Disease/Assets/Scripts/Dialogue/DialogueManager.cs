@@ -54,6 +54,7 @@ public class DialogueManager : MonoBehaviour
         DialogueIsPlaying = false;
         _choicesAvailable = false;
         _dialoguePanel.SetActive(false);
+        Debug.Log("Dialogue Panel Active?: " + _dialoguePanel.activeSelf);
 
         _choicesText = new TextMeshProUGUI[_choices.Length];
         int index = 0;

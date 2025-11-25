@@ -15,7 +15,7 @@ Hey, pa. #speaker:B?nj? #portrait:benji
 -> DONE
 
 === phase1check ===
-{p1q1done:
+{p1q1s1done:
     -> phase1RollerReceived
 - else:
     -> phase1GetRoller
@@ -77,7 +77,7 @@ We want him to have his own.
 Hm. #speaker:Anton #portrait:anton
 I guess I can be okay with that.
 Thanks, Pa. #speaker:Benj? #portrait:benji
-~ p1q1done = true
+~ p1q1s1done = true
 -> DONE
 
 === phase1RollerReceived ===
