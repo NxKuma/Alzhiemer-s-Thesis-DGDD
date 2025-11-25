@@ -211,6 +211,11 @@ public class FirstPersonController : MonoBehaviour
     float camRotation;
     
     #region Item Detection
+    // hovered item tracking for visual highlight
+    private ItemScript _hoveredItem;
+    public float highlightOutlineThickness = 0.01f;
+    public float highlightLerpSpeed = 12f;
+
     private void DetectAndPickupItem()
     {
         // safety checks
@@ -218,7 +223,7 @@ public class FirstPersonController : MonoBehaviour
             return;
 
         // interaction distance (hardcoded so no new serialized fields are required)
-        float interactRange = 5f;
+        float interactRange = 10f;
         float hoverScale = 2.2f;
         float lerpSpeed = 5.5f;
         int mask = LayerMask.GetMask("Item");
@@ -238,13 +243,13 @@ public class FirstPersonController : MonoBehaviour
             if (itemScript == null) itemScript = hit.collider.GetComponentInParent<ItemScript>();
             if (itemScript == null) itemScript = hit.collider.GetComponentInChildren<ItemScript>();
 
-            Debug.Log(itemScript);
 
             if (itemScript != null)
             {
                 Color highlightColor = Color.yellow;
-                
+
                 crosshairObject.color = Color.Lerp(crosshairObject.color, highlightColor, Time.deltaTime * lerpSpeed);
+                itemScript.TweenShadowThickness(highlightOutlineThickness, highlightLerpSpeed);
                 Vector3 hoverTarget = _crosshairDefaultScale * hoverScale;
                     crosshairObject.rectTransform.localScale = Vector3.Lerp(
                         crosshairObject.rectTransform.localScale,
@@ -252,29 +257,49 @@ public class FirstPersonController : MonoBehaviour
                         Time.deltaTime * lerpSpeed
                     );
 
+                // start highlight tween for this item and stop previous
+                if (_hoveredItem != itemScript)
+                {
+                    if (_hoveredItem != null) _hoveredItem.TweenShadowThickness(0f, highlightLerpSpeed);
+                    _hoveredItem = itemScript;
+                    _hoveredItem.TweenShadowThickness(highlightOutlineThickness, highlightLerpSpeed);
+                }
+
                 // pickup on left mouse button (LMB)
                 if (Input.GetMouseButtonDown(0)) // 0 = LMB
                 {
                     // add to the inventory
-                    if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null)
+                    if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null && ItemPoolManagerScript.Instance != null)
                     {
                         Item itemAsset = itemScript.GetItemResource();
                         if (itemAsset != null)
                         {
-                            TriggerHandler.Instance.PlayerInventory.AddItem(itemAsset);
+                            TriggerHandler.Instance.PlayerInventory.Inventory_AddItem(itemAsset);
                             Debug.Log($"Picked up {itemAsset.GetItemName()}");
 
                             // remove object from scene (use SetActive(false) if you want pooling)
-                            Destroy(itemScript.gameObject);
+                            itemScript.TweenShadowThickness(0f, highlightLerpSpeed);
+                            itemScript.gameObject.SetActive(false);
+                            // stop highlight on pickup 
+                            _hoveredItem = null;                           
+                            
                         }
                     }
                 }
 
                 return; 
             }
+
+        }
+
+        if (_hoveredItem != null)
+        {
+            _hoveredItem.TweenShadowThickness(0f, highlightLerpSpeed);
+            _hoveredItem = null;
         }
 
         crosshairObject.color = Color.Lerp(crosshairObject.color, Color.white, Time.deltaTime * 8f);
+        
         crosshairObject.rectTransform.localScale = Vector3.Lerp(
             crosshairObject.rectTransform.localScale,
             _crosshairDefaultScale,
@@ -453,11 +478,11 @@ public class FirstPersonController : MonoBehaviour
     void FixedUpdate()
     {
         #region Movement
-
-        if (DialogueManager.GetInstance().DialogueIsPlaying)
-        {
-            return;
-        }
+        
+        // if (DialogueManager.GetInstance().DialogueIsPlaying)
+        // {
+        //     return;
+        // }
 
         if (playerCanMove)
         {
@@ -617,6 +642,15 @@ public class FirstPersonController : MonoBehaviour
             joint.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, jointOriginalPos.x, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, jointOriginalPos.z, Time.deltaTime * bobSpeed));
         }
     }
+
+    #region Public Methods
+    public void StopStartPlayer(bool _masterSwitch)
+    {
+        playerCanMove = _masterSwitch;
+        enableHeadBob = _masterSwitch;
+        cameraCanMove = _masterSwitch;
+    }
+    #endregion
 }
 
 

@@ -31,7 +31,7 @@ public class DoorInteraction : MonoBehaviour
 
         if (InteractionUI != null)
         {
-            InteractionUI.SetActive(false);
+            InteractionUI.GetComponent<CanvasGroup>().alpha = 0f;
         }
     }
 
@@ -47,7 +47,8 @@ public class DoorInteraction : MonoBehaviour
         bool isLookingAtDoor = Physics.Raycast(ray, out hit, InteractionDistance, doorLayerMask)
             && hit.transform.name.StartsWith("Door_");
 
-        if (InteractionUI != null) InteractionUI.SetActive(isLookingAtDoor && !isInteracting);
+        if (InteractionUI != null && (isLookingAtDoor && !isInteracting)) InteractionUI.GetComponent<CanvasGroup>().alpha = 1f;
+        else if (InteractionUI != null) InteractionUI.GetComponent<CanvasGroup>().alpha = 0f;
 
         if (isLookingAtDoor && Input.GetKeyDown(interactKey) && !isInteracting)
         {

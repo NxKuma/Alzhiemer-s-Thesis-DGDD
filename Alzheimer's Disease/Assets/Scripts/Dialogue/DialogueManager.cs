@@ -5,6 +5,7 @@ using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
 using Ink.UnityIntegration;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -25,8 +26,11 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private FirstPersonController _controller;
 
     private static DialogueManager _instance;
+
     private const string SPEAKER_TAG = "speaker";
     private const string PORTRAIT_TAG = "portrait";
+    private Sprite _NPCImage;
+
     private Story _currentStory;
     private bool _choicesAvailable;
     public bool DialogueIsPlaying { get; private set; }
@@ -80,13 +84,14 @@ public class DialogueManager : MonoBehaviour
         _currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
         _dialoguePanel.SetActive(true);
+        _dialoguePanel.transform.GetChild(0).GetComponent<Image>().sprite = _NPCImage;
 
         _dialogueVar.StartListening(_currentStory);
 
         // Enable the cursor and disable camera movement.
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
-        _controller.cameraCanMove = false;
+        _controller.StopStartPlayer(false);
 
         // Default Values for Name and Portrait
         _displayNameText.text = "???";
@@ -105,7 +110,8 @@ public class DialogueManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        _controller.cameraCanMove = true;
+        _controller.StopStartPlayer(true);
+
     }
 
     private void ContinueStory()
@@ -199,5 +205,10 @@ public class DialogueManager : MonoBehaviour
         _currentStory.ChooseChoiceIndex(choiceIndex);
         _choicesAvailable = false;
         ContinueStory();
+    }
+
+    public void SetCurrentNPC(Sprite npcImage)
+    {
+        _NPCImage = npcImage;
     }
 }

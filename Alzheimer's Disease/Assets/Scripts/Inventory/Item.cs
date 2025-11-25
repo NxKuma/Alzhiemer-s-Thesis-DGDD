@@ -22,17 +22,18 @@ public class Item : ScriptableObject
 
     [Header("Item Mesh Data")]
     [SerializeField] private Mesh _itemMesh;
-    [SerializeField] private Material _itemMaterial;
-    [SerializeField] private Texture _itemThumbnail;
+    [SerializeField] private Material[] _itemMaterial;
+    [SerializeField] private Sprite[] _itemThumbnail;
+    [SerializeField] private float _itemSize;
 
-    public string GetItemName() { return _itemName; }
-    public string GetItemDesc() { return _itemDescription; }
-    public eItemType GetItemtype() { return itemType; }
-    public Mesh GetItemMesh() { return _itemMesh; }
-    public Material GetItemMaterial() { return _itemMaterial; }
-    public Texture GetItemTexture() { return _itemThumbnail; }
-
-
+    //Getters
+    public string GetItemName() => _itemName; 
+    public string GetItemDesc() => _itemDescription; 
+    public eItemType GetItemtype() => itemType; 
+    public Mesh GetItemMesh() => _itemMesh; 
+    public Material[] GetItemMaterial() => _itemMaterial; 
+    public Sprite[] GetItemSprite() => _itemThumbnail; 
+    public float GetItemSize() => _itemSize;
 
 
 

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb4e6c10a2af949b29e88c0ba5d50b, type: 3}
+  m_Name: Wife_NPC
+  m_EditorClassIdentifier: 
+  _npcName: Wife
+  _npcMesh: {fileID: 4300000, guid: eb7bfa8aad1ef43488b9c77e902c67c8, type: 2}
+  _npcMaterial: {fileID: 2100000, guid: 32ed8e3535df00943a0a2aeeb1f720ca, type: 2}
+  _npcFace: {fileID: 21300000, guid: 8463d29d50d204e46bf84e1884d1fb69, type: 3}
+  _npcSize: 1
+  _npcPrefab: {fileID: 919132149155446097, guid: 5bdc5df5fa7a574468d8d72a7eceebcc, type: 3}

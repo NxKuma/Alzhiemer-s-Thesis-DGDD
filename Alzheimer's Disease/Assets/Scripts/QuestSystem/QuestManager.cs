@@ -63,11 +63,11 @@ public class QuestManager : MonoBehaviour
         Dictionary<string, Quest> idToQuestMap = new Dictionary<string, Quest>();
         foreach (QuestInfoSO questInfo in allQuests)
         {
-            if (idToQuestMap.ContainsKey(questInfo.ID))
+            if (idToQuestMap.ContainsKey(questInfo.questID))
             {
-                Debug.LogWarning("Duplicate Quest Info ID: " + questInfo.ID);
+                Debug.LogWarning("Duplicate Quest Info ID: " + questInfo.questID);
             }
-            idToQuestMap.Add(questInfo.ID, new Quest(questInfo));
+            idToQuestMap.Add(questInfo.questID, new Quest(questInfo));
         }
         return idToQuestMap;
     }

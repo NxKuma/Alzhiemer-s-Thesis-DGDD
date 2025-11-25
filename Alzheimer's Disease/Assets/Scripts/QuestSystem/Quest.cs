@@ -44,7 +44,7 @@ public class Quest
         }
         else
         {
-            Debug.LogWarning("Quest Step Prefab Index out of range. No Current step: Quest ID=" + Info.ID + "; Step Index=" + _currentQuestStepIndex);
+            Debug.LogWarning("Quest Step Prefab Index out of range. No Current step: Quest ID=" + Info.questID + "; Step Index=" + _currentQuestStepIndex);
         }
         return questStepPrefab;
     }

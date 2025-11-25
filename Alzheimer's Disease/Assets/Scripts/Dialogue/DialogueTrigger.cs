@@ -15,77 +15,91 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private TextAsset _inkJSON;
 
     private bool _playerInRange;
+    private CanvasGroup _uiCanvasGroup;
+    [HideInInspector] public string npcName;
+    private GameEventsManager _gameEventsManager;
+    private PuzzleCAnvasScript _puzzleCanvasScript;
+    private DialogueManager _dialogueManager;
 
-    [Header("Debug - isolate leak")]
-    [Tooltip("If false, the Physics.Raycast call will be skipped (no hit).")]
-    [SerializeField] private bool _dbgAllowRaycast = true;
-    [Tooltip("If false, GameEventsManager.npcEvents.NPCInteracted() won't be called.")]
-    [SerializeField] private bool _dbgCallEvent = true;
-    [Tooltip("If false, npc.Interact() won't be called.")]
-    [SerializeField] private bool _dbgCallNpcInteract = true;
-    [Tooltip("If false, DialogueManager.EnterDialogueMode won't be called.")]
-    [SerializeField] private bool _dbgCallEnterDialogue = true;
+    // [Header("Debug - isolate leak")]
+    // [Tooltip("If false, the Physics.Raycast call will be skipped (no hit).")]
+    // [SerializeField] private bool _dbgAllowRaycast = true;
+    // [Tooltip("If false, GameEventsManager.npcEvents.NPCInteracted() won't be called.")]
+    // [SerializeField] private bool _dbgCallEvent = true;
+    // [Tooltip("If false, npc.Interact() won't be called.")]
+    // [SerializeField] private bool _dbgCallNpcInteract = true;
+    // [Tooltip("If false, DialogueManager.EnterDialogueMode won't be called.")]
+    // [SerializeField] private bool _dbgCallEnterDialogue = true;
 
     private void Awake()
     {
         _playerInRange = false;
-        _interactUI.SetActive(false);
     }
 
-    // private void Start()
-    // {
-    //     _interactorSource = GameObject.FindWithTag("Player").transform;
-    //     _interactUI = GameObject.FindWithTag("InteractUI");
-    // }
+    private void Start()
+    {
+        _gameEventsManager = GameEventsManager.Instance;
+        _puzzleCanvasScript = PuzzleCAnvasScript.Instance;
+        _dialogueManager = DialogueManager.GetInstance();
+        // _interactorSource = GameObject.FindWithTag("Player").transform;
+        // _interactUI = GameObject.FindWithTag("InteractUI");
+    }
 
     private void Update()
     {
-        if (_playerInRange && !DialogueManager.GetInstance().DialogueIsPlaying)
+        if (_playerInRange && !_dialogueManager.DialogueIsPlaying)
         {
-            _interactUI.SetActive(true);
+            _interactUI.GetComponent<CanvasGroup>().alpha = 1f;
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Ray r = new Ray(_interactorSource.position, _interactorSource.forward);
-                if (!_dbgAllowRaycast)
+                Vector3 origin = _interactorSource.position + _interactorSource.forward * 0.2f;
+                Ray r = new Ray(origin, _interactorSource.forward);
+                Debug.DrawRay(r.origin, r.direction * _interactRange, Color.red, 2.0f);
+                int mask = LayerMask.GetMask("NPC");
+                float radius = 0.5f; // Adjust the radius as needed
+                if (Physics.SphereCast(_interactorSource.position, radius, _interactorSource.forward,
+                       out RaycastHit hitInfo, _interactRange, mask))
                 {
-                    Debug.Log("[DialogueTrigger] Raycast skipped (debug)");
-                }
-                else if (Physics.Raycast(r, out RaycastHit hitInfo, _interactRange))
-                {
-                    NPC npc = hitInfo.collider.GetComponentInParent<NPC>();
+                    Debug.Log("RAYCAST HIT: " + hitInfo.collider.name);
+                    NPCScript npc = hitInfo.collider.GetComponentInParent<NPCScript>();
                     if (npc != null)
                     {
-                        if (_dbgCallEvent)
-                        {
-                            GameEventsManager.Instance.npcEvents.NPCInteracted();
-                        }
-                        else Debug.Log("[DialogueTrigger] NPCInteracted skipped (debug)");
-
-                        if (_dbgCallNpcInteract)
-                        {
+                            npcName = npc.GetNPCName();
+                            _puzzleCanvasScript.SetNPCName(npcName);
+                            _gameEventsManager.npcEvents.NPCInteracted();
+                            _dialogueManager.SetCurrentNPC(npc.GetNPCImage());
                             npc.Interact();
-                        }
-                        else Debug.Log("[DialogueTrigger] npc.Interact skipped (debug)");
+                            _dialogueManager.EnterDialogueMode(_inkJSON);
+                        // if (_dbgCallEvent)
+                        // {
+                        // }
+                        // else Debug.Log("[DialogueTrigger] NPCInteracted skipped (debug)");
 
-                        if (_dbgCallEnterDialogue)
-                        {
-                            DialogueManager.GetInstance().EnterDialogueMode(_inkJSON);
-                        }
-                        else Debug.Log("[DialogueTrigger] EnterDialogueMode skipped (debug)");
+                        // if (_dbgCallNpcInteract)
+                        // {   
+                        // }
+                        // else Debug.Log("[DialogueTrigger] npc.Interact skipped (debug)");
+
+                        // if (_dbgCallEnterDialogue)
+                        // {
+                        // }
+                        // else Debug.Log("[DialogueTrigger] EnterDialogueMode skipped (debug)");
                     }
                 }
             }
         }
         else
-            _interactUI.SetActive(false);
+        {
+            _interactUI.GetComponent<CanvasGroup>().alpha = 0f;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
-        {
+        {   
             _playerInRange = true;
-            Debug.Log("PLAYER ENTERED NPC TRIGGER");
+            Debug.Log("PLAYER ENTERED "+ this.transform.parent.GetComponent<NPCScript>().GetNPCName()  +" TRIGGER");
         }
     }
 
@@ -94,7 +108,17 @@ public class DialogueTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             _playerInRange = false;
-            Debug.Log("PLAYER EXITED NPC TRIGGER");
+            Debug.Log("PLAYER EXITED "+ this.transform.parent.GetComponent<NPCScript>().GetNPCName() +" TRIGGER");
         }
+    }
+
+    private void HideUI(CanvasGroup cg)
+    {
+        cg.alpha = 0f;
+    }
+
+    private void ShowUI(CanvasGroup cg)
+    {
+        cg.alpha = 1f;
     }
 }

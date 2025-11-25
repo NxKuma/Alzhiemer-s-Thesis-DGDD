@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3202130121519659710}
-  - component: {fileID: 3216735134384098898}
-  m_Layer: 0
+  - component: {fileID: 1582600636361421192}
+  m_Layer: 10
   m_Name: NPC
   m_TagString: NPC
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 2056406442164362032}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3216735134384098898
+--- !u!114 &1582600636361421192
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,10 +43,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1361809257032192281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91fd93b41dd8cf34e9d0a7eb3ad175e9, type: 3}
+  m_Script: {fileID: 11500000, guid: d6384d9085abc37438f071a426276b49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _npcName: 
+  _npcData: {fileID: 11400000, guid: fb7569edc67267b4580e75141c996975, type: 2}
 --- !u!1 &4903557869478991514
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 2056406442164362032}
   - component: {fileID: 2907256528147766527}
   - component: {fileID: 7341745986944456964}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +117,7 @@ MonoBehaviour:
   _interactorSource: {fileID: 0}
   _interactRange: 2
   _inkJSON: {fileID: 4900000, guid: 7b62c44e20b1cd14b949df1142bb0e8a, type: 3}
+  npcName: 
 --- !u!1 &7167356476810912531
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +130,7 @@ GameObject:
   - component: {fileID: 8485446756350286093}
   - component: {fileID: 3623991993323653603}
   - component: {fileID: 119650328640017374}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,8 +150,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1596571538045226594}
   - {fileID: 6278120301575352131}
+  - {fileID: 1596571538045226594}
   m_Father: {fileID: 3202130121519659710}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8485446756350286093
@@ -241,7 +242,7 @@ GameObject:
   - component: {fileID: 1672727319090648804}
   - component: {fileID: 813118297824904605}
   - component: {fileID: 317515115430983247}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +332,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -349,7 +350,7 @@ GameObject:
   - component: {fileID: 410269923587618612}
   - component: {fileID: 3777358255723451816}
   - component: {fileID: 8386594492193913902}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Blur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +403,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c3de4cad529e9d4894665c2322df762, type: 2}
+  - {fileID: 2100000, guid: adcb525e9587ffd489d467f828a60e84, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -439,7 +440,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

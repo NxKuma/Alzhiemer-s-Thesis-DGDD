@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb4e6c10a2af949b29e88c0ba5d50b, type: 3}
+  m_Name: DIL_NPC
+  m_EditorClassIdentifier: 
+  _npcName: Daughter-in-Law
+  _npcMesh: {fileID: 4300000, guid: e40eba9e59048a14985d6f0ac8b04841, type: 2}
+  _npcMaterial: {fileID: 2100000, guid: 1bd76265072f3de4288f494bc93dbf40, type: 2}
+  _npcFace: {fileID: 21300000, guid: 84a56f8aa9bea794885bcad6f96dd682, type: 3}
+  _npcSize: 1.11
+  _npcPrefab: {fileID: 919132149155446097, guid: 6076632c75e210943941836028b33695, type: 3}

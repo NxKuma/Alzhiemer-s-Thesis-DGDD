@@ -6,6 +6,7 @@ public class GameEventsManager : MonoBehaviour
 
     public NPCEventBus npcEvents;
     public QuestEventBus questEvents;
+    // public InputEventBus inputEvents;
 
     private void Awake()
     {
