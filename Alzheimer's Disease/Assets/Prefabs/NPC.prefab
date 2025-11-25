@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3202130121519659710}
   - component: {fileID: 1582600636361421192}
   m_Layer: 10
-  m_Name: NPC
+  m_Name: Daughter-in-Law_NPC
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 2056406442164362032}
   - component: {fileID: 2907256528147766527}
   - component: {fileID: 7341745986944456964}
+  - component: {fileID: 8455959010282898748}
   m_Layer: 10
   m_Name: Trigger
   m_TagString: Untagged
@@ -118,6 +119,22 @@ MonoBehaviour:
   _interactRange: 2
   _inkJSON: {fileID: 4900000, guid: 7b62c44e20b1cd14b949df1142bb0e8a, type: 3}
   npcName: 
+--- !u!114 &8455959010282898748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903557869478991514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 665634027c61d77469962dbe73b5aae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueKnotName: 
+  questInfoForPoint: {fileID: 0}
+  startPoint: 1
+  finishPoint: 1
 --- !u!1 &7167356476810912531
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,5 +20,8 @@ public class GameEventsManager : MonoBehaviour
 
         npcEvents = new NPCEventBus();
         questEvents = new QuestEvents();
+        inputEvents = new InputEvents();
+        playerEvents = new PlayerEvents();
+        dialogueEvents = new DialogueEvents();
     }
 }

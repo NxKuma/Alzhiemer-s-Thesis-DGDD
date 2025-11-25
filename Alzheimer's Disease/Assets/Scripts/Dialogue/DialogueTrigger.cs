@@ -66,7 +66,7 @@ public class DialogueTrigger : MonoBehaviour
                     {
                             npcName = npc.GetNPCName();
                             _puzzleCanvasScript.SetNPCName(npcName);
-                            _gameEventsManager.npcEvents.NPCInteracted();
+                            _gameEventsManager.npcEvents.NPCInteracted(npcName);
                             _dialogueManager.SetCurrentNPC(npc.GetNPCImage());
                             npc.Interact();
                             _dialogueManager.EnterDialogueMode(_inkJSON);

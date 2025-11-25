@@ -12,10 +12,10 @@ public class QuestManager : MonoBehaviour
     // quest start requirements
     private int currentPlayerLevel;
 
-    private void Awake()
-    {
-        questMap = CreateQuestMap();
-    }
+    // private void Start()
+    // {
+        
+    // }
 
     private void OnEnable()
     {
@@ -39,7 +39,7 @@ public class QuestManager : MonoBehaviour
 
     private void Start()
     {
-        
+        questMap = CreateQuestMap();
         foreach (Quest quest in questMap.Values)
         {
             // initialize any loaded quest steps
@@ -68,13 +68,8 @@ public class QuestManager : MonoBehaviour
     {
         // start true and prove to be false
         bool meetsRequirements = true;
-
-        // check player level requirements
-        if (currentPlayerLevel < quest.info.levelRequirement)
-        {
-            meetsRequirements = false;
-        }
-
+        return true;
+        
         // check quest prerequisites for completion
         foreach (QuestInfoSO prerequisiteQuestInfo in quest.info.questPrerequisites)
         {

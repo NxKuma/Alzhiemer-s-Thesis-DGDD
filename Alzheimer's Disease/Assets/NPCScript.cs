@@ -8,6 +8,14 @@ public class NPCScript : MonoBehaviour
     private GameEventsManager _gameEventsManager;
     private bool _hasInteracted = false;
 
+    private void OnValidate()
+    {  
+        #if UNITY_EDITOR
+        this.name = _npcData != null ? $"{_npcData.GetNPCName()}_NPC" : "NPC_NULL";
+        UnityEditor.EditorUtility.SetDirty(this);
+        #endif
+    }
+    
     void Awake()
     {
         _nPCModel = this.transform.GetChild(0).gameObject;
@@ -96,14 +104,14 @@ public class NPCScript : MonoBehaviour
         // do something
     }
 
-    public void OnInteract()
+    public void OnInteract(string NPCName)
     {   
         if (_hasInteracted) return;
         // mark as interacted before broadcasting to avoid re-entrant recursion
         _hasInteracted = true;
         Debug.Log("NPC ONINTERACT TRIGGERED (sent from NPC.cs)");
         if (_gameEventsManager != null)
-            _gameEventsManager.npcEvents.NPCInteracted();
+            _gameEventsManager.npcEvents.NPCInteracted(NPCName);
     } 
 
     public string GetNPCName() => _npcData.GetNPCName();

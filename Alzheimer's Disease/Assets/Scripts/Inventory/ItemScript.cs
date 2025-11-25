@@ -9,6 +9,13 @@ public class ItemScript : MonoBehaviour
     private Coroutine _thicknessCoroutine;
     private bool _isSpinning = false;
 
+    private void OnValidate()
+    {  
+        #if UNITY_EDITOR
+        this.name = _itemResource != null ? _itemResource.GetItemName() : "Item_NULL";
+        UnityEditor.EditorUtility.SetDirty(this);
+        #endif
+    }
 
     void Awake()
     {

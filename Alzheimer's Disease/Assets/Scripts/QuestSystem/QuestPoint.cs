@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(BoxCollider))]
 public class QuestPoint : MonoBehaviour
 {
     [Header("Dialogue (optional)")]
@@ -21,15 +21,20 @@ public class QuestPoint : MonoBehaviour
 
     private QuestIcon questIcon;
 
-    private void Awake() 
+    private void Start() 
     {
         questId = questInfoForPoint.id;
         questIcon = GetComponentInChildren<QuestIcon>();
+        if (questIcon == null)
+        {
+            Debug.LogWarning($"QuestPoint '{name}': no QuestIcon found in children. Quest icon state updates will be skipped.");
+        }
     }
 
     private void OnEnable()
     {
         GameEventsManager.Instance.questEvents.onQuestStateChange += QuestStateChange;
+        GameEventsManager.Instance.npcEvents.onNPCInteract += NPCInteract;
         GameEventsManager.Instance.inputEvents.onSubmitPressed += SubmitPressed;
     }
 
@@ -37,6 +42,28 @@ public class QuestPoint : MonoBehaviour
     {
         GameEventsManager.Instance.questEvents.onQuestStateChange -= QuestStateChange;
         GameEventsManager.Instance.inputEvents.onSubmitPressed -= SubmitPressed;
+    }
+
+    private void NPCInteract(string npcName)
+    {
+        // if we have a knot name defined, try to start dialogue with it
+        if (!dialogueKnotName.Equals("")) 
+        {
+            GameEventsManager.Instance.dialogueEvents.EnterDialogue(dialogueKnotName);
+        }// otherwise, start or finish the quest immediately without dialogue
+        else 
+        {
+            Debug.Log("Player near quest point, processing NPC interact.");
+            // start or finish a quest
+            if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
+            {
+                GameEventsManager.Instance.questEvents.StartQuest(questId);
+            }
+            else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
+            {
+                GameEventsManager.Instance.questEvents.FinishQuest(questId);
+            }
+        }
     }
 
     private void SubmitPressed(InputEventContext inputEventContext)
@@ -72,7 +99,11 @@ public class QuestPoint : MonoBehaviour
         if (quest.info.id.Equals(questId))
         {
             currentQuestState = quest.state;
-            questIcon.SetState(currentQuestState, startPoint, finishPoint);
+            // only update icon if it exists (null guard)
+            if (questIcon != null)
+            {
+                questIcon.SetState(currentQuestState, startPoint, finishPoint);
+            }
         }
     }
 

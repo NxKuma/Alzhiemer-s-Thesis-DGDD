@@ -7,13 +7,12 @@ public class NPCEventBus
 {
     public static NPCEventBus current;
 
-    public event Action onNPCInteract;
-    public event Action onItemCollected;
-    public void NPCInteracted()
+    public event Action<string> onNPCInteract;
+    public void NPCInteracted(string npcName)
     {
         if (onNPCInteract != null)
         {
-            onNPCInteract();
+            onNPCInteract(npcName);
         }
     }
 
