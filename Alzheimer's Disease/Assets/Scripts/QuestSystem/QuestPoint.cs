@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class QuestPoint : MonoBehaviour
@@ -21,29 +19,29 @@ public class QuestPoint : MonoBehaviour
     private string questId;
     private QuestState currentQuestState;
 
-    // private QuestIcon questIcon;
+    private QuestIcon questIcon;
 
     private void Awake() 
     {
-        questId = questInfoForPoint.questID;
-        // questIcon = GetComponentInChildren<QuestIcon>();
+        questId = questInfoForPoint.id;
+        questIcon = GetComponentInChildren<QuestIcon>();
     }
 
     private void OnEnable()
     {
         GameEventsManager.Instance.questEvents.onQuestStateChange += QuestStateChange;
-        // GameEventsManager.Instance.inputEvents.onSubmitPressed += SubmitPressed;
+        GameEventsManager.Instance.inputEvents.onSubmitPressed += SubmitPressed;
     }
 
     private void OnDisable()
     {
         GameEventsManager.Instance.questEvents.onQuestStateChange -= QuestStateChange;
-        // GameEventsManager.Instance.inputEvents.onSubmitPressed -= SubmitPressed;
+        GameEventsManager.Instance.inputEvents.onSubmitPressed -= SubmitPressed;
     }
 
-    private void SubmitPressed(InputAction inputEventContext)
+    private void SubmitPressed(InputEventContext inputEventContext)
     {
-        if (!playerIsNear)
+        if (!playerIsNear || !inputEventContext.Equals(InputEventContext.DEFAULT))
         {
             return;
         }
@@ -51,8 +49,7 @@ public class QuestPoint : MonoBehaviour
         // if we have a knot name defined, try to start dialogue with it
         if (!dialogueKnotName.Equals("")) 
         {
-            // GameEventsManager.Instance.dialogueEvents.EnterDialogue(dialogueKnotName);
-            return;
+            GameEventsManager.Instance.dialogueEvents.EnterDialogue(dialogueKnotName);
         }
         // otherwise, start or finish the quest immediately without dialogue
         else 
@@ -72,10 +69,10 @@ public class QuestPoint : MonoBehaviour
     private void QuestStateChange(Quest quest)
     {
         // only update the quest state if this point has the corresponding quest
-        if (quest.Info.questID.Equals(questId))
+        if (quest.info.id.Equals(questId))
         {
-            currentQuestState = quest.State;
-            //questIcon.SetState(currentQuestState, startPoint, finishPoint);
+            currentQuestState = quest.state;
+            questIcon.SetState(currentQuestState, startPoint, finishPoint);
         }
     }
 

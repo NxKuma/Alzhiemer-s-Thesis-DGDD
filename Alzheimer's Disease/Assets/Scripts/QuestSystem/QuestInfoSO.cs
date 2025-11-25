@@ -1,28 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "QuestInfoSO", menuName = "Scriptable Objects/QuestInfoSO", order = 1)]
+[CreateAssetMenu(fileName = "QuestInfoSO", menuName = "ScriptableObjects/QuestInfoSO", order = 1)]
 public class QuestInfoSO : ScriptableObject
 {
-    [field: SerializeField] public string questID { get; private set; }
+    [field: SerializeField] public string id { get; private set; }
 
     [Header("General")]
-    public string DisplayName;
+    public string displayName;
 
     [Header("Requirements")]
-    public int PhaseRequirement;
-    public Item[] ItemRequirements;
-    public QuestInfoSO[] QuestPrerequesites;
+    public int levelRequirement;
+    public QuestInfoSO[] questPrerequisites;
 
-    [Header("Quest Steps")]
-    public GameObject[] QuestStepPrefabs;
+    [Header("Steps")]
+    public GameObject[] questStepPrefabs;
 
-    // [Header("Rewards")]
-    
-    // ensure the id is the name of the Scriptable Object asset
+    [Header("Rewards")]
+    public int goldReward;
+    public int experienceReward;
+
+    // ensure the id is always the name of the Scriptable Object asset
     private void OnValidate()
     {
         #if UNITY_EDITOR
-        questID = this.name;
+        id = this.name;
         UnityEditor.EditorUtility.SetDirty(this);
         #endif
     }

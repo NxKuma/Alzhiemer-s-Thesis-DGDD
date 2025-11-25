@@ -53,6 +53,28 @@ public class NPCScript : MonoBehaviour
             if (child.GetComponent<Camera>() != null)
                 Destroy(child.gameObject);
         }
+
+        // Add a SphereCollider sized to the NPC mesh bounds
+        Renderer[] renderers = npcMesh.GetComponentsInChildren<Renderer>(true);
+        if (renderers.Length > 0)
+        {
+            Bounds combinedBounds = renderers[0].bounds;
+            foreach (var rend in renderers)
+            {
+                combinedBounds.Encapsulate(rend.bounds);
+            }
+
+            SphereCollider sc = npcMesh.GetComponent<SphereCollider>();
+            if (sc == null) sc = npcMesh.AddComponent<SphereCollider>();
+            
+            // Convert world-space bounds center to local space
+            Vector3 localCenter = npcMesh.transform.InverseTransformPoint(combinedBounds.center);
+            sc.center = localCenter;
+            
+            // Radius is half the largest extent of the bounds
+            // float maxExtent = Mathf.Max(combinedBounds.size.x, combinedBounds.size.y, combinedBounds.size.z) / 5f;
+            sc.radius = 0.3f;
+        }
     }
 
     private void Start()

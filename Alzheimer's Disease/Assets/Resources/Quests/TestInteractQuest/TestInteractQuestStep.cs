@@ -31,4 +31,9 @@ public class TestInteractQuestStep : QuestStep
             FinishQuestStep();
         }
     }
+
+    protected override void SetQuestStepState(string state)
+    {
+        // No specific states to handle for this test quest step.
+    }
 }

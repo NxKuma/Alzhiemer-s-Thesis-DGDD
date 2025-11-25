@@ -8,6 +8,7 @@ public class NPCEventBus
     public static NPCEventBus current;
 
     public event Action onNPCInteract;
+    public event Action onItemCollected;
     public void NPCInteracted()
     {
         if (onNPCInteract != null)
@@ -15,4 +16,6 @@ public class NPCEventBus
             onNPCInteract();
         }
     }
+
+    
 }
