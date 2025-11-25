@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9310c7c7d1da47b4187cc0b485b2f98e, type: 3}
   m_Name: DIL 3
   m_EditorClassIdentifier: 
-  _itemName: Son_1
+  _itemName: Daughter-in-Law_4
   _itemDescription: This looks familiar...
   itemType: 2
   _itemMesh: {fileID: 4300000, guid: c06f053d0133cd74290ec075966200ab, type: 2}

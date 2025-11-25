@@ -4,20 +4,38 @@ using System.Collections.Generic;
 
 public class PuzzleCAnvasScript : MonoBehaviour
 {
+    public static PuzzleCAnvasScript Instance { get; private set; }
     [SerializeField] private GameObject _puzzlePiecePrefab;
     private List<GameObject> _puzzlePiecesAvailable = new List<GameObject>();
     private List<GameObject> _puzzlePiecesList = new List<GameObject>();
     private Transform _puzzleAreaParent;
+    private Transform _storageParent;
     private CanvasGroup _canvasGroup;
     private DialogueManager _dialogueManager;
     private Inventory _puzzleInventory;
     private string _nPCName;
     private bool _hasRandomized = false;
+    private bool _isVisible = false;
+    // Saved layouts per NPC: list of (slotName -> pieceName)
+    private class SlotSave { public string slotName; public string pieceName; }
+    private Dictionary<string, List<SlotSave>> _savedLayouts = new Dictionary<string, List<SlotSave>>();
     
     private void Awake() {
         
         _puzzleAreaParent = this.transform.GetChild(1);
+        // create a hidden storage parent for pieces so they aren't detected when talking to other NPCs
+        GameObject storage = new GameObject("_PuzzleStorage");
+        storage.transform.SetParent(this.transform, false);
+        _storageParent = storage.transform;
         _canvasGroup = this.GetComponent<CanvasGroup>();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }   
     }
 
     private void Start() {
@@ -48,7 +66,8 @@ public class PuzzleCAnvasScript : MonoBehaviour
     {
         if (newItem.GetItemtype() == Item.eItemType.JigsawPuzzle)
         {
-            GameObject puzzlePiece = Instantiate(_puzzlePiecePrefab, _puzzleAreaParent);
+            // Instantiate under storage by default; we'll move pieces into the area when interacting with an NPC
+            GameObject puzzlePiece = Instantiate(_puzzlePiecePrefab, _storageParent);
             puzzlePiece.name = newItem.GetItemName();
             puzzlePiece.GetComponent<RectTransform>().sizeDelta = new Vector2(60,60);
             Image img = puzzlePiece.GetComponent<Image>();
@@ -60,14 +79,17 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private void Show()
     {
         _canvasGroup.alpha = 1f;
+        // Move pieces that belong to this NPC into the visible puzzle area and restore any saved layout
+        if(!_isVisible) MovePiecesForNPC(_nPCName);
+        RestoreLayoutForNPC(_nPCName);
         if (!_hasRandomized)
         {
             RandomizeChildOrder(_puzzleAreaParent);
-            FilterPieces("Wife");
             _hasRandomized = true;
         }
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        _isVisible = true;
     }
 
     private void Hide()
@@ -77,7 +99,11 @@ public class PuzzleCAnvasScript : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+        // Save any layout for the current NPC and move visible pieces back to storage 
+        SaveLayoutForNPC(_nPCName);
+        MovePiecesToStorage();
         _hasRandomized = false;
+        _isVisible = false;
     }
 
     private void FilterPieces(string npcName)
@@ -93,6 +119,75 @@ public class PuzzleCAnvasScript : MonoBehaviour
             {
                 piece.SetActive(false);
             }
+        }
+    }
+
+    private void MovePiecesForNPC(string npcName)
+    {
+        foreach (GameObject piece in _puzzlePiecesList)
+        {
+            if (piece == null) continue;
+            if (!string.IsNullOrEmpty(npcName) && piece.name.Contains(npcName))
+            {
+                piece.transform.SetParent(_puzzleAreaParent);
+                piece.SetActive(true);
+            }
+            else
+            {
+                piece.transform.SetParent(_storageParent);
+                piece.SetActive(false);
+            }
+        }
+    }
+
+    private void MovePiecesToStorage()
+    {
+        foreach (GameObject piece in _puzzlePiecesList)
+        {
+            if (piece == null) continue;
+            piece.transform.SetParent(_storageParent, false);
+            piece.SetActive(false);
+        }
+    }
+
+    private void SaveLayoutForNPC(string npcName)
+    {
+        if (string.IsNullOrEmpty(npcName)) return;
+        List<SlotSave> saved = new List<SlotSave>();
+        // find all PuzzleSlot components under the puzzle area
+        PuzzleSlot[] slots = _puzzleAreaParent.GetComponentsInChildren<PuzzleSlot>(true);
+        foreach (var slot in slots)
+        {
+            string slotName = slot.gameObject.name;
+            string pieceName = null;
+            if (slot.transform.childCount > 0)
+            {
+                pieceName = slot.transform.GetChild(0).gameObject.name;
+            }
+            saved.Add(new SlotSave { slotName = slotName, pieceName = pieceName });
+        }
+        _savedLayouts[npcName] = saved;
+    }
+
+    private void RestoreLayoutForNPC(string npcName)
+    {
+        if (string.IsNullOrEmpty(npcName)) return;
+        if (!_savedLayouts.ContainsKey(npcName)) return;
+        var saved = _savedLayouts[npcName];
+        foreach (var s in saved)
+        {
+            if (string.IsNullOrEmpty(s.pieceName)) continue;
+            // find slot transform under puzzle area
+            Transform slot = _puzzleAreaParent.Find(s.slotName);
+            if (slot == null) continue;
+            // find piece by name in our list
+            GameObject piece = _puzzlePiecesList.Find(p => p != null && p.name == s.pieceName);
+            if (piece == null) continue;
+            piece.transform.SetParent(slot, false);
+            piece.SetActive(true);
+            // reset local transform so it snaps into slot
+            RectTransform rt = piece.GetComponent<RectTransform>();
+            if (rt != null) { rt.anchoredPosition = Vector2.zero; rt.localRotation = Quaternion.identity; }
         }
     }
 
@@ -117,6 +212,11 @@ public class PuzzleCAnvasScript : MonoBehaviour
             children[i] = children[randomIndex];
             children[randomIndex] = temp;
         }
+    }
+
+    public void SetNPCName(string name)
+    {
+        _nPCName = name;
     }
 }
 
