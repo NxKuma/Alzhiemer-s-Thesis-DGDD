@@ -105,7 +105,7 @@ Did you find the stuff? #speaker:Rosalyn #portrait:rosalyn
 + Not yet. #speaker:Anton #portrait:anton
     Let me know when you do. #speaker:Rosalyn #portrait:rosalyn
 + Yeah, I have them. #speaker:Anton #portrait:anton
-    { phase1ItemsComplete: 
+    { p1q1s1done and p1q1d1done: 
         -> phase1complete
     - else:
         Haha, very funny. Let me know when you actually get them. #speaker:Rosalyn #portrait:rosalyn
