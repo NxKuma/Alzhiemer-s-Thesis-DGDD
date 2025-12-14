@@ -16,14 +16,15 @@ public class PuzzleDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public void OnBeginDrag(PointerEventData eventData)
     {
         _parentAfterDrag = transform.parent;
-        transform.SetParent(transform.root);
+        transform.SetParent(transform.root.Find("PuzzleCanvas"));
         transform.SetAsLastSibling();
         puzzleImage.raycastTarget = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = Input.mousePosition;
+        transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1f);
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)

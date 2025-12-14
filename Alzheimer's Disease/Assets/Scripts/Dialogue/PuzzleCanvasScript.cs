@@ -71,8 +71,9 @@ public class PuzzleCAnvasScript : MonoBehaviour
             // Instantiate under storage by default; we'll move pieces into the area when interacting with an NPC
             GameObject puzzlePiece = Instantiate(_puzzlePiecePrefab, _storageParent);
             puzzlePiece.name = newItem.GetItemName();
-            puzzlePiece.GetComponent<RectTransform>().sizeDelta = new Vector2(60,60);
-            Image img = puzzlePiece.GetComponent<Image>();
+            GameObject puzzleImage = puzzlePiece.transform.GetChild(0).gameObject;
+            // puzzlePiece.GetComponent<RectTransform>().sizeDelta = new Vector2(60,60);
+            Image img = puzzleImage.GetComponent<Image>();
             img.sprite = newItem.GetItemSprite()[0];
             _puzzlePiecesList.Add(puzzlePiece);
         }
