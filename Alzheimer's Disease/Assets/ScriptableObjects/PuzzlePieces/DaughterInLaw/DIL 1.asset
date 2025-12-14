@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9310c7c7d1da47b4187cc0b485b2f98e, type: 3}
   m_Name: DIL 1
   m_EditorClassIdentifier: 
-  _itemName: Son_1
+  _itemName: Daughter-in-Law_2
   _itemDescription: This looks familiar...
   itemType: 2
   _itemMesh: {fileID: 4300000, guid: c06f053d0133cd74290ec075966200ab, type: 2}
@@ -20,5 +20,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 213514c352f2923429aac30c684e88cb, type: 2}
   - {fileID: 2100000, guid: 9bfd55d9895b88642b2f2411bd118332, type: 2}
   - {fileID: 0}
-  _itemThumbnail: {fileID: 391601978, guid: b5966610e49a2974894d7d4ba64e0dbf, type: 3}
+  _itemThumbnail:
+  - {fileID: -411437080, guid: 01a601746a8ca314682f7dbc71686171, type: 3}
+  - {fileID: 21300000, guid: e28629ffce5e2194ba81b2db7812adbc, type: 3}
   _itemSize: 20

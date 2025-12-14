@@ -2,6 +2,18 @@ using UnityEngine;
 
 public class MazeTrigger : MonoBehaviour
 {
+    [SerializeField] public bool isLandmarked = false;
+    private enum ERoomType
+    {
+        Small,
+        Medium,
+        Large,
+        Hallway
+    }
+    [Header("Room Type")]
+    [SerializeField]
+    private ERoomType roomType = ERoomType.Small;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player")) 
@@ -19,5 +31,10 @@ public class MazeTrigger : MonoBehaviour
                 Debug.Log("Already in room: " + name);
             }
         }
+    }
+
+    public int GetRoomType() 
+    {
+        return (int)roomType;
     }
 }

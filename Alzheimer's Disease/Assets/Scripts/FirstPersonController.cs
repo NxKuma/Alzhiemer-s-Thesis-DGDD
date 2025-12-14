@@ -223,7 +223,7 @@ public class FirstPersonController : MonoBehaviour
             return;
 
         // interaction distance (hardcoded so no new serialized fields are required)
-        float interactRange = 5f;
+        float interactRange = 10f;
         float hoverScale = 2.2f;
         float lerpSpeed = 5.5f;
         int mask = LayerMask.GetMask("Item");

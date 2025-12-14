@@ -24,14 +24,10 @@ public class PuzzleDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = Input.mousePosition;
-        Debug.Log(_parentAfterDrag);
-
-
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log(_parentAfterDrag);
         transform.SetParent(_parentAfterDrag);
         puzzleImage.raycastTarget = true;
 

@@ -105,7 +105,7 @@ public class InventoryToggle : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
-            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
             
         }
 
@@ -132,7 +132,7 @@ public class InventoryToggle : MonoBehaviour
         // flip target
         bool targetOpen = !_isOpen;
         Cursor.visible = !_isOpen;
-        if (Cursor.visible) Cursor.lockState = CursorLockMode.None;
+        if (Cursor.visible) Cursor.lockState = CursorLockMode.Confined;
         else Cursor.lockState = CursorLockMode.Locked;
         _fps.StopStartPlayer(_isOpen);
         // stop any existing animation

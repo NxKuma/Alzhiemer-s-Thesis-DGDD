@@ -9,6 +9,13 @@ public class ItemScript : MonoBehaviour
     private Coroutine _thicknessCoroutine;
     private bool _isSpinning = false;
 
+    private void OnValidate()
+    {  
+        #if UNITY_EDITOR
+        this.name = _itemResource != null ? _itemResource.GetItemName() : "Item_NULL";
+        UnityEditor.EditorUtility.SetDirty(this);
+        #endif
+    }
 
     void Awake()
     {
@@ -40,10 +47,10 @@ public class ItemScript : MonoBehaviour
             int materialCount = _isSpinning ? (rend.materials.Length + 1) : rend.materials.Length;
             Material[] mats = new Material[materialCount];
             if (_isSpinning){
-                mats[0] = _itemResource.GetItemMaterial()[0];
-                mats[materialCount - 1] = _itemResource.GetItemMaterial()[1];
-                mats[1].SetTexture("_MainTexture", _itemResource.GetItemSprite().texture);
-            } else mats[0] = _itemResource.GetItemMaterial()[0];
+                mats[0] = new Material(_itemResource.GetItemMaterial()[0]);
+                mats[materialCount - 1] = new Material(_itemResource.GetItemMaterial()[1]);
+                mats[materialCount - 1].SetTexture("_MainTexture", _itemResource.GetItemSprite()[1].texture);
+            } else mats[0] = new Material(_itemResource.GetItemMaterial()[0]);
             rend.materials = mats;
         }   
         SetShadowThickness(0.0f);

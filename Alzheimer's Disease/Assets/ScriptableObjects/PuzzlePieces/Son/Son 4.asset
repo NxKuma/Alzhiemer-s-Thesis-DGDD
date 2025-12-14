@@ -20,5 +20,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 213514c352f2923429aac30c684e88cb, type: 2}
   - {fileID: 2100000, guid: 9bfd55d9895b88642b2f2411bd118332, type: 2}
   - {fileID: 0}
-  _itemThumbnail: {fileID: -1066832097, guid: b3f7914de2d9d0e45a432cb35d84bd12, type: 3}
+  _itemThumbnail:
+  - {fileID: 1642520742, guid: 9dcf029012917fc4ca5d8b71716fada1, type: 3}
+  - {fileID: 21300000, guid: 22b2b74b273b5414c8f253067a970322, type: 3}
   _itemSize: 20

@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3202130121519659710}
   - component: {fileID: 1582600636361421192}
-  m_Layer: 0
-  m_Name: NPC
+  m_Layer: 10
+  m_Name: Daughter-in-Law_NPC
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,8 @@ GameObject:
   - component: {fileID: 2056406442164362032}
   - component: {fileID: 2907256528147766527}
   - component: {fileID: 7341745986944456964}
-  m_Layer: 0
+  - component: {fileID: 8455959010282898748}
+  m_Layer: 10
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +118,23 @@ MonoBehaviour:
   _interactorSource: {fileID: 0}
   _interactRange: 2
   _inkJSON: {fileID: 4900000, guid: 7b62c44e20b1cd14b949df1142bb0e8a, type: 3}
+  npcName: 
+--- !u!114 &8455959010282898748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903557869478991514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 665634027c61d77469962dbe73b5aae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueKnotName: 
+  questInfoForPoint: {fileID: 0}
+  startPoint: 1
+  finishPoint: 1
 --- !u!1 &7167356476810912531
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +147,7 @@ GameObject:
   - component: {fileID: 8485446756350286093}
   - component: {fileID: 3623991993323653603}
   - component: {fileID: 119650328640017374}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +259,7 @@ GameObject:
   - component: {fileID: 1672727319090648804}
   - component: {fileID: 813118297824904605}
   - component: {fileID: 317515115430983247}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +349,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -349,7 +367,7 @@ GameObject:
   - component: {fileID: 410269923587618612}
   - component: {fileID: 3777358255723451816}
   - component: {fileID: 8386594492193913902}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Blur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +420,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c3de4cad529e9d4894665c2322df762, type: 2}
+  - {fileID: 2100000, guid: adcb525e9587ffd489d467f828a60e84, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -439,7 +457,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

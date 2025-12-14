@@ -58,7 +58,7 @@ public class InventoryManager : MonoBehaviour
                 Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
                 if (_inventorySlots[i] != null && img.color.a == 0f)
                 {
-                    Sprite itemSprite = newItem.GetItemSprite();
+                    Sprite itemSprite = newItem.GetItemSprite()[0];
                     _inventorySlots[i] = itemSprite.texture;
                     img.sprite = itemSprite;
                     Color c = img.color;
@@ -88,7 +88,7 @@ public class InventoryManager : MonoBehaviour
                     _puzzleCountTexts[1].text = _puzzleCounts[1].ToString() + "/9";
                     break;
                 }
-                else if (newItem.GetItemName().Contains("DIL")) 
+                else if (newItem.GetItemName().Contains("Daughter-in-Law")) 
                 {
                     _puzzleCounts[2] = int.Parse(_puzzleCountTexts[2].text.Substring(0,1));
                     _puzzleCounts[2]++;
@@ -104,7 +104,7 @@ public class InventoryManager : MonoBehaviour
         for (int i = 1; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
-            if (_inventorySlots[i] == removedItem.GetItemSprite().texture)
+            if (_inventorySlots[i] == removedItem.GetItemSprite()[0].texture)
             {
                 // _inventorySlots[i] = null;
                 img.sprite = null;
