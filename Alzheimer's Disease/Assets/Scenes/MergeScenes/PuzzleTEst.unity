@@ -24485,6 +24485,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogueCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3231932743471473256, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4634741288842562664, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
       propertyPath: m_Color.b
       value: 0.99248016
