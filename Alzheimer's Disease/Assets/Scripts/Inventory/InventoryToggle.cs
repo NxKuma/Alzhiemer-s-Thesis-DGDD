@@ -7,6 +7,7 @@ public class InventoryToggle : MonoBehaviour
     [SerializeField] private FirstPersonController _fps;
     [SerializeField] private RectTransform _inventoryRect;
     [SerializeField] private RectTransform _iconRect;
+    [SerializeField] private GameObject _pauseIcon;
     private Vector2 _invCurrentPosition;
     private Vector2 _invInitialPosition;
     private Vector2 _invHiddenPosition;
@@ -158,11 +159,13 @@ public class InventoryToggle : MonoBehaviour
             // use smoothstep for nicer easing
             float ease = Mathf.SmoothStep(0f, 1f, t);
             _inventoryRect.anchoredPosition = Vector2.Lerp(invStart, invEnd, ease);
-
+            
             // move icon and make it invisible when inventory is open
             _iconRect.anchoredPosition = Vector2.Lerp(iconStart, iconEnd, ease);
             float iconAlpha = open ? 1f - ease : ease;
+            float pauseIconAlpha = open ? ease: 1f - ease;
             _iconRect.GetComponent<CanvasGroup>().alpha = iconAlpha;
+            _pauseIcon.GetComponent<CanvasGroup>().alpha = pauseIconAlpha;
             yield return null;
         }
 
