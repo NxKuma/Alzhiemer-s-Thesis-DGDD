@@ -5,6 +5,7 @@ using TMPro;
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject _visibleInventory;
+    [SerializeField] private GameObject _puzzleCountArea;
     private TextMeshProUGUI[] _puzzleCountTexts;
     private Texture2D[] _inventorySlots;
     private int[] _puzzleCounts;
@@ -14,7 +15,7 @@ public class InventoryManager : MonoBehaviour
     {
         _inventorySlotCount = _visibleInventory.transform.childCount;
         _inventorySlots = new Texture2D[_inventorySlotCount];
-        GameObject puzzleCountObj = _visibleInventory.transform.GetChild(0).GetChild(0).gameObject;
+        GameObject puzzleCountObj = _puzzleCountArea;
 
         _puzzleCountTexts = new TextMeshProUGUI[puzzleCountObj.transform.childCount];
         _puzzleCounts = new int[puzzleCountObj.transform.childCount];
@@ -25,7 +26,7 @@ public class InventoryManager : MonoBehaviour
             _puzzleCounts[i] = 0;
         }
 
-        for (int i = 1; i < _inventorySlotCount; i++)
+        for (int i = 0; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             Color c = img.color;
@@ -53,7 +54,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (newItem.GetItemtype() != Item.eItemType.JigsawPuzzle)
         {
-            for (int i = 1; i < _inventorySlotCount; i++)
+            for (int i = 0; i < _inventorySlotCount; i++)
             {
                 Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
                 if (_inventorySlots[i] != null && img.color.a == 0f)

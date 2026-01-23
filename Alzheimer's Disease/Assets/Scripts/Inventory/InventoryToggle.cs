@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class InventoryToggle : MonoBehaviour
 {
     [SerializeField] private FirstPersonController _fps;
-    private RectTransform _inventoryRect;
-    private RectTransform _iconRect;
+    [SerializeField] private RectTransform _inventoryRect;
+    [SerializeField] private RectTransform _iconRect;
     private Vector2 _invCurrentPosition;
     private Vector2 _invInitialPosition;
     private Vector2 _invHiddenPosition;
@@ -33,10 +33,10 @@ public class InventoryToggle : MonoBehaviour
 
     void Awake()
     {
-        Transform child = this.transform.GetChild(0);
-        Transform iconChild = this.transform.GetChild(1);
-        _iconRect = iconChild != null ? iconChild.GetComponent<RectTransform>() : null;
-        _inventoryRect = child != null ? child.GetComponent<RectTransform>() : null;
+        // Transform child = this.transform.GetChild(0);
+        // // Transform iconChild = this.transform.GetChild(1);
+        // _iconRect = iconChild != null ? iconChild.GetComponent<RectTransform>() : null;
+        // _inventoryRect = child != null ? child.GetComponent<RectTransform>() : null;
 
         if (_iconRect == null || _inventoryRect == null)
         {
@@ -52,7 +52,8 @@ public class InventoryToggle : MonoBehaviour
         
         _iconCurrentPosition = _iconRect.anchoredPosition;
         _iconInitialPosition = _iconCurrentPosition;
-        _iconHiddenPosition = new Vector2(_iconInitialPosition.x, _iconInitialPosition.y -100f);
+        // _iconHiddenPosition = new Vector2(_iconInitialPosition.x + 151f, _iconInitialPosition.y);
+        _iconHiddenPosition = new Vector2(_iconInitialPosition.x, _iconInitialPosition.y - 100f);
 
         _iconCanvasGroup = this.GetComponent<CanvasGroup>();
         _isOpen = true;
@@ -60,7 +61,7 @@ public class InventoryToggle : MonoBehaviour
         ToggleInventory();
 
         
-        Transform puzzleContainer = _inventoryRect.GetChild(0);
+        Transform puzzleContainer = _inventoryRect.GetChild(1);
         if (puzzleContainer != null && puzzleContainer.childCount >= 2)
         {
             GameObject puzzleCountObj = puzzleContainer.GetChild(0).gameObject;
@@ -70,7 +71,7 @@ public class InventoryToggle : MonoBehaviour
             if (_puzzleCountArea != null)
             {
                 _puzzleCountOriginalAnchoredPos = _puzzleCountArea.anchoredPosition;
-                _puzzleCountTargetAnchoredPos = _puzzleCountOriginalAnchoredPos + new Vector2(0f, _hoverOffset);
+                _puzzleCountTargetAnchoredPos = _puzzleCountOriginalAnchoredPos + new Vector2(_hoverOffset, 0f);
             }
 
             // find canvas (used for ScreenPoint conversions)
@@ -189,10 +190,10 @@ public class InventoryToggle : MonoBehaviour
 
     private System.Collections.IEnumerator CoIconBlink(Color iconColor)
     {
-        Image img = _iconRect.GetComponent<Image>();
+        Image img = _iconRect.transform.GetChild(0).GetComponent<Image>();
         if (img == null) yield break;
 
-        Color from = new Color(Color.white.r, Color.white.g, Color.white.b, 0.3921f);
+        Color from = new Color(Color.white.r, Color.white.g, Color.white.b, 1.0f);
         Color mid = new Color(iconColor.r, iconColor.g, iconColor.b, 0.8f);
 
         float half = iconBlinkDuration * 0.5f;
