@@ -24,7 +24,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private void Awake() {
         
         _puzzleAreaParent = this.transform.GetChild(1);
-        _puzzleSlotsParent = this.transform.GetChild(0).GetChild(0);
+        _puzzleSlotsParent = this.transform.GetChild(0).GetChild(1);
         // create a hidden storage parent for pieces so they aren't detected when talking to other NPCs
         GameObject storage = new GameObject("_PuzzleStorage");
         storage.transform.SetParent(this.transform, false);
@@ -74,7 +74,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
             GameObject puzzleImage = puzzlePiece.transform.GetChild(0).gameObject;
             // puzzlePiece.GetComponent<RectTransform>().sizeDelta = new Vector2(60,60);
             Image img = puzzleImage.GetComponent<Image>();
-            img.sprite = newItem.GetItemSprite()[0];
+            img.sprite = newItem.GetItemSprite();
             _puzzlePiecesList.Add(puzzlePiece);
         }
     }

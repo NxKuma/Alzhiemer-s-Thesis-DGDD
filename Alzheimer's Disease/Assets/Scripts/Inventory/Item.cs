@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/Item", order = 0)]
+[CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/Item/Generic", order = 0)]
 public class Item : ScriptableObject
 {
     [Header("Item Data")]
@@ -15,15 +15,14 @@ public class Item : ScriptableObject
         MainQuestItem,
         IdleItem,
         JigsawPuzzle,
-        Letter
     }
 
     public eItemType itemType;
 
     [Header("Item Mesh Data")]
     [SerializeField] private Mesh _itemMesh;
-    [SerializeField] private Material[] _itemMaterial;
-    [SerializeField] private Sprite[] _itemThumbnail;
+    [SerializeField] private Material _itemMaterial;
+    [SerializeField] private Sprite _itemThumbnail;
     [SerializeField] private float _itemSize;
 
     //Getters
@@ -31,8 +30,8 @@ public class Item : ScriptableObject
     public string GetItemDesc() => _itemDescription; 
     public eItemType GetItemtype() => itemType; 
     public Mesh GetItemMesh() => _itemMesh; 
-    public Material[] GetItemMaterial() => _itemMaterial; 
-    public Sprite[] GetItemSprite() => _itemThumbnail; 
+    public Material GetItemMaterial() => _itemMaterial; 
+    public Sprite GetItemSprite() => _itemThumbnail; 
     public float GetItemSize() => _itemSize;
 
 

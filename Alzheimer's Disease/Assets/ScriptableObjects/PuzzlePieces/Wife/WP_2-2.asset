@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4642afc3d1f03804081583505c42749e, type: 3}
+  m_Name: WP_2-2
+  m_EditorClassIdentifier: 
+  _itemName: Wife_2-2
+  _itemDescription: 
+  itemType: 2
+  _itemMesh: {fileID: 4300000, guid: c06f053d0133cd74290ec075966200ab, type: 2}
+  _itemMaterial: {fileID: 2100000, guid: 213514c352f2923429aac30c684e88cb, type: 2}
+  _itemThumbnail: {fileID: 21300000, guid: 858713931155e1c4599a8b7d7fbb457c, type: 3}
+  _itemSize: 20
+  _puzzleDimensions: {x: 67.4131, y: 67.4131}
+  _puzzlePosition: {x: -5.5, y: 5}
+  _puzzleShaderMaterial: {fileID: 2100000, guid: 9bfd55d9895b88642b2f2411bd118332, type: 2}
+  _puzzleMeshTexture: {fileID: 21300000, guid: 33756c450037ae348aa763a2f5149d22, type: 3}

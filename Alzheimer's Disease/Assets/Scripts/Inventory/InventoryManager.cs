@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -59,7 +60,7 @@ public class InventoryManager : MonoBehaviour
                 Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
                 if (_inventorySlots[i] != null && img.color.a == 0f)
                 {
-                    Sprite itemSprite = newItem.GetItemSprite()[0];
+                    Sprite itemSprite = newItem.GetItemSprite();
                     _inventorySlots[i] = itemSprite.texture;
                     img.sprite = itemSprite;
                     Color c = img.color;
@@ -105,7 +106,7 @@ public class InventoryManager : MonoBehaviour
         for (int i = 1; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
-            if (_inventorySlots[i] == removedItem.GetItemSprite()[0].texture)
+            if (_inventorySlots[i] == removedItem.GetItemSprite().texture)
             {
                 // _inventorySlots[i] = null;
                 img.sprite = null;

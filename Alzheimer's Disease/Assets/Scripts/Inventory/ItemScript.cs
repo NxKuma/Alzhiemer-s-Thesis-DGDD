@@ -44,14 +44,20 @@ public class ItemScript : MonoBehaviour
         if (_itemResource.GetItemMaterial() != null)
         {
             Renderer rend = GetComponent<Renderer>();
-            int materialCount = _isSpinning ? (rend.materials.Length + 1) : rend.materials.Length;
-            Material[] mats = new Material[materialCount];
-            if (_isSpinning){
-                mats[0] = new Material(_itemResource.GetItemMaterial()[0]);
-                mats[materialCount - 1] = new Material(_itemResource.GetItemMaterial()[1]);
-                mats[materialCount - 1].SetTexture("_MainTexture", _itemResource.GetItemSprite()[1].texture);
-            } else mats[0] = new Material(_itemResource.GetItemMaterial()[0]);
-            rend.materials = mats;
+
+            if(_itemResource.GetType() == typeof(PuzzlePiece))
+            {
+                PuzzlePiece _itemResource = (PuzzlePiece)this._itemResource;
+                Material[] materials = new Material[2];
+                materials[0] = new Material(_itemResource.GetItemMaterial());
+                materials[1] = new Material(_itemResource.GetPuzzleShaderMaterial());
+                materials[1].SetTexture("_MainTexture", _itemResource.GetPuzzleMeshTexture().texture);
+                rend.materials = materials;
+            } else {
+                int materialCount = _isSpinning ? (rend.materials.Length + 1) : rend.materials.Length;
+                Material mats = new Material(_itemResource.GetItemMaterial());
+                rend.material = mats;
+            }
         }   
         SetShadowThickness(0.0f);
         transform.localScale *= size;
