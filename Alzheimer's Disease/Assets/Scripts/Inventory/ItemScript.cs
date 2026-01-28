@@ -47,7 +47,8 @@ public class ItemScript : MonoBehaviour
 
             if(_itemResource.GetType() == typeof(PuzzlePiece))
             {
-                PuzzlePiece _itemResource = (PuzzlePiece)this._itemResource;
+                // PuzzlePiece _itemResource = (PuzzlePiece)this._itemResource;
+                PuzzlePiece _itemResource = this._itemResource as PuzzlePiece;
                 Material[] materials = new Material[2];
                 materials[0] = new Material(_itemResource.GetItemMaterial());
                 materials[1] = new Material(_itemResource.GetPuzzleShaderMaterial());
