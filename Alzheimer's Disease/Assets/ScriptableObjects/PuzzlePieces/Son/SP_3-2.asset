@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4642afc3d1f03804081583505c42749e, type: 3}
+  m_Name: SP_3-2
+  m_EditorClassIdentifier: 
+  _itemName: Son_3-2
+  _itemDescription: 
+  itemType: 2
+  _itemMesh: {fileID: 4300000, guid: c06f053d0133cd74290ec075966200ab, type: 2}
+  _itemMaterial: {fileID: 2100000, guid: 213514c352f2923429aac30c684e88cb, type: 2}
+  _itemThumbnail: {fileID: 21300000, guid: 3d7e435959d33bb4395cca29dc35c921, type: 3}
+  _itemSize: 20
+  _puzzleDimensions: {x: 56.6151, y: 62.8558}
+  _puzzlePosition: {x: -0.1002, y: 6.1}
+  _puzzleShaderMaterial: {fileID: 2100000, guid: 9bfd55d9895b88642b2f2411bd118332, type: 2}
+  _puzzleMeshTexture: {fileID: 21300000, guid: 22b2b74b273b5414c8f253067a970322, type: 3}

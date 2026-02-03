@@ -17,9 +17,9 @@ MonoBehaviour:
   itemType: 2
   _itemMesh: {fileID: 4300000, guid: c06f053d0133cd74290ec075966200ab, type: 2}
   _itemMaterial: {fileID: 2100000, guid: 213514c352f2923429aac30c684e88cb, type: 2}
-  _itemThumbnail: {fileID: 21300000, guid: 62e565767c4215f448191354c0fb86c7, type: 3}
+  _itemThumbnail: {fileID: 21300000, guid: 96792fb86f9a4414a8be9b0c5a99d1ac, type: 3}
   _itemSize: 20
-  _puzzleDimensions: {x: 57.6298, y: 60.892}
-  _puzzlePosition: {x: 0, y: -1.7047}
+  _puzzleDimensions: {x: 61.4589, y: 62.78}
+  _puzzlePosition: {x: 0.0315, y: -5.15}
   _puzzleShaderMaterial: {fileID: 2100000, guid: 9bfd55d9895b88642b2f2411bd118332, type: 2}
   _puzzleMeshTexture: {fileID: 21300000, guid: 33756c450037ae348aa763a2f5149d22, type: 3}
