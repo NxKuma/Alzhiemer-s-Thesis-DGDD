@@ -15,6 +15,7 @@ public class InventoryManager : MonoBehaviour
     void Awake()
     {
         _inventorySlotCount = _visibleInventory.transform.childCount;
+        
         _inventorySlots = new Texture2D[_inventorySlotCount];
         GameObject puzzleCountObj = _puzzleCountArea;
 
@@ -60,6 +61,7 @@ public class InventoryManager : MonoBehaviour
                 Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
                 if (_inventorySlots[i] != null && img.color.a == 0f)
                 {
+                    Debug.Log("Inventory Slot: " + _visibleInventory.transform.GetChild(i).name);
                     Sprite itemSprite = newItem.GetItemSprite();
                     _inventorySlots[i] = itemSprite.texture;
                     img.sprite = itemSprite;
@@ -73,7 +75,6 @@ public class InventoryManager : MonoBehaviour
         
         for (int i = 0; i < _puzzleCountTexts.Length; i++)
         {
-            Debug.Log(_puzzleCounts[i]);
             if (newItem.GetItemtype() == Item.eItemType.JigsawPuzzle)
             {
                 if (newItem.GetItemName().Contains("Wife"))
@@ -133,7 +134,7 @@ public class InventoryManager : MonoBehaviour
                     _puzzleCounts[1]--;
                     _puzzleCountTexts[1].text = _puzzleCounts[1].ToString() + "/9";
                 }
-                else if (removedItem.GetItemName().Contains("DIL")) 
+                else if (removedItem.GetItemName().Contains("Daughter-in-Law")) 
                 {
                     _puzzleCounts[2] = int.Parse(_puzzleCountTexts[2].text.Substring(0,1));
                     _puzzleCounts[2]--;

@@ -15,6 +15,10 @@ MonoBehaviour:
   _npcName: Wife
   _npcMesh: {fileID: 4300000, guid: eb7bfa8aad1ef43488b9c77e902c67c8, type: 2}
   _npcMaterial: {fileID: 2100000, guid: 32ed8e3535df00943a0a2aeeb1f720ca, type: 2}
-  _npcFace: {fileID: 21300000, guid: 8463d29d50d204e46bf84e1884d1fb69, type: 3}
+  _npcEmotions:
+  - {fileID: 21300000, guid: 8eec19ef6f7967c4287d703ddb033401, type: 3}
+  - {fileID: 21300000, guid: 7e37ae1124b83054db900e2a3d53afd0, type: 3}
+  - {fileID: 21300000, guid: f55bd4ca385cac9418b900e985b7c050, type: 3}
+  - {fileID: 21300000, guid: 9af0f4a80418319449fa7b9f36b916cd, type: 3}
   _npcSize: 1
   _npcPrefab: {fileID: 919132149155446097, guid: 5bdc5df5fa7a574468d8d72a7eceebcc, type: 3}

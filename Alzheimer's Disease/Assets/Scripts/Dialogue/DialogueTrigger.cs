@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /* 
@@ -20,6 +21,7 @@ public class DialogueTrigger : MonoBehaviour
     private GameEventsManager _gameEventsManager;
     private PuzzleCAnvasScript _puzzleCanvasScript;
     private DialogueManager _dialogueManager;
+    private String _npcEmotition = "Neutral";
 
     // [Header("Debug - isolate leak")]
     // [Tooltip("If false, the Physics.Raycast call will be skipped (no hit).")]
@@ -67,7 +69,7 @@ public class DialogueTrigger : MonoBehaviour
                             npcName = npc.GetNPCName();
                             _puzzleCanvasScript.SetNPCName(npcName);
                             _gameEventsManager.npcEvents.NPCInteracted(npcName);
-                            _dialogueManager.SetCurrentNPC(npc.GetNPCImage());
+                            _dialogueManager.SetCurrentNPC(npc.GetNPCImage(_npcEmotition));
                             npc.Interact();
                             _dialogueManager.EnterDialogueMode(_inkJSON);
                         // if (_dbgCallEvent)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4642afc3d1f03804081583505c42749e, type: 3}
   m_Name: DP_3-3
   m_EditorClassIdentifier: 
-  _itemName: DIL_3-3
+  _itemName: Daughter-In-Law_3-3
   _itemDescription: 
   itemType: 2
   _itemMesh: {fileID: 4300000, guid: c06f053d0133cd74290ec075966200ab, type: 2}
