@@ -6,7 +6,7 @@ public class RoomManager : MonoBehaviour
     // Event invoked after rooms are randomized (subscribers should rescan their references)
     public event System.Action RoomsRandomized;
     [Header("Rooms Setup")]
-    public Transform[] Hallways; // For L-shaped: assign vertical and horizontal hallway GameObjects
+    public Transform[] Hallways; // [0] = outer hallway, [1] = inner hallway (inverted)
     public Transform[] PossibleRooms;
     [HideInInspector] public Transform CurrentRoom;
     
@@ -148,33 +148,16 @@ public class RoomManager : MonoBehaviour
             return;
         }
 
-        // Compute intersection bounds if we have multiple hallways
-        Bounds? intersectionBounds = null;
-        if (Hallways.Length > 1)
-        {
-            Bounds h0 = Hallways[0].GetComponent<Renderer>().bounds;
-            Bounds h1 = Hallways[1].GetComponent<Renderer>().bounds;
-            
-            float minX = Mathf.Max(h0.min.x, h1.min.x);
-            float maxX = Mathf.Min(h0.max.x, h1.max.x);
-            float minZ = Mathf.Max(h0.min.z, h1.min.z);
-            float maxZ = Mathf.Min(h0.max.z, h1.max.z);
-
-            if (minX < maxX && minZ < maxZ)
-            {
-                Bounds intersection = new Bounds();
-                intersection.SetMinMax(new Vector3(minX, 0, minZ), new Vector3(maxX, 100, maxZ));
-                intersectionBounds = intersection;
-            }
-        }
-
         // Process each hallway independently
-        foreach (Transform hallway in Hallways)
+        for (int hallwayIndex = 0; hallwayIndex < Hallways.Length; hallwayIndex++)
         {
+            Transform hallway = Hallways[hallwayIndex];
             if (hallway == null) continue;
 
             Bounds hallwayBounds = hallway.GetComponent<Renderer>().bounds;
             List<DoorInfo> doorInfos = new List<DoorInfo>();
+
+            bool isInverted = (Hallways.Length > 1 && hallwayIndex == 1);
 
             // Collect doors for this hallway (doors from rooms placed around this hallway)
             foreach (Transform room in PossibleRooms)
@@ -190,8 +173,7 @@ public class RoomManager : MonoBehaviour
                 {
                     if (child.name.StartsWith("Door_"))
                     {
-                        // Only include this door if it's on this hallway
-                        if (IsPointNearHallway(child.position, hallwayBounds))
+                        if (DoorBelongsToHallway(child.position, room, hallwayBounds, isInverted))
                         {
                             DoorInfo doorInfo = new DoorInfo
                             {
@@ -208,27 +190,52 @@ public class RoomManager : MonoBehaviour
                 }
             }
 
-            // Create walls based on door positions for this hallway, excluding intersection
-            CreateWallsFromDoorPositions(hallwayBounds, doorInfos, intersectionBounds);
+            CreateWallsFromDoorPositions(hallwayBounds, doorInfos, null);
         }
     }
 
-    // Helper: check if a point is near/on a hallway (within a threshold)
+    private bool DoorBelongsToHallway(Vector3 doorPosition, Transform room, Bounds hallwayBounds, bool isInverted)
+    {
+        Renderer roomRenderer = room.GetComponent<Renderer>();
+        if (roomRenderer == null) return false;
+        
+        Bounds roomBounds = roomRenderer.bounds;
+        
+        if (isInverted)
+        {
+            // For inner hallway
+            bool roomIsInside = 
+                roomBounds.center.x >= hallwayBounds.min.x &&
+                roomBounds.center.x <= hallwayBounds.max.x &&
+                roomBounds.center.z >= hallwayBounds.min.z &&
+                roomBounds.center.z <= hallwayBounds.max.z;
+            
+            if (!roomIsInside) return false;
+        }
+        else
+        {
+            // For outer hallway
+            bool roomIsOutside = 
+                roomBounds.center.x < hallwayBounds.min.x ||
+                roomBounds.center.x > hallwayBounds.max.x ||
+                roomBounds.center.z < hallwayBounds.min.z ||
+                roomBounds.center.z > hallwayBounds.max.z;
+            
+            if (!roomIsOutside) return false;
+        }
+        
+        Vector3 closest = hallwayBounds.ClosestPoint(doorPosition);
+        return Vector3.Distance(doorPosition, closest) < 2.0f;
+    }
+
     private bool IsPointNearHallway(Vector3 point, Bounds hallwayBounds)
     {
         Vector3 closest = hallwayBounds.ClosestPoint(point);
-        return Vector3.Distance(point, closest) < 2.0f; // 2 unit threshold
-    }
-
-    // Helper: check if a position is inside the intersection area
-    private bool IsPositionInIntersection(Vector3 position, Bounds intersectionBounds)
-    {
-        return intersectionBounds.Contains(position);
+        return Vector3.Distance(point, closest) < 2.0f;
     }
 
     private int GetDoorSide(Vector3 doorPosition, Bounds hallwayBounds)
     {
-        // Determine which side of the hallway this door is on
         float northDist = Mathf.Abs(doorPosition.z - hallwayBounds.max.z);
         float southDist = Mathf.Abs(doorPosition.z - hallwayBounds.min.z);
         float eastDist = Mathf.Abs(doorPosition.x - hallwayBounds.max.x);
@@ -261,7 +268,6 @@ public class RoomManager : MonoBehaviour
             }
         }
 
-        // Create walls for each side with gaps for doors, excluding intersection areas
         CreateWallSegmentWithDoors(hallwayBounds, "North", hallwayBounds.max.z, northDoors, true, intersectionBounds);
         CreateWallSegmentWithDoors(hallwayBounds, "South", hallwayBounds.min.z, southDoors, true, intersectionBounds);
         CreateWallSegmentWithDoors(hallwayBounds, "East", hallwayBounds.max.x, eastDoors, false, intersectionBounds);
@@ -270,12 +276,12 @@ public class RoomManager : MonoBehaviour
 
     private void CreateWallSegmentWithDoors(Bounds hallwayBounds, string sideName, float wallPosition, List<Vector3> doors, bool isHorizontal, Bounds? intersectionBounds = null)
     {
-        // Determine the valid wall range(s), excluding intersection area
+        // Determine the valid wall range(s)
         List<Vector2> validRanges = ComputeValidWallRanges(hallwayBounds, wallPosition, isHorizontal, intersectionBounds);
 
         if (doors.Count == 0)
         {
-            // No doors on this side, create full wall(s) in valid ranges (but skip intersection)
+            // No doors on this side, create full wall(s) in valid ranges
             foreach (var range in validRanges)
             {
                 CreatePartialWallSegment(hallwayBounds, sideName + "_Full", range.x, range.y, wallPosition, isHorizontal, isHorizontal, intersectionBounds);
@@ -289,7 +295,7 @@ public class RoomManager : MonoBehaviour
         else
             doors.Sort((a, b) => a.z.CompareTo(b.z));
 
-        float doorWidth = 1.33f; // Adjust this based on your door prefab size
+        float doorWidth = 1.5f;
 
         // For each valid range, create wall segments with door gaps
         foreach (var range in validRanges)
@@ -333,115 +339,12 @@ public class RoomManager : MonoBehaviour
     {
         List<Vector2> result = new List<Vector2>();
 
-        if (!intersectionBounds.HasValue)
-        {
-            if (isHorizontal)
-                result.Add(new Vector2(hallwayBounds.min.x, hallwayBounds.max.x));
-            else
-                result.Add(new Vector2(hallwayBounds.min.z, hallwayBounds.max.z));
-            return result;
-        }
-
-        Bounds inter = intersectionBounds.Value;
-        bool thisWallTouchesIntersection = false;
-
         if (isHorizontal)
-        {
-            // North or South → look at Z match
-            if (Mathf.Abs(wallPosition - inter.min.z) < 0.01f ||
-                Mathf.Abs(wallPosition - inter.max.z) < 0.01f)
-            {
-                thisWallTouchesIntersection = true;
-            }
-        }
+            result.Add(new Vector2(hallwayBounds.min.x, hallwayBounds.max.x));
         else
-        {
-            // East or West → look at X match
-            if (Mathf.Abs(wallPosition - inter.min.x) < 0.01f ||
-                Mathf.Abs(wallPosition - inter.max.x) < 0.01f)
-            {
-                thisWallTouchesIntersection = true;
-            }
-        }
-
-        if (!thisWallTouchesIntersection)
-        {
-            if (isHorizontal)
-                result.Add(new Vector2(hallwayBounds.min.x, hallwayBounds.max.x));
-            else
-                result.Add(new Vector2(hallwayBounds.min.z, hallwayBounds.max.z));
-
-            return result;
-        }
-
-        float excludeMin, excludeMax, fullMin, fullMax;
-
-        if (isHorizontal)
-        {
-            fullMin = hallwayBounds.min.x;
-            fullMax = hallwayBounds.max.x;
-
-            excludeMin = inter.min.x;
-            excludeMax = inter.max.x;
-        }
-        else
-        {
-            fullMin = hallwayBounds.min.z;
-            fullMax = hallwayBounds.max.z;
-
-            excludeMin = inter.min.z;
-            excludeMax = inter.max.z;
-        }
-
-        // Clamp the exclusion to the hallway wall range
-        excludeMin = Mathf.Clamp(excludeMin, fullMin, fullMax);
-        excludeMax = Mathf.Clamp(excludeMax, fullMin, fullMax);
-
-        // If the intersection does not overlap in-range, keep full length
-        if (excludeMax <= excludeMin)
-        {
-            result.Add(new Vector2(fullMin, fullMax));
-            return result;
-        }
-
-        // Left segment
-        if (excludeMin > fullMin)
-            result.Add(new Vector2(fullMin, excludeMin));
-
-        // Right segment
-        if (excludeMax < fullMax)
-            result.Add(new Vector2(excludeMax, fullMax));
+            result.Add(new Vector2(hallwayBounds.min.z, hallwayBounds.max.z));
 
         return result;
-    }
-
-
-    private void CreateFullWallSegment(Bounds hallwayBounds, string sideName, float wallPosition, bool isHorizontal, Bounds? intersectionBounds = null)
-    {
-        Vector3 position;
-        Vector3 scale;
-        Quaternion rotation;
-
-        if (isHorizontal)
-        {
-            position = new Vector3(hallwayBounds.center.x, wallYPosition, wallPosition);
-            scale = new Vector3(hallwayBounds.size.x, wallHeight, wallThickness);
-            rotation = sideName == "North" ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
-        }
-        else
-        {
-            position = new Vector3(wallPosition, wallYPosition, hallwayBounds.center.z);
-            scale = new Vector3(hallwayBounds.size.z, wallHeight, wallThickness);
-            rotation = sideName == "East" ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, -90, 0);
-        }
-
-        // Check if this wall position is in intersection; if so, skip it
-        if (intersectionBounds.HasValue && IsPositionInIntersection(position, intersectionBounds.Value))
-        {
-            return;
-        }
-
-        CreateWall(position, scale, rotation, "HallwayWall_" + sideName);
     }
 
     private void CreatePartialWallSegment(Bounds hallwayBounds, string segmentName, float start, float end, float wallPosition, bool isHorizontal, bool isNorthSouth, Bounds? intersectionBounds = null)
@@ -508,27 +411,6 @@ public void RandomizeOtherRooms()
         occupied.Add(currentRect);
         placedRooms.Add(CurrentRoom); // Mark current room as placed
     }
-
-    // Reserve space for hallway intersection area
-    if (Hallways.Length > 1)
-    {
-        Bounds h0 = Hallways[0].GetComponent<Renderer>().bounds;
-        Bounds h1 = Hallways[1].GetComponent<Renderer>().bounds;
-        
-        float minX = Mathf.Max(h0.min.x, h1.min.x);
-        float maxX = Mathf.Min(h0.max.x, h1.max.x);
-        float minZ = Mathf.Max(h0.min.z, h1.min.z);
-        float maxZ = Mathf.Min(h0.max.z, h1.max.z);
-
-        if (minX < maxX && minZ < maxZ)
-        {
-            Rect intersectionRect = new Rect(
-                new Vector2(minX - minDistanceBetweenRooms, minZ - minDistanceBetweenRooms),
-                new Vector2((maxX - minX) + minDistanceBetweenRooms * 2.5f, (maxZ - minZ) + minDistanceBetweenRooms * 2.5f)
-            );
-            occupied.Add(intersectionRect);
-        }
-    }
     
     // Reserve space for landmarked rooms
     foreach (Transform lmRoom in PossibleRooms)
@@ -557,32 +439,24 @@ public void RandomizeOtherRooms()
             );
 
             occupied.Add(lmRect);
-            placedRooms.Add(lmRoom); // Mark landmarked room as placed
+            placedRooms.Add(lmRoom);
         }
     }
 
-    // Randomize rooms around all hallways
-    List<Transform> shuffledHallways = new List<Transform>(Hallways);
-
-    for (int i = shuffledHallways.Count - 1; i > 0; i--)
+    for (int i = Hallways.Length - 1; i >= 0; i--)
     {
-        int j = Random.Range(0, i + 1);
-        (shuffledHallways[i], shuffledHallways[j]) = (shuffledHallways[j], shuffledHallways[i]);
-    }
-
-    foreach (Transform hallway in shuffledHallways)
-    {
+        Transform hallway = Hallways[i];
         if (hallway == null) continue;
-        RandomizeRoomsAroundHallway(hallway, occupied, placedRooms);
+        
+        bool isInverted = (i == 1); // Second hallway is inverted (inner)
+        RandomizeRoomsAroundHallway(hallway, occupied, placedRooms, isInverted);
     }
-
 
     CreateHallwayWallsFromDoors();
-        // Notify subscribers (e.g. RoomChildMover) that rooms have been randomized
-        RoomsRandomized?.Invoke();
+    RoomsRandomized?.Invoke();
 }
 
-private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied, HashSet<Transform> placedRooms)
+private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied, HashSet<Transform> placedRooms, bool isInverted)
 {
     Bounds hallwayBounds = hallway.GetComponent<Renderer>().bounds;
 
@@ -622,12 +496,26 @@ private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied,
             int side = Random.Range(0, 4);
             Quaternion rotation = Quaternion.identity;
 
-            switch (side)
+            // For inverted (inner) hallway, flip the rotation
+            if (isInverted)
             {
-                case 0: rotation = Quaternion.Euler(0, 0, 0); break;    // North
-                case 1: rotation = Quaternion.Euler(0, 180, 0); break;  // South
-                case 2: rotation = Quaternion.Euler(0, 90, 0); break;   // East
-                case 3: rotation = Quaternion.Euler(0, -90, 0); break;  // West
+                switch (side)
+                {
+                    case 0: rotation = Quaternion.Euler(0, 180, 0); break; // Face inward
+                    case 1: rotation = Quaternion.Euler(0, 0, 0); break;   // Face inward
+                    case 2: rotation = Quaternion.Euler(0, -90, 0); break; // Face inward
+                    case 3: rotation = Quaternion.Euler(0, 90, 0); break;  // Face inward
+                }
+            }
+            else
+            {
+                switch (side)
+                {
+                    case 0: rotation = Quaternion.Euler(0, 0, 0); break;    // North
+                    case 1: rotation = Quaternion.Euler(0, 180, 0); break;  // South
+                    case 2: rotation = Quaternion.Euler(0, 90, 0); break;   // East
+                    case 3: rotation = Quaternion.Euler(0, -90, 0); break;  // West
+                }
             }
 
             room.rotation = rotation;
@@ -637,46 +525,108 @@ private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied,
             Bounds rb = rend.bounds;
             Vector3 newPos = Vector3.zero;
 
-            switch (side)
+            if (isInverted)
             {
-                case 0: // North
-                    newPos = new Vector3(
-                        Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
-                        room.position.y,
-                        hallwayBounds.max.z + rb.extents.z
-                    );
-                    break;
+                // Place rooms INSIDE the inner hallway
+                switch (side)
+                {
+                    case 0: // North interior
+                        newPos = new Vector3(
+                            Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
+                            room.position.y,
+                            hallwayBounds.max.z - rb.extents.z
+                        );
+                        break;
 
-                case 1: // South
-                    newPos = new Vector3(
-                        Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
-                        room.position.y,
-                        hallwayBounds.min.z - rb.extents.z
-                    );
-                    break;
+                    case 1: // South interior
+                        newPos = new Vector3(
+                            Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
+                            room.position.y,
+                            hallwayBounds.min.z + rb.extents.z
+                        );
+                        break;
 
-                case 2: // East
-                    newPos = new Vector3(
-                        hallwayBounds.max.x + rb.extents.x,
-                        room.position.y,
-                        Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
-                    );
-                    break;
+                    case 2: // East interior
+                        newPos = new Vector3(
+                            hallwayBounds.max.x - rb.extents.x,
+                            room.position.y,
+                            Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
+                        );
+                        break;
 
-                case 3: // West
-                    newPos = new Vector3(
-                        hallwayBounds.min.x - rb.extents.x,
-                        room.position.y,
-                        Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
-                    );
-                    break;
+                    case 3: // West interior
+                        newPos = new Vector3(
+                            hallwayBounds.min.x + rb.extents.x,
+                            room.position.y,
+                            Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
+                        );
+                        break;
+                }
+            }
+            else
+            {
+                // Place rooms OUTSIDE (original logic)
+                switch (side)
+                {
+                    case 0: // North
+                        newPos = new Vector3(
+                            Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
+                            room.position.y,
+                            hallwayBounds.max.z + rb.extents.z
+                        );
+                        break;
+
+                    case 1: // South
+                        newPos = new Vector3(
+                            Random.Range(hallwayBounds.min.x + rb.extents.x, hallwayBounds.max.x - rb.extents.x),
+                            room.position.y,
+                            hallwayBounds.min.z - rb.extents.z
+                        );
+                        break;
+
+                    case 2: // East
+                        newPos = new Vector3(
+                            hallwayBounds.max.x + rb.extents.x,
+                            room.position.y,
+                            Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
+                        );
+                        break;
+
+                    case 3: // West
+                        newPos = new Vector3(
+                            hallwayBounds.min.x - rb.extents.x,
+                            room.position.y,
+                            Random.Range(hallwayBounds.min.z + rb.extents.z, hallwayBounds.max.z - rb.extents.z)
+                        );
+                        break;
+                }
+            }
+            
+            // Recalculate bounds at new position
+            room.position = newPos;
+            Bounds newRoomBounds = rend.bounds;
+            
+            if (isInverted && Hallways.Length > 1 && Hallways[1] != null)
+            {
+                Bounds innerHallwayBounds = Hallways[1].GetComponent<Renderer>().bounds;
+                
+                bool fullyContained = 
+                    newRoomBounds.min.x >= innerHallwayBounds.min.x &&
+                    newRoomBounds.max.x <= innerHallwayBounds.max.x &&
+                    newRoomBounds.min.z >= innerHallwayBounds.min.z &&
+                    newRoomBounds.max.z <= innerHallwayBounds.max.z;
+                
+                if (!fullyContained)
+                {
+                    continue;
+                }
             }
             
             Rect roomRect = new Rect(
-                new Vector2(newPos.x - roomBounds.extents.x - minDistanceBetweenRooms,
-                            newPos.z - roomBounds.extents.z - minDistanceBetweenRooms),
-                new Vector2(roomBounds.size.x + minDistanceBetweenRooms * 2f,
-                            roomBounds.size.z + minDistanceBetweenRooms * 2f)
+                new Vector2(newRoomBounds.min.x - minDistanceBetweenRooms,
+                            newRoomBounds.min.z - minDistanceBetweenRooms),
+                new Vector2(newRoomBounds.size.x + minDistanceBetweenRooms * 2f,
+                            newRoomBounds.size.z + minDistanceBetweenRooms * 2f)
             );
 
             bool overlap = false;
@@ -693,11 +643,10 @@ private void RandomizeRoomsAroundHallway(Transform hallway, List<Rect> occupied,
             if (!overlap)
             {
                 occupied.Add(roomRect);
-                room.position = newPos;
                 placed = true;
                 placedSide = side;
                 placedPosition = newPos;
-                placedRooms.Add(room); // Mark this room as placed
+                placedRooms.Add(room);
             }
         }
 
