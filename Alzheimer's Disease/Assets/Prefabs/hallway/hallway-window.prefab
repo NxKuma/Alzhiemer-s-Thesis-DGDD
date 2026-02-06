@@ -48,9 +48,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2577548232221058511, guid: c1dddbf525491a14ea3b6b11fe34edd3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.07
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c1dddbf525491a14ea3b6b11fe34edd3, type: 3}
       propertyPath: m_Name
       value: hallway-window
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865064391339405807, guid: c1dddbf525491a14ea3b6b11fe34edd3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.07
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

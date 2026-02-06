@@ -23,8 +23,14 @@ public class RoomManager : MonoBehaviour
     public float wallThickness = 0.2f;
     public float wallYPosition = 0f;
 
+    [Header("Wall Decoration Settings")]
+    public GameObject[] wallDecorationPrefabs; // Array of decoration prefabs (windows, shelves, etc.)
+    public float decorationSpacing = 3.0f; // Minimum distance between decorations
+    public float decorationHeightOffset = 1.5f; // Height from ground to place decorations
+
     private List<GameObject> currentWalls = new List<GameObject>();
     private List<GameObject> currentDoors = new List<GameObject>();
+    private List<GameObject> currentDecorations = new List<GameObject>();
 
     void OnDrawGizmos()
     {
@@ -61,6 +67,114 @@ public class RoomManager : MonoBehaviour
                 }
             }
         }
+    }
+    
+    private void AddWallDecorations()
+    {
+        foreach (GameObject decoration in currentDecorations) if (decoration != null) Destroy(decoration);
+        currentDecorations.Clear();
+
+        if (wallDecorationPrefabs == null || Hallways == null) return;
+
+        foreach (GameObject decorationPrefab in wallDecorationPrefabs)
+        {
+            if (decorationPrefab == null) continue;
+
+            bool placed = false;
+            int attempts = 0;
+
+            // Get the actual width of the decoration
+            float decorWidth = 1.5f; 
+            Renderer prefabRend = decorationPrefab.GetComponentInChildren<Renderer>();
+            if (prefabRend != null) decorWidth = Mathf.Max(prefabRend.bounds.size.x, prefabRend.bounds.size.z);
+            decorWidth *= decorationPrefab.transform.localScale.x;
+
+            while (!placed && attempts < 50)
+            {
+                attempts++;
+                int hIdx = Random.Range(0, Hallways.Length);
+                Transform hallway = Hallways[hIdx];
+                Bounds hBounds = hallway.GetComponent<Renderer>().bounds;
+                bool isInner = (hIdx == 1);
+                int wallSide = Random.Range(0, 4);
+
+                float wallPos, rotY, wallLen, wallStart;
+                bool isHorizontalWall;
+
+                // Setup 
+                GetWallData(wallSide, hBounds, isInner, out wallPos, out rotY, out wallLen, out wallStart, out isHorizontalWall);
+                List<Vector2> forbiddenZones = GetForbiddenZonesForWall(wallSide, hBounds, isHorizontalWall);
+
+                float margin = (decorWidth / 2f) + 0.1f;
+                float posOnWall = Random.Range(wallStart + margin, wallStart + wallLen - margin);
+                Vector2 decorRange = new Vector2(posOnWall - (decorWidth / 2f), posOnWall + (decorWidth / 2f));
+
+                bool isOverlapping = false;
+                foreach (Vector2 zone in forbiddenZones)
+                {
+                    if (decorRange.x < zone.y && decorRange.y > zone.x) 
+                    {
+                        isOverlapping = true;
+                        break;
+                    }
+                }
+
+                if (!isOverlapping) isOverlapping = IsTooCloseToAnyDecoration(new Vector3(isHorizontalWall ? posOnWall : wallPos, 0, isHorizontalWall ? wallPos : posOnWall));
+
+                if (isOverlapping) continue;
+
+                // Placement
+                Vector3 spawnPos = isHorizontalWall ? 
+                    new Vector3(posOnWall, wallYPosition + decorationHeightOffset, wallPos) :
+                    new Vector3(wallPos, wallYPosition + decorationHeightOffset, posOnWall);
+
+                GameObject instance = Instantiate(decorationPrefab, spawnPos, Quaternion.Euler(0, rotY, 0), transform);
+                currentDecorations.Add(instance);
+                placed = true;
+            }
+        }
+    }
+
+    // Helper to find all doors/rooms on a specific wall and return their 1D coordinate ranges
+    private List<Vector2> GetForbiddenZonesForWall(int wallSide, Bounds hBounds, bool isHorizontalWall)
+    {
+        List<Vector2> zones = new List<Vector2>();
+        float doorBuffer = 0.8f; 
+
+        foreach (GameObject door in currentDoors)
+        {
+            if (door == null) continue;
+            if (GetDoorSide(door.transform.position, hBounds) != wallSide) continue;
+
+            float coord = isHorizontalWall ? door.transform.position.x : door.transform.position.z;
+            zones.Add(new Vector2(coord - doorBuffer, coord + doorBuffer));
+        }
+        return zones;
+    }
+
+    private void GetWallData(int side, Bounds b, bool inner, out float pos, out float rot, out float len, out float start, out bool isH)
+    {
+        isH = (side == 0 || side == 1);
+        if (side == 0) { pos = b.max.z; rot = inner ? 0 : 180; len = b.size.x; start = b.min.x; }
+        else if (side == 1) { pos = b.min.z; rot = inner ? 180 : 0; len = b.size.x; start = b.min.x; }
+        else if (side == 2) { pos = b.max.x; rot = inner ? 90 : -90; len = b.size.z; start = b.min.z; }
+        else { pos = b.min.x; rot = inner ? -90 : 90; len = b.size.z; start = b.min.z; }
+    }
+
+    private bool IsTooCloseToAnyDecoration(Vector3 position)
+    {
+        foreach (GameObject decoration in currentDecorations)
+        {
+            if (decoration == null) continue;
+
+            float distance = Vector3.Distance(new Vector3(position.x, 0, position.z), 
+                                            new Vector3(decoration.transform.position.x, 0, decoration.transform.position.z));
+            
+            if (distance < decorationSpacing)
+                return true;
+        }
+
+        return false;
     }
 
     private void ClearExistingWallsAndDoors()
@@ -453,6 +567,7 @@ public void RandomizeOtherRooms()
     }
 
     CreateHallwayWallsFromDoors();
+    AddWallDecorations();
     RoomsRandomized?.Invoke();
 }
 

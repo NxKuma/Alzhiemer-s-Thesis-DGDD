@@ -7897,6 +7897,21 @@ MonoBehaviour:
   wallHeight: 1.5
   wallThickness: 0.5
   wallYPosition: 1
+  wallDecorationPrefabs:
+  - {fileID: 1331907591737689213, guid: e2daa27a8ef12ab499107fe20efa7fe1, type: 3}
+  - {fileID: 8398271600367861001, guid: 415d6fdbbbcc8484e91219797e0dc21c, type: 3}
+  - {fileID: 8314122132123725485, guid: f2600920a3b59d94c8c31c2291de93c4, type: 3}
+  - {fileID: 4234767419680258332, guid: 955a671a05ba6df4db629ed08a3bb44e, type: 3}
+  - {fileID: 4234767419680258332, guid: 955a671a05ba6df4db629ed08a3bb44e, type: 3}
+  - {fileID: 4234767419680258332, guid: 955a671a05ba6df4db629ed08a3bb44e, type: 3}
+  - {fileID: 5723359939738300889, guid: b96ca3089f5b7d54397ec95f13f8e296, type: 3}
+  - {fileID: 5723359939738300889, guid: b96ca3089f5b7d54397ec95f13f8e296, type: 3}
+  - {fileID: 5828877089463272052, guid: 1ad09b72454ee084db4640b8754b7bd0, type: 3}
+  - {fileID: 5828877089463272052, guid: 1ad09b72454ee084db4640b8754b7bd0, type: 3}
+  - {fileID: 5723359939738300889, guid: b96ca3089f5b7d54397ec95f13f8e296, type: 3}
+  - {fileID: 5723359939738300889, guid: b96ca3089f5b7d54397ec95f13f8e296, type: 3}
+  decorationSpacing: 3
+  decorationHeightOffset: 1.5
 --- !u!114 &2519080130532763659
 MonoBehaviour:
   m_ObjectHideFlags: 0
