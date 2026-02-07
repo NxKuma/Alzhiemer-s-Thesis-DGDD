@@ -17,7 +17,7 @@ MonoBehaviour:
   itemType: 2
   _itemMesh: {fileID: 4300000, guid: c06f053d0133cd74290ec075966200ab, type: 2}
   _itemMaterial: {fileID: 2100000, guid: 213514c352f2923429aac30c684e88cb, type: 2}
-  _itemThumbnail: {fileID: 21300000, guid: 3d7e435959d33bb4395cca29dc35c921, type: 3}
+  _itemThumbnail: {fileID: 21300000, guid: ed470da075af9d04ebf8c63e31f06678, type: 3}
   _itemSize: 20
   _puzzleDimensions: {x: 56.6151, y: 62.8558}
   _puzzlePosition: {x: -0.1002, y: 6.1}
