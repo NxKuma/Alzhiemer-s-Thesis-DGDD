@@ -19,6 +19,7 @@ public class DialogueTrigger : MonoBehaviour
     private CanvasGroup _uiCanvasGroup;
     [HideInInspector] public string npcName;
     private GameEventsManager _gameEventsManager;
+    private CanvasManager _canvasManager;
     private PuzzleCAnvasScript _puzzleCanvasScript;
     private DialogueManager _dialogueManager;
     private String _npcEmotition = "Neutral";
@@ -40,11 +41,38 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Start()
     {
+        // Cache references to avoid repeated calls in Update.
         _gameEventsManager = GameEventsManager.Instance;
         _puzzleCanvasScript = PuzzleCAnvasScript.Instance;
+        _canvasManager = CanvasManager.Instance;
+        _canvasManager.OnCanvasStateChanged += TriggerDialougeCanvas;
         _dialogueManager = DialogueManager.GetInstance();
-        // _interactorSource = GameObject.FindWithTag("Player").transform;
+        
+        // Find the Dialogue UI canvas and cache its CanvasGroup for showing/hiding.
+        // Canvas[] majorCanvasList = _canvasManager.GetMajorCanvasList();
+        // string parentName = this.transform.parent.GetComponent<NPCScript>().GetNPCName();
+        // parentName = parentName.Split('_')[0];
+        // foreach (Canvas canvas in majorCanvasList)
+        // {
+        //     if (canvas.name.Contains(parentName))
+        //     {
+        //         _interactUI = canvas.gameObject;
+        //         Debug.Log("DialogueTrigger found canvas: " + canvas.name);
+        //         break;
+        //     }
+        // }
+        // // _interactorSource = GameObject.FindWithTag("Player").transform;
         // _interactUI = GameObject.FindWithTag("InteractUI");
+    }
+
+    private void TriggerDialougeCanvas(CanvasManager.EPlayerState newState)
+    {
+        if (newState == CanvasManager.EPlayerState.Dialouging)
+        {
+            _interactUI.GetComponent<CanvasGroup>().alpha = 1f;
+            _dialogueManager.EnterDialogueMode(_inkJSON);
+
+        }
     }
 
     private void Update()
@@ -72,6 +100,8 @@ public class DialogueTrigger : MonoBehaviour
                             _dialogueManager.SetCurrentNPC(npc.GetNPCImage(_npcEmotition));
                             npc.Interact();
                             _dialogueManager.EnterDialogueMode(_inkJSON);
+                            _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.PuzzleSolving); // Set to dialogue state
+
                         // if (_dbgCallEvent)
                         // {
                         // }

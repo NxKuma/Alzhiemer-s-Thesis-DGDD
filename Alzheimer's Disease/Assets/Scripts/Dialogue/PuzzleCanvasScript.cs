@@ -13,6 +13,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private Transform _storageParent;
     private CanvasGroup _canvasGroup;
     private DialogueManager _dialogueManager;
+    private CanvasManager _canvasManager;
     private Inventory _puzzleInventory;
     private string _nPCName;
     private bool _hasRandomized = false;
@@ -117,7 +118,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
         _puzzlePiecesAvailable.Clear();
         foreach (GameObject piece in _puzzlePiecesList)
         {
-            if(piece.name.Contains(npcName))
+            if(piece.name.Contains(npcName.Split('_')[0]))
             {
                 piece.SetActive(true);
             }
@@ -133,7 +134,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
         foreach (GameObject piece in _puzzlePiecesList)
         {
             if (piece == null) continue;
-            if (!string.IsNullOrEmpty(npcName) && piece.name.Contains(npcName))
+            if (!string.IsNullOrEmpty(npcName) && (piece.name.Contains(npcName.Split('-')[0]) || piece.name.Contains(npcName) ) )
             {
                 piece.transform.SetParent(_puzzleAreaParent);
                 piece.SetActive(true);

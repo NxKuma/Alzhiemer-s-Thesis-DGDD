@@ -13,6 +13,12 @@ public class PuzzleDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     //     Cursor.visible = true;
     // }
 
+    private void Start()
+    {
+        Image childImage = gameObject.GetComponentInChildren<Image>();
+        childImage.preserveAspect = true;
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         _parentAfterDrag = transform.parent;

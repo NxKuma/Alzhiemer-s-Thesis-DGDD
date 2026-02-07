@@ -53,7 +53,7 @@ public class DialogueManager : MonoBehaviour
     {
         DialogueIsPlaying = false;
         _choicesAvailable = false;
-        _dialoguePanel.SetActive(false);
+        _dialoguePanel.GetComponent<CanvasGroup>().alpha = 0f;
         Debug.Log("Dialogue Panel Active?: " + _dialoguePanel.activeSelf);
 
         _choicesText = new TextMeshProUGUI[_choices.Length];
@@ -74,9 +74,17 @@ public class DialogueManager : MonoBehaviour
         }
 
         //
-        if (Input.GetMouseButtonDown(0) && !_choicesAvailable)
+        if (Input.GetMouseButtonDown(0) && !_choicesAvailable )
         {
-            ContinueStory();
+            Vector2 mousePos = Input.mousePosition;
+            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.CompareTag("NextDialogue"))
+                {
+                    ContinueStory();
+                }
+            }
         }
     }
 
@@ -84,7 +92,7 @@ public class DialogueManager : MonoBehaviour
     {
         _currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
-        _dialoguePanel.SetActive(true);
+        _dialoguePanel.GetComponent<CanvasGroup>().alpha = 1f;
         _dialoguePanel.transform.GetChild(0).GetComponent<Image>().sprite = _NPCImage;
 
         _dialogueVar.StartListening(_currentStory);
@@ -106,7 +114,7 @@ public class DialogueManager : MonoBehaviour
         _dialogueVar.StopListening(_currentStory);
 
         DialogueIsPlaying = false;
-        _dialoguePanel.SetActive(false);
+        _dialoguePanel.GetComponent<CanvasGroup>().alpha = 0f;
         _dialogueText.text = "";
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -190,10 +198,10 @@ public class DialogueManager : MonoBehaviour
             _choices[i].gameObject.SetActive(false);
         }
 
-        StartCoroutine(SelectFirstChocie()); 
+        StartCoroutine(SelectFirstChoice()); 
     }
 
-    private IEnumerator SelectFirstChocie()
+    private IEnumerator SelectFirstChoice()
     {
         // Must clear the event first then wait a frame.
         EventSystem.current.SetSelectedGameObject(null);

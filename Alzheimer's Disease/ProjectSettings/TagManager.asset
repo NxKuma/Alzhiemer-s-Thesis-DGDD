@@ -6,11 +6,12 @@ TagManager:
   tags:
   - NPC
   - InteractUI
+  - NextDialogue
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - NextDialouge
   - Water
   - UI
   - Trigger
