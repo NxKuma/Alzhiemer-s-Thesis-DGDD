@@ -35,6 +35,8 @@ public class NPC : ScriptableObject
         return null;
     }
 
+    public Sprite[] GetNPCEmotions() => _npcEmotions;
+
     public float GetNPCSize() => _npcSize;
 
     public GameObject GetNPCPrefab() => _npcPrefab;

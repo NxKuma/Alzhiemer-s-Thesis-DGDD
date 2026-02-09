@@ -45,7 +45,7 @@ public class DialogueTrigger : MonoBehaviour
         _gameEventsManager = GameEventsManager.Instance;
         _puzzleCanvasScript = PuzzleCAnvasScript.Instance;
         _canvasManager = CanvasManager.Instance;
-        _canvasManager.OnCanvasStateChanged += TriggerDialougeCanvas;
+        // _canvasManager.OnCanvasStateChanged += TriggerDialougeCanvas;
         _dialogueManager = DialogueManager.GetInstance();
         
         // Find the Dialogue UI canvas and cache its CanvasGroup for showing/hiding.
@@ -65,15 +65,15 @@ public class DialogueTrigger : MonoBehaviour
         // _interactUI = GameObject.FindWithTag("InteractUI");
     }
 
-    private void TriggerDialougeCanvas(CanvasManager.EPlayerState newState)
-    {
-        if (newState == CanvasManager.EPlayerState.Dialouging)
-        {
-            _interactUI.GetComponent<CanvasGroup>().alpha = 1f;
-            _dialogueManager.EnterDialogueMode(_inkJSON);
+    // private void TriggerDialougeCanvas(CanvasManager.EPlayerState newState)
+    // {
+    //     if (newState == CanvasManager.EPlayerState.Dialouging)
+    //     {
+    //         _interactUI.GetComponent<CanvasGroup>().alpha = 1f;
+    //         _dialogueManager.EnterDialogueMode(_inkJSON);
 
-        }
-    }
+    //     }
+    // }
 
     private void Update()
     {
@@ -95,9 +95,10 @@ public class DialogueTrigger : MonoBehaviour
                     if (npc != null)
                     {
                             npcName = npc.GetNPCName();
+                            Debug.Log("Interacting with NPC: " + npcName);
                             _puzzleCanvasScript.SetNPCName(npcName);
                             _gameEventsManager.npcEvents.NPCInteracted(npcName);
-                            _dialogueManager.SetCurrentNPC(npc.GetNPCImage(_npcEmotition));
+                            // _dialogueManager.SetCurrentNPC(npc.GetNPCImage(_npcEmotition));
                             npc.Interact();
                             _dialogueManager.EnterDialogueMode(_inkJSON);
                             _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.PuzzleSolving); // Set to dialogue state

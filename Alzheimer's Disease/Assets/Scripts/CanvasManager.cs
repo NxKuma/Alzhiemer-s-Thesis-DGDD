@@ -79,7 +79,6 @@ public class CanvasManager : MonoBehaviour
     {
         foreach (Canvas canvas in _majorCanvasList)
         {
-            Debug.Log("Checking canvas: " + canvas.name);
             if (_canvasDictionary.TryGetValue(canvas, out var validStates) &&
                 System.Array.IndexOf(validStates, _playerState) >= 0)
             {

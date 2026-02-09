@@ -119,6 +119,11 @@ public class NPCScript : MonoBehaviour
     public Sprite GetNPCImage(string emotion)
     {
         return _npcData.GetNPCEmotions(emotion);
-    } 
+    }
+
+    public Sprite[] GetNPCImages()
+    {
+        return _npcData.GetNPCEmotions();
+    }
 
 }

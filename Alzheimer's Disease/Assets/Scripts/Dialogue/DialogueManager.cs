@@ -6,6 +6,7 @@ using Ink.Runtime;
 using UnityEngine.EventSystems;
 using Ink.UnityIntegration;
 using UnityEngine.UI;
+using System.Linq;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject _dialoguePanel;
     [SerializeField] private TextMeshProUGUI _dialogueText;
     [SerializeField] private TextMeshProUGUI _displayNameText;
+    [SerializeField] private GameObject _nextIcon;
     // [SerializeField] private Animator _portraitAnimator;
 
     [Header("Choices UI")]
@@ -24,6 +26,9 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Controller")]
     [SerializeField] private FirstPersonController _controller;
+    [Header ("NPCs")]
+    [SerializeField] private NPC[] _npcs;
+    private Sprite[] _spriteLists = new Sprite[0];
 
     private static DialogueManager _instance;
 
@@ -36,12 +41,21 @@ public class DialogueManager : MonoBehaviour
     public bool DialogueIsPlaying { get; private set; }
 
     private DialogueVariables _dialogueVar;
+    private CanvasManager _canvasManager;
 
     private void Awake()
     {
         if (_instance != null) Debug.LogWarning("Found more than one Dialouge Manager in the scene.");
         _instance = this;
         _dialogueVar = new DialogueVariables(_globalsInkFile.filePath);
+
+        foreach (NPC npc in _npcs)
+        {
+            foreach (Sprite sp in npc.GetNPCEmotions())
+            {
+                _spriteLists = _spriteLists.Append(sp).ToArray();
+            }
+        }
     }
 
     public static DialogueManager GetInstance()
@@ -63,6 +77,7 @@ public class DialogueManager : MonoBehaviour
             _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
             index++;
         }
+        _canvasManager = CanvasManager.Instance;
     }
 
     private void Update()
@@ -73,18 +88,20 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        //
-        if (Input.GetMouseButtonDown(0) && !_choicesAvailable )
+        if(!_choicesAvailable)
         {
-            Vector2 mousePos = Input.mousePosition;
-            Ray ray = Camera.main.ScreenPointToRay(mousePos);
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            _nextIcon.GetComponent<CanvasGroup>().alpha = 1f;
+            if(IsPointerOverRect(_nextIcon.GetComponent<RectTransform>()))
             {
-                if (hit.collider.CompareTag("NextDialogue"))
+                if(Input.GetMouseButtonDown(0))
                 {
                     ContinueStory();
                 }
             }
+        }
+        else
+        {
+            _nextIcon.GetComponent<CanvasGroup>().alpha = 0f;
         }
     }
 
@@ -120,7 +137,7 @@ public class DialogueManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _controller.StopStartPlayer(true);
-
+        _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Roam);
     }
 
     private void ContinueStory()
@@ -161,6 +178,19 @@ public class DialogueManager : MonoBehaviour
                     _displayNameText.text = tagValue;
                     break;
                 case PORTRAIT_TAG:
+                    // SetCurrentNPC()
+                    foreach (Sprite sp in _spriteLists)
+                    {
+                        string spName = sp.name.ToLower();
+                        string tagValueLower = tagValue.ToLower();
+                        if (spName.Contains(tagValueLower.Split(' ')[0]) && spName.Contains("neutral")) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
+                        {
+                            Debug.Log("sp name= " + spName);
+
+                            SetCurrentNPC(sp);
+                            break;
+                        }
+                    }
                     Debug.Log("portrait= " + tagValue); //https://youtu.be/tVrxeUIEV9E?si=vu2NrIrVzmKJOjED&t=687
                     break;
                 default:
@@ -218,6 +248,15 @@ public class DialogueManager : MonoBehaviour
 
     public void SetCurrentNPC(Sprite npcImage)
     {
-        _NPCImage = npcImage;
+        _dialoguePanel.transform.GetChild(0).GetComponent<Image>().sprite = npcImage;
+    }
+
+    private bool IsPointerOverRect(RectTransform rect)
+    {
+        if (rect == null) return false;
+        Vector2 localPoint;
+        Camera cam = (_dialoguePanel.GetComponent<Canvas>() != null && _dialoguePanel.GetComponent<Canvas>().renderMode != RenderMode.ScreenSpaceOverlay) ? _dialoguePanel.GetComponent<Canvas>().worldCamera : null;
+        bool gotPoint = RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, Input.mousePosition, cam, out localPoint);
+        return gotPoint && rect.rect.Contains(localPoint);
     }
 }
