@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <id>k__BackingField: FirstQuest
   displayName: Helping the Wife
-  questPrerequisites: []
+  questPrerequisites:
+  - {fileID: 11400000}
   questStepPrefabs:
   - {fileID: 4754406978968473197, guid: 3778f4d1a7893df4895082d7c65ef973, type: 3}
   - {fileID: 4144240090807829404, guid: 1b08d317e132c6a46a21115647ba46eb, type: 3}
