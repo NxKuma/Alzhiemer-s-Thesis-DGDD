@@ -91,7 +91,7 @@ public class InventoryManager : MonoBehaviour
                     _puzzleCountTexts[1].text = _puzzleCounts[1].ToString() + "/9";
                     break;
                 }
-                else if (newItem.GetItemName().Contains("Daughter-in-Law")) 
+                else if (newItem.GetItemName().Contains("Daughter-In-Law")) 
                 {
                     _puzzleCounts[2] = int.Parse(_puzzleCountTexts[2].text.Substring(0,1));
                     _puzzleCounts[2]++;
@@ -134,7 +134,7 @@ public class InventoryManager : MonoBehaviour
                     _puzzleCounts[1]--;
                     _puzzleCountTexts[1].text = _puzzleCounts[1].ToString() + "/9";
                 }
-                else if (removedItem.GetItemName().Contains("Daughter-in-Law")) 
+                else if (removedItem.GetItemName().Contains("Daughter-In-Law")) 
                 {
                     _puzzleCounts[2] = int.Parse(_puzzleCountTexts[2].text.Substring(0,1));
                     _puzzleCounts[2]--;

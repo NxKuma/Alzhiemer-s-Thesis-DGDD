@@ -183,7 +183,7 @@ public class DialogueManager : MonoBehaviour
                     {
                         string spName = sp.name.ToLower();
                         string tagValueLower = tagValue.ToLower();
-                        if (spName.Contains(tagValueLower.Split(' ')[0]) && spName.Contains("neutral")) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
+                        if (spName.Contains(tagValueLower.Split(' ')[0])) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
                         {
                             Debug.Log("sp name= " + spName);
 

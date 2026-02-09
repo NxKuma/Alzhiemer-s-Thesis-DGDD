@@ -39368,7 +39368,7 @@ PrefabInstance:
     - target: {fileID: 6634918963150384907, guid: 0a91a75e97f8a57499e97d4ce2166db1, type: 3}
       propertyPath: _globalsInkFile.inkAsset
       value: 
-      objectReference: {fileID: 102900000, guid: cb1f811887597e14ba648c6e0b25fe5e, type: 3}
+      objectReference: {fileID: 102900000, guid: a9bd5acf36808214da0d4a6f30753fac, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
