@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+// using UnityEngine.UIElements;
 
 public class QuestLogUI : MonoBehaviour
 {
@@ -12,20 +13,31 @@ public class QuestLogUI : MonoBehaviour
     [SerializeField] private QuestLogScrollingList scrollingList;
     [SerializeField] private TextMeshProUGUI questDisplayNameText;
     [SerializeField] private TextMeshProUGUI questStatusText;
+    [SerializeField] private FirstPersonController _player;
 
     private Button firstSelectedButton;
+    private CanvasGroup _canvasGroup;
+    private CanvasManager _canvasManager;
 
-    private void OnEnable()
+    private void Start( )
     {
+        _canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+        _canvasManager = CanvasManager.Instance;
+        _canvasGroup.alpha = 0f; // start hidden
         GameEventsManager.Instance.inputEvents.onQuestLogTogglePressed += QuestLogTogglePressed;
         GameEventsManager.Instance.questEvents.onQuestStateChange += QuestStateChange;
     }
 
-    private void OnDisable()
-    {
-        GameEventsManager.Instance.inputEvents.onQuestLogTogglePressed -= QuestLogTogglePressed;
-        GameEventsManager.Instance.questEvents.onQuestStateChange -= QuestStateChange;
-    }
+    // private void OnEnable()
+    // {
+        
+    // }
+
+    // private void OnDisable()
+    // {
+    //     GameEventsManager.Instance.inputEvents.onQuestLogTogglePressed -= QuestLogTogglePressed;
+    //     GameEventsManager.Instance.questEvents.onQuestStateChange -= QuestStateChange;
+    // }
 
     private void QuestLogTogglePressed()
     {
@@ -41,8 +53,10 @@ public class QuestLogUI : MonoBehaviour
 
     private void ShowUI()
     {
-        contentParent.SetActive(true);
+        _canvasGroup.alpha = 1f;
+        _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.QuestAccess);
         GameEventsManager.Instance.playerEvents.DisablePlayerMovement();
+        _player.StopStartPlayer(false);
         // note - this needs to happen after the content parent is set active,
         // or else the onSelectAction won't work as expected
         if (firstSelectedButton != null)
@@ -53,8 +67,10 @@ public class QuestLogUI : MonoBehaviour
 
     private void HideUI()
     {
-        contentParent.SetActive(false);
+        _canvasGroup.alpha = 0f;
+        _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Roam);
         GameEventsManager.Instance.playerEvents.EnablePlayerMovement();
+        _player.StopStartPlayer(true);
         EventSystem.current.SetSelectedGameObject(null);
     }
 

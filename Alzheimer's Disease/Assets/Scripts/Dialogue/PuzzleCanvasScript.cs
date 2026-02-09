@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class PuzzleCAnvasScript : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     [SerializeField] private GameObject _puzzlePiecePrefab;
     private List<GameObject> _puzzlePiecesAvailable = new List<GameObject>();
     private List<GameObject> _puzzlePiecesList = new List<GameObject>();
+    private GameObject _nextIcon;
     private Transform _puzzleAreaParent;
     private Transform _puzzleSlotsParent;
     private Transform _storageParent;
@@ -42,6 +44,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     }
 
     private void Start() {
+        _nextIcon = this.transform.GetChild(2).gameObject;
         if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null)
         {
             _puzzleInventory = TriggerHandler.Instance.PlayerInventory;
@@ -53,6 +56,8 @@ public class PuzzleCAnvasScript : MonoBehaviour
             _dialogueManager = DialogueManager.GetInstance();
         }
 
+        _canvasManager = CanvasManager.Instance;
+
         Hide();
     }
 
@@ -63,6 +68,16 @@ public class PuzzleCAnvasScript : MonoBehaviour
         }else{
             Hide();
         }
+
+
+        if(IsPointerOverRect(_nextIcon.GetComponent<RectTransform>()))
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Dialouging);
+            }
+        }
+      
     }
 
     private void OnPuzzleItemAdded(Item newItem)
@@ -225,5 +240,15 @@ public class PuzzleCAnvasScript : MonoBehaviour
     {
         _nPCName = name;
     }
+
+    private bool IsPointerOverRect(RectTransform rect)
+    {
+        if (rect == null) return false;
+        Vector2 localPoint;
+        Camera cam = (this.gameObject.GetComponent<Canvas>() != null && this.gameObject.GetComponent<Canvas>().renderMode != RenderMode.ScreenSpaceOverlay) ? this.gameObject.GetComponent<Canvas>().worldCamera : null;
+        bool gotPoint = RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, Input.mousePosition, cam, out localPoint);
+        return gotPoint && rect.rect.Contains(localPoint);
+    }
+
 }
 

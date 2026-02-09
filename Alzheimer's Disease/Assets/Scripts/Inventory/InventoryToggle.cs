@@ -16,6 +16,7 @@ public class InventoryToggle : MonoBehaviour
     private Vector2 _iconHiddenPosition;
     private DialogueManager _dialogueManager;
     private CanvasGroup _iconCanvasGroup;
+    private CanvasManager _canvasManager;
     [SerializeField] private float toggleDuration = 0.25f;
     private bool _isOpen = true;
     private Coroutine _toggleRoutine;
@@ -50,7 +51,7 @@ public class InventoryToggle : MonoBehaviour
         _invCurrentPosition = _inventoryRect.anchoredPosition;
         _invInitialPosition = _invCurrentPosition;
         _invHiddenPosition = -_invInitialPosition; 
-        
+        _canvasManager = CanvasManager.Instance;
         _iconCurrentPosition = _iconRect.anchoredPosition;
         _iconInitialPosition = _iconCurrentPosition;
         // _iconHiddenPosition = new Vector2(_iconInitialPosition.x + 151f, _iconInitialPosition.y);
@@ -78,6 +79,7 @@ public class InventoryToggle : MonoBehaviour
             // find canvas (used for ScreenPoint conversions)
             _rootCanvas = GetComponentInParent<Canvas>();
         }
+        
         
 
         // Subscribe to inventory events safely (TriggerHandler may not be initialized in Awake of other systems)
@@ -108,6 +110,7 @@ public class InventoryToggle : MonoBehaviour
         {
             ToggleInventory();
             Cursor.lockState = CursorLockMode.Confined;
+            _canvasManager.SetPlayerState(!_isOpen ? (int)CanvasManager.EPlayerState.InventoryAccess : (int)CanvasManager.EPlayerState.Roam);
             
         }
 

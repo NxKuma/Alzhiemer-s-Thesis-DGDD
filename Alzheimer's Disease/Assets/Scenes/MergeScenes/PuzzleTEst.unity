@@ -7707,6 +7707,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1149535093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7973774110955642827, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
+  m_PrefabInstance: {fileID: 3115265708667853554}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1149535096
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149535093}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!4 &1166828810 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2627438063468296573, guid: 91603075eab8d4942a9925dd817c16c6, type: 3}
@@ -20933,6 +20950,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: QuestCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 292257864198770807, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 1032969111}
+    - target: {fileID: 672859599682289813, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -23
+      objectReference: {fileID: 0}
+    - target: {fileID: 672859599682289813, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 1427076072630756491, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -20955,7 +20984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1755508390567803106, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1774686548259102767, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
       propertyPath: m_Pivot.x
@@ -21171,7 +21200,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7714734882336859791, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 218.48
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7714734882336859791, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -21264,6 +21293,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 97846057001552518, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1867004374}
+    - targetCorrespondingSourceObject: {fileID: 7973774110955642827, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1149535096}
   m_SourcePrefab: {fileID: 100100000, guid: f1eee975f3b4ea64dab9a6b4c047c260, type: 3}
 --- !u!33 &3123158162442935306
 MeshFilter:

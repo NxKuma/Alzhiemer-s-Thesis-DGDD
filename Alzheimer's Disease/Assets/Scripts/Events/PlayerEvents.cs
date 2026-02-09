@@ -2,6 +2,7 @@ using System;
 
 public class PlayerEvents
 {
+    
     public event Action onDisablePlayerMovement;
     public void DisablePlayerMovement()
     {
