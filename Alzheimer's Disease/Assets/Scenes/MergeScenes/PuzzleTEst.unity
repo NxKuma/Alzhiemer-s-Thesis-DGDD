@@ -2521,6 +2521,77 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91603075eab8d4942a9925dd817c16c6, type: 3}
+--- !u!1 &474340368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 474340369}
+  - component: {fileID: 474340371}
+  - component: {fileID: 474340370}
+  m_Layer: 10
+  m_Name: Trigger (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &474340369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474340368}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1885130520}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &474340370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474340368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0580d70c5cd755428f94b96cfe49727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactUI: {fileID: 1575146141}
+  _interactorSource: {fileID: 902916787}
+  _interactRange: 2
+  _inkJSON: {fileID: 4900000, guid: e7bbe7267812b524eba593e4320a5e08, type: 3}
+  npcName: 
+--- !u!65 &474340371
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474340368}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 3, z: 3}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &533210976
 GameObject:
   m_ObjectHideFlags: 0
@@ -13193,6 +13264,11 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!4 &1885130520 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8489640498957785092, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
+  m_PrefabInstance: {fileID: 7948848306589049278}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1943764726
 GameObject:
   m_ObjectHideFlags: 0
@@ -35610,7 +35686,7 @@ PrefabInstance:
     - target: {fileID: 240849800683131379, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       propertyPath: _inkJSON
       value: 
-      objectReference: {fileID: 4900000, guid: 70e3327092280e24591fbf13a59f2449, type: 3}
+      objectReference: {fileID: 4900000, guid: 5b68043638dbaf142bb10f9b1a65b681, type: 3}
     - target: {fileID: 240849800683131379, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       propertyPath: _interactUI
       value: 
@@ -35878,7 +35954,7 @@ PrefabInstance:
     - target: {fileID: 4342064323265215422, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       propertyPath: _inkJSON
       value: 
-      objectReference: {fileID: 4900000, guid: 46dead98d91103041adced3d00fc3b0e, type: 3}
+      objectReference: {fileID: 4900000, guid: e7bbe7267812b524eba593e4320a5e08, type: 3}
     - target: {fileID: 4342064323265215422, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       propertyPath: _interactUI
       value: 
@@ -36166,7 +36242,7 @@ PrefabInstance:
     - target: {fileID: 6770199054338122604, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       propertyPath: _inkJSON
       value: 
-      objectReference: {fileID: 4900000, guid: 38cd68e54b1458c4dae05bf26288657b, type: 3}
+      objectReference: {fileID: 4900000, guid: a7bf03fd8345aa54281050fc656071db, type: 3}
     - target: {fileID: 6770199054338122604, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       propertyPath: _interactUI
       value: 
@@ -36430,6 +36506,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9036053091321078067, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       insertIndex: 2
       addedObject: {fileID: 432235701}
+    - targetCorrespondingSourceObject: {fileID: 8489640498957785092, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 474340369}
     - targetCorrespondingSourceObject: {fileID: 1389401662622952206, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       insertIndex: 0
       addedObject: {fileID: 2059012604633310242}
