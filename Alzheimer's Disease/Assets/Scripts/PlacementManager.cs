@@ -5,7 +5,7 @@ using System;
 [Serializable]
 public struct PlacementInfo
 {
-    public Vector2 position;
+    public Vector3 position;
     public Transform room;
     public bool isVisible;
 
