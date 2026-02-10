@@ -14,9 +14,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Instructions.unity
     guid: e6fce25b108a79c49b5094c61d84474c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI and Lighting Fix.unity
     guid: fec912ac1b7cf4f46b5698ba300dd119
+  - enabled: 1
+    path: Assets/Scenes/PuzzleTEst.unity
+    guid: e4f1451da7e91f345ab6a4a1fe9012ba
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

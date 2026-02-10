@@ -41,7 +41,7 @@ public class QuestLogUI : MonoBehaviour
 
     private void QuestLogTogglePressed()
     {
-        if (_canvasManager.GetPlayerState() != CanvasManager.EPlayerState.Roam || _canvasManager.GetPlayerState() == CanvasManager.EPlayerState.Roam) return; // don't open quest log if game is paused
+        if (_canvasManager.GetPlayerState() != CanvasManager.EPlayerState.Roam || _canvasManager.GetPlayerState() == CanvasManager.EPlayerState.Paused) return; // don't open quest log if game is paused
         if (contentParent.activeInHierarchy)
         {
             HideUI();
