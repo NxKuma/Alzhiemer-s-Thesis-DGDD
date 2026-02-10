@@ -201,8 +201,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: suadausiasubndpiodbosndidosbnsidpo
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2c7267ed3c6259e4992e7a291fa7ba28, type: 2}
+  m_sharedMaterial: {fileID: 1675717636065652402, guid: 2c7267ed3c6259e4992e7a291fa7ba28, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

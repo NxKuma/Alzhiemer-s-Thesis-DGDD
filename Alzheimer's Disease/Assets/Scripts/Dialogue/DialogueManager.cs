@@ -30,6 +30,22 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private NPC[] _npcs;
     private Sprite[] _spriteLists = new Sprite[0];
 
+    public IEnumerable<NPC> GetNpcData()
+    {
+        if (_npcs == null)
+        {
+            yield break;
+        }
+
+        foreach (NPC npc in _npcs)
+        {
+            if (npc != null)
+            {
+                yield return npc;
+            }
+        }
+    }
+
     private static DialogueManager _instance;
 
     private const string SPEAKER_TAG = "speaker";

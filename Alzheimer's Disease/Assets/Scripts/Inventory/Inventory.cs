@@ -33,7 +33,7 @@ public class Inventory
         if (_items.Contains(item))
         {
             _items.Remove(item);
-
+        
             Debug.Log("Removed: " + item.GetItemName());
         }
     }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Phase4Quest
   m_EditorClassIdentifier: 
   <id>k__BackingField: Phase4Quest
-  displayName: 
+  displayName: Goodbye
   questPrerequisites:
   - {fileID: 11400000, guid: abd1b76babb510e4290e34465d458ebd, type: 2}
   - {fileID: 11400000, guid: f61bb4fd7f4b80b4294abe0256e51d15, type: 2}

@@ -104,7 +104,7 @@ public class InventoryManager : MonoBehaviour
 
     private void RemoveFromInventoryUI(Item removedItem)
     {
-        for (int i = 1; i < _inventorySlotCount; i++)
+        for (int i = 0; i < _inventorySlotCount; i++)
         {
             Image img = _visibleInventory.transform.GetChild(i).GetChild(0).GetComponent<Image>();
             if (_inventorySlots[i] == removedItem.GetItemSprite().texture)

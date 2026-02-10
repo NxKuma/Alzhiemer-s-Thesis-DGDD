@@ -110,6 +110,11 @@ public class CanvasManager : MonoBehaviour
         OnCanvasStateChanged?.Invoke(_playerState);
     }
 
+    public EPlayerState GetPlayerState()
+    {
+        return _playerState;
+    }
+
     public Canvas[] GetMajorCanvasList() => _majorCanvasList;
 
 }
