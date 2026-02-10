@@ -105,9 +105,9 @@ Mahal, can you be a dear and look for it? I'll just finish this up.
     Why not look for it yourself? #speaker:Anton #portrait:Character_Anton_Neutral
     Don't give me that attitude! #speaker:Rosalyn #portrait:Character_Rosalyn_Angry
     Just go look for it, please? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
-    Fine. #speaker:Anton #portrait:anton
+    Fine. #speaker:Anton #portrait:Character_Anton_Neutral
 + [Okay.]
-    Will do.#speaker:Anton #portrait:anton
+    Will do.#speaker:Anton #portrait:Character_Anton_Neutral
 -
 Thank you, Anton. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 Oh, can you find a paint roller and a small brush while you're at it? I might need them.

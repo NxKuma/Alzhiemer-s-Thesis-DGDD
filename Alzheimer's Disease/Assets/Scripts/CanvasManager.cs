@@ -58,7 +58,7 @@ public class CanvasManager : MonoBehaviour
                 _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.QuestAccess});
             }else if(canvas.name.Contains("Puzzle"))
             {
-                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.PuzzleSolving});
+                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.PuzzleSolving, EPlayerState.Roam});
 
             }else if(canvas.name.Contains("Dialogue"))
             {

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4754406978968473197
+--- !u!1 &4395145229905063613
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8963700752073514806}
-  - component: {fileID: -4922640964710681374}
+  - component: {fileID: 8750539239966690246}
+  - component: {fileID: -2126991618119409445}
   m_Layer: 0
-  m_Name: GetTheBrushQS
+  m_Name: GetItemTrashbag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8963700752073514806
+--- !u!4 &8750539239966690246
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4754406978968473197}
+  m_GameObject: {fileID: 4395145229905063613}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,16 +32,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-4922640964710681374
+--- !u!114 &-2126991618119409445
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4754406978968473197}
+  m_GameObject: {fileID: 4395145229905063613}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4da3bc6ca21505443a2db4331260f60f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemRequired: {fileID: 11400000, guid: 2a6889d8f7d4afe46a7787cc613ec1b0, type: 2}
+  _itemRequired: {fileID: 11400000, guid: ac0fe968bd082714584b3d6de0e5d4fe, type: 2}

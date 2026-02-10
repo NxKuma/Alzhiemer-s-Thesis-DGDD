@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4da3bc6ca21505443a2db4331260f60f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemRequired: Roller
+  _itemRequired: {fileID: 11400000, guid: 63be14bd4994c8249b5ac9c667d6acd0, type: 2}

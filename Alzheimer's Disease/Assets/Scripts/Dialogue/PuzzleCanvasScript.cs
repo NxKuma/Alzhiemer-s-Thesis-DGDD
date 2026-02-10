@@ -57,9 +57,20 @@ public class PuzzleCAnvasScript : MonoBehaviour
         }
 
         _canvasManager = CanvasManager.Instance;
-
+        _canvasManager.OnCanvasStateChanged += (state) => {
+            if (state == CanvasManager.EPlayerState.PuzzleSolving)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
+        };
         Hide();
     }
+
+    
 
     void Update() {
         if (_dialogueManager.DialogueIsPlaying)
@@ -239,6 +250,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     public void SetNPCName(string name)
     {
         _nPCName = name;
+        Debug.Log("PuzzleCanvas set NPC name: " + _nPCName);
     }
 
     private bool IsPointerOverRect(RectTransform rect)

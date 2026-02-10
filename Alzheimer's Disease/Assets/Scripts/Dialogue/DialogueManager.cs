@@ -43,6 +43,103 @@ public class DialogueManager : MonoBehaviour
     private DialogueVariables _dialogueVar;
     private CanvasManager _canvasManager;
 
+    public bool TryGetGlobalInkBool(string variableName, out bool value)
+    {
+        value = default;
+        if (_dialogueVar == null)
+        {
+            return false;
+        }
+
+        return _dialogueVar.TryGetBool(variableName, out value);
+    }
+
+    public bool GetGlobalInkBool(string variableName, bool defaultValue = false)
+    {
+        return TryGetGlobalInkBool(variableName, out bool value) ? value : defaultValue;
+    }
+
+    public void SetGlobalInkBool(string variableName, bool value)
+    {
+        if (_dialogueVar == null)
+        {
+            Debug.LogWarning("DialogueManager.SetGlobalInkBool called before globals were initialized.");
+            return;
+        }
+
+        _dialogueVar.SetBool(variableName, value);
+
+        // If a dialogue is currently playing, update the active story immediately too.
+        if (_currentStory != null)
+        {
+            _currentStory.variablesState.SetGlobal(variableName, new BoolValue(value));
+        }
+    }
+
+    public bool TryGetGlobalInkInt(string variableName, out int value)
+    {
+        value = default;
+        if (_dialogueVar == null)
+        {
+            return false;
+        }
+
+        return _dialogueVar.TryGetInt(variableName, out value);
+    }
+
+    public int GetGlobalInkInt(string variableName, int defaultValue = 0)
+    {
+        return TryGetGlobalInkInt(variableName, out int value) ? value : defaultValue;
+    }
+
+    public void SetGlobalInkInt(string variableName, int value)
+    {
+        if (_dialogueVar == null)
+        {
+            Debug.LogWarning("DialogueManager.SetGlobalInkInt called before globals were initialized.");
+            return;
+        }
+
+        _dialogueVar.SetInt(variableName, value);
+
+        if (_currentStory != null)
+        {
+            _currentStory.variablesState.SetGlobal(variableName, new IntValue(value));
+        }
+    }
+
+    public bool TryGetGlobalInkFloat(string variableName, out float value)
+    {
+        value = default;
+        if (_dialogueVar == null)
+        {
+            return false;
+        }
+
+        return _dialogueVar.TryGetFloat(variableName, out value);
+    }
+
+    public float GetGlobalInkFloat(string variableName, float defaultValue = 0f)
+    {
+        return TryGetGlobalInkFloat(variableName, out float value) ? value : defaultValue;
+    }
+
+    public void SetGlobalInkFloat(string variableName, float value)
+    {
+        if (_dialogueVar == null)
+        {
+            Debug.LogWarning("DialogueManager.SetGlobalInkFloat called before globals were initialized.");
+            return;
+        }
+
+        _dialogueVar.SetFloat(variableName, value);
+
+        if (_currentStory != null)
+        {
+            _currentStory.variablesState.SetGlobal(variableName, new FloatValue(value));
+        }
+    }
+
     private void Awake()
     {
         if (_instance != null) Debug.LogWarning("Found more than one Dialouge Manager in the scene.");
@@ -183,7 +280,7 @@ public class DialogueManager : MonoBehaviour
                     {
                         string spName = sp.name.ToLower();
                         string tagValueLower = tagValue.ToLower();
-                        if (spName.Contains(tagValueLower.Split(' ')[0])) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
+                        if (spName.Contains(tagValueLower)) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
                         {
                             Debug.Log("sp name= " + spName);
 

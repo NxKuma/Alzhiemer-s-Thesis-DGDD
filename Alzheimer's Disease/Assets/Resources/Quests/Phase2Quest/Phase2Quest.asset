@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 294185b0eafd7954bb208b6f004d2616, type: 3}
   m_Name: Phase2Quest
   m_EditorClassIdentifier: 
-  <id>k__BackingField: QuestInfoSO
-  displayName: 
-  questPrerequisites: []
-  questStepPrefabs: []
+  <id>k__BackingField: Phase2Quest
+  displayName: Benji's Move
+  questPrerequisites:
+  - {fileID: 11400000, guid: abd1b76babb510e4290e34465d458ebd, type: 2}
+  questStepPrefabs:
+  - {fileID: 4144240090807829404, guid: 97e98a8c07372a54681772a9ee9a13ed, type: 3}
+  - {fileID: 4395145229905063613, guid: a750cd7e002f21740856a19a1ac73295, type: 3}
+  - {fileID: 4144240090807829404, guid: e9d24e3633401624ba4a34eb1fc1a59e, type: 3}
+  - {fileID: 4144240090807829404, guid: b181d07a8d5665342ab32957d0e6bea7, type: 3}
+  - {fileID: 4395145229905063613, guid: 0da32d4e631184d4db2f96d48e4a564e, type: 3}
+  - {fileID: 4144240090807829404, guid: 14392b36b6636a541be70348003f0f62, type: 3}

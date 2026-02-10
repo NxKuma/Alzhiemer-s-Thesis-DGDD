@@ -132,7 +132,7 @@ public class DialogueTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {   
             _playerInRange = true;
-            Debug.Log("PLAYER ENTERED "+ this.transform.parent.GetComponent<NPCScript>().GetNPCName()  +" TRIGGER");
+            // Debug.Log("PLAYER ENTERED "+ this.transform.parent.GetComponent<NPCScript>().GetNPCName()  +" TRIGGER");
         }
     }
 
@@ -141,7 +141,7 @@ public class DialogueTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             _playerInRange = false;
-            Debug.Log("PLAYER EXITED "+ this.transform.parent.GetComponent<NPCScript>().GetNPCName() +" TRIGGER");
+            // Debug.Log("PLAYER EXITED "+ this.transform.parent.GetComponent<NPCScript>().GetNPCName() +" TRIGGER");
         }
     }
 
