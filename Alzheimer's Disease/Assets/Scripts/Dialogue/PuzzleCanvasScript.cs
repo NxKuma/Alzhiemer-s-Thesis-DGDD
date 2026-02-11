@@ -85,6 +85,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
         {
             if(Input.GetMouseButtonDown(0))
             {
+                _dialogueManager.SetSpriteCompletion(CheckPuzzleAccuracy());
                 _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Dialouging);
             }
         }
@@ -222,6 +223,19 @@ public class PuzzleCAnvasScript : MonoBehaviour
             RectTransform rt = piece.GetComponent<RectTransform>();
             if (rt != null) { rt.anchoredPosition = Vector2.zero; rt.localRotation = Quaternion.identity; }
         }
+    }
+
+    private float CheckPuzzleAccuracy()
+    {
+        float correctNessPercentage = 0f;
+        foreach(GameObject piece in _puzzlePiecesList)
+        {
+            if (piece.transform.parent.name.Contains(piece.name.Split('_')[1]))
+            {
+                correctNessPercentage += 1f;
+            } // piece is in correct slot
+        }
+        return (correctNessPercentage / 9f)*100f; // there are 9 pieces in total
     }
 
     private void RandomizeChildOrder(Transform parent)

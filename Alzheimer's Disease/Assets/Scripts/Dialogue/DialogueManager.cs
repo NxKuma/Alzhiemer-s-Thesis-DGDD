@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using Ink.UnityIntegration;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.Rendering;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class DialogueManager : MonoBehaviour
     [Header ("NPCs")]
     [SerializeField] private NPC[] _npcs;
     private Sprite[] _spriteLists = new Sprite[0];
+    private float _spriteCompletion = 0f;
 
     public IEnumerable<NPC> GetNpcData()
     {
@@ -296,8 +298,10 @@ public class DialogueManager : MonoBehaviour
                     {
                         string spName = sp.name.ToLower();
                         string tagValueLower = tagValue.ToLower();
+                        //Add a function that has a percentage threshold for each sprite, and if the current completion percentage is above that threshold, it can be used as a portrait. This way we can have portraits that change based on how much of the sprite has been completed.
                         if (spName.Contains(tagValueLower)) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
                         {
+                            
                             Debug.Log("sp name= " + spName);
 
                             SetCurrentNPC(sp);
@@ -371,5 +375,10 @@ public class DialogueManager : MonoBehaviour
         Camera cam = (_dialoguePanel.GetComponent<Canvas>() != null && _dialoguePanel.GetComponent<Canvas>().renderMode != RenderMode.ScreenSpaceOverlay) ? _dialoguePanel.GetComponent<Canvas>().worldCamera : null;
         bool gotPoint = RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, Input.mousePosition, cam, out localPoint);
         return gotPoint && rect.rect.Contains(localPoint);
+    }
+
+    public void SetSpriteCompletion(float completion)
+    {
+        _spriteCompletion = completion;
     }
 }

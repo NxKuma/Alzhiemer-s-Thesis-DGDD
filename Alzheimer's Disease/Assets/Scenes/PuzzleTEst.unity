@@ -629,7 +629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot (7)
+      value: 3-2
       objectReference: {fileID: 0}
     - target: {fileID: 4714865473576402734, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Sprite
@@ -1932,7 +1932,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot (1)
+      value: 1-2
       objectReference: {fileID: 0}
     - target: {fileID: 4373299196784728825, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3152,7 +3152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot (6)
+      value: 3-1
       objectReference: {fileID: 0}
     - target: {fileID: 4714865473576402734, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Sprite
@@ -3946,27 +3946,35 @@ MonoBehaviour:
     - {fileID: 1703834711}
     _placementValues:
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
   _phase2Placements:
@@ -3981,27 +3989,35 @@ MonoBehaviour:
     - {fileID: 1703834711}
     _placementValues:
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
   _phase3Placements:
@@ -4016,27 +4032,35 @@ MonoBehaviour:
     - {fileID: 1703834711}
     _placementValues:
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
     - position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
       room: {fileID: 0}
       isVisible: 0
 --- !u!1001 &883308163
@@ -4089,7 +4113,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot (2)
+      value: 1-2
       objectReference: {fileID: 0}
     - target: {fileID: 4373299196784728825, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4690,7 +4714,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot (3)
+      value: 2-1
       objectReference: {fileID: 0}
     - target: {fileID: 4714865473576402734, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Sprite
@@ -5536,7 +5560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot (4)
+      value: 2-2
       objectReference: {fileID: 0}
     - target: {fileID: 4714865473576402734, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Sprite
@@ -6492,7 +6516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot (8)
+      value: 3-3
       objectReference: {fileID: 0}
     - target: {fileID: 4714865473576402734, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Sprite
@@ -9660,7 +9684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot
+      value: 1-1
       objectReference: {fileID: 0}
     - target: {fileID: 4714865473576402734, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Sprite
@@ -9888,7 +9912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657001127084454767, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Name
-      value: PuzzleSlot (5)
+      value: 2-3
       objectReference: {fileID: 0}
     - target: {fileID: 4714865473576402734, guid: 035a0066cb7d61141b5e1415eab8e7d2, type: 3}
       propertyPath: m_Sprite
@@ -10778,9 +10802,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 400042172392660796, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 1-2
+      objectReference: {fileID: 0}
     - target: {fileID: 404989765193692410, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_CullTransparentMesh
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 575831134565920579, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 2-1
+      objectReference: {fileID: 0}
+    - target: {fileID: 621286113894123572, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 1-1
       objectReference: {fileID: 0}
     - target: {fileID: 713412276609888157, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_CullTransparentMesh
@@ -10837,6 +10873,10 @@ PrefabInstance:
     - target: {fileID: 1143962715312882706, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_CellSize.y
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190016368631874112, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 3-1
       objectReference: {fileID: 0}
     - target: {fileID: 1199236266556324728, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_Sprite
@@ -11282,6 +11322,10 @@ PrefabInstance:
       propertyPath: m_CullTransparentMesh
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5982718268299609425, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 3-3
+      objectReference: {fileID: 0}
     - target: {fileID: 5986707390040845975, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_CullTransparentMesh
       value: 0
@@ -11349,6 +11393,10 @@ PrefabInstance:
     - target: {fileID: 6775510570855446943, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_CullTransparentMesh
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6881146415721537078, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 1-3
       objectReference: {fileID: 0}
     - target: {fileID: 6905031437658678111, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_RaycastTarget
@@ -11441,6 +11489,10 @@ PrefabInstance:
     - target: {fileID: 7134128200380995473, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7808645074490446095, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 2-3
       objectReference: {fileID: 0}
     - target: {fileID: 7867297297726620789, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_Sprite
@@ -11610,6 +11662,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8436801620698920761, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 3-2
+      objectReference: {fileID: 0}
     - target: {fileID: 8445033036195302913, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -11753,6 +11809,10 @@ PrefabInstance:
     - target: {fileID: 8882516428925172576, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier
       value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203471114261925242, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_Name
+      value: 2-2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

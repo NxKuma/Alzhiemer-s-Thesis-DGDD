@@ -6,6 +6,7 @@ using System;
 public struct PlacementInfo
 {
     public Vector3 position;
+    public Vector3 rotation;
     public Transform room;
     public bool isVisible;
 
