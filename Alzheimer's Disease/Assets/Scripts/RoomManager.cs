@@ -817,7 +817,7 @@ private void InstantiateDoor(Transform room, int side, int roomIndex)
     door.name = "Door_" + room.name;
     door.transform.SetParent(room, true);
 
-    Debug.Log($"Door placed for {room.name} at {doorPosition}");
+    // Debug.Log($"Door placed for {room.name} at {doorPosition}");
 }
 
 
