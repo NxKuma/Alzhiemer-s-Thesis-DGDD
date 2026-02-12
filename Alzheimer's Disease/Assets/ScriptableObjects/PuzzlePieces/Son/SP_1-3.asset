@@ -22,4 +22,4 @@ MonoBehaviour:
   _puzzleDimensions: {x: 67.1022, y: 63.9482}
   _puzzlePosition: {x: -5.9931, y: -6.5469}
   _puzzleShaderMaterial: {fileID: 2100000, guid: 9bfd55d9895b88642b2f2411bd118332, type: 2}
-  _puzzleMeshTexture: {fileID: 21300000, guid: 22b2b74b273b5414c8f253067a970322, type: 3}
+  _puzzleMeshTexture: {fileID: 21300000, guid: b8e364c010905af439bc11bc4ff2702c, type: 3}

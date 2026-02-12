@@ -18,5 +18,8 @@ MonoBehaviour:
   _npcEmotions:
   - {fileID: 21300000, guid: 0a1826d1cdb72744baae34cde56a3b49, type: 3}
   - {fileID: 21300000, guid: 5d72613e239da2042aeb92a3ff9800dc, type: 3}
+  - {fileID: 21300000, guid: 437418c891c83064b9d0a761629a0dd7, type: 3}
+  - {fileID: 21300000, guid: e15ebbf41d324d447a20ccb24a597a16, type: 3}
+  - {fileID: 21300000, guid: 2827daac517f75c49add3b0719d742e8, type: 3}
   _npcSize: 1.11
   _npcPrefab: {fileID: 919132149155446097, guid: 6076632c75e210943941836028b33695, type: 3}

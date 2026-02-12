@@ -20,5 +20,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 21686503815fa3848ad4a2388c913128, type: 3}
   - {fileID: 21300000, guid: df59786f9963c634284ef0333c19c8ef, type: 3}
   - {fileID: 21300000, guid: f614ece4e255fad4b80b1d9132314d58, type: 3}
+  - {fileID: 21300000, guid: a515a5d92fa94a944b94b395d17381ca, type: 3}
+  - {fileID: 21300000, guid: 688e8ef42dcd6bf4a8680def5420fafe, type: 3}
+  - {fileID: 21300000, guid: b97d213a87887b04aaa84f0382eb541d, type: 3}
   _npcSize: 1
   _npcPrefab: {fileID: 919132149155446097, guid: 3f4333302b6c77e4bba72fdf0035f5a8, type: 3}

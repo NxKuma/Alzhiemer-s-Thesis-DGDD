@@ -53,7 +53,7 @@ public class QuestPoint : MonoBehaviour
         }// otherwise, start or finish the quest immediately without dialogue
         else 
         {
-            Debug.Log("Player near quest point, processing NPC interact.");
+            // Debug.Log("Player near quest point, processing NPC interact.");
             // start or finish a quest
             if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
             {

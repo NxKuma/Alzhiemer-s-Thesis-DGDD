@@ -30,7 +30,7 @@ public class DialogueManager : MonoBehaviour
     [Header ("NPCs")]
     [SerializeField] private NPC[] _npcs;
     private Sprite[] _spriteLists = new Sprite[0];
-    private float _spriteCompletion = 0f;
+    private int _spriteCompletion = 0;
 
     public IEnumerable<NPC> GetNpcData()
     {
@@ -299,14 +299,28 @@ public class DialogueManager : MonoBehaviour
                         string spName = sp.name.ToLower();
                         string tagValueLower = tagValue.ToLower();
                         //Add a function that has a percentage threshold for each sprite, and if the current completion percentage is above that threshold, it can be used as a portrait. This way we can have portraits that change based on how much of the sprite has been completed.
-                        if (spName.Contains(tagValueLower)) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
-                        {
-                            
-                            Debug.Log("sp name= " + spName);
-
-                            SetCurrentNPC(sp);
-                            break;
+                        if (_spriteCompletion >= 3)
+                        {  
+                            if (spName.Contains(tagValueLower)) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
+                            {
+                                SetCurrentNPC(sp);
+                                break;
+                            }
+                        }else
+                        {   
+                            if (spName.Contains(tagValueLower) && spName.Contains("Anton")) // Check if the sprite name contains the tag value and the current sprite completion (ignoring case and after splitting by '_')
+                            {
+                                Debug.Log("portrait= " + tagValue + ", sprite = " + sp.name);
+                                SetCurrentNPC(sp);
+                                break;
+                            }else if (spName.Contains(_spriteCompletion.ToString()) && spName.Contains(tagValueLower)) // Check if the sprite name contains the tag value and "30" (ignoring case and after splitting by '_')
+                            {
+                                Debug.Log("portrait= " + tagValue + ", sprite = " + sp.name);
+                                SetCurrentNPC(sp);
+                                break;
+                            }
                         }
+                        
                     }
                     Debug.Log("portrait= " + tagValue); //https://youtu.be/tVrxeUIEV9E?si=vu2NrIrVzmKJOjED&t=687
                     break;
@@ -379,6 +393,11 @@ public class DialogueManager : MonoBehaviour
 
     public void SetSpriteCompletion(float completion)
     {
-        _spriteCompletion = completion;
+        if ((int)(completion/30f) >= 1.8)
+        {
+            _spriteCompletion =  (int)Mathf.Ceil(completion/30f);
+        }else{  
+            _spriteCompletion = (int)Mathf.Floor(completion/30f);
+        } 
     }
 }

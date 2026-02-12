@@ -91,7 +91,7 @@ Do you like the color?
     Not really. #speaker:Anton #portrait:Character_Anton_Neutral
     How blunt! #speaker:Rosalyn #portrait:Character_Rosalyn_Angry
     You could have at least lied and pretended to like it!
-    Well, that's too bad. #speaker:Rosalyn #Character_Rosalyn_Happy
+    Well, that's too bad. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     I already bought the paints.
 + Yeah. #speaker:Anton #portrait:Character_Anton_Neutral
     Me too! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy

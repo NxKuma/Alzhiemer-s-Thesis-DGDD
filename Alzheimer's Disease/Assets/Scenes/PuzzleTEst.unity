@@ -13116,6 +13116,14 @@ PrefabInstance:
       propertyPath: _interactorSource
       value: 
       objectReference: {fileID: 902916787}
+    - target: {fileID: 6834924776771967722, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.505
+      objectReference: {fileID: 0}
+    - target: {fileID: 6834924776771967722, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6979525407844845045, guid: 4038ce57ecdff81488e5393b799355b9, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.676
