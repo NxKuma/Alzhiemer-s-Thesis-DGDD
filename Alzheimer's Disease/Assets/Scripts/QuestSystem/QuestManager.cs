@@ -21,6 +21,7 @@ public class QuestManager : MonoBehaviour
     {
         GameEventsManager.Instance.questEvents.onStartQuest += StartQuest;
         GameEventsManager.Instance.questEvents.onAdvanceQuest += AdvanceQuest;
+        GameEventsManager.Instance.questEvents.onSetQuestStepIndex += SetQuestStepIndex;
         GameEventsManager.Instance.questEvents.onFinishQuest += FinishQuest;
 
         GameEventsManager.Instance.questEvents.onQuestStepStateChange += QuestStepStateChange;
@@ -31,6 +32,7 @@ public class QuestManager : MonoBehaviour
     {
         GameEventsManager.Instance.questEvents.onStartQuest -= StartQuest;
         GameEventsManager.Instance.questEvents.onAdvanceQuest -= AdvanceQuest;
+        GameEventsManager.Instance.questEvents.onSetQuestStepIndex -= SetQuestStepIndex;
         GameEventsManager.Instance.questEvents.onFinishQuest -= FinishQuest;
 
         GameEventsManager.Instance.questEvents.onQuestStepStateChange -= QuestStepStateChange;
@@ -119,6 +121,46 @@ public class QuestManager : MonoBehaviour
         {
             ChangeQuestState(quest.info.id, QuestState.CAN_FINISH);
         }
+    }
+
+    private void SetQuestStepIndex(string id, int stepIndex)
+    {
+        Quest quest = GetQuestById(id);
+
+        // if the quest is already finished, don't allow regressions
+        if (quest.state == QuestState.FINISHED)
+        {
+            return;
+        }
+
+        quest.SetCurrentStepIndex(stepIndex);
+
+        // Destroy any active quest step objects for this quest that are not the target step.
+        QuestStep[] activeSteps = this.transform.GetComponentsInChildren<QuestStep>(true);
+        bool hasTargetStepObject = false;
+        foreach (QuestStep activeStep in activeSteps)
+        {
+            if (activeStep == null || activeStep.QuestId != id)
+            {
+                continue;
+            }
+
+            if (activeStep.StepIndex == stepIndex)
+            {
+                hasTargetStepObject = true;
+                continue;
+            }
+
+            Destroy(activeStep.gameObject);
+        }
+
+        // Ensure the target step exists in the scene.
+        if (quest.CurrentStepExists() && !hasTargetStepObject)
+        {
+            quest.InstantiateCurrentQuestStep(this.transform);
+        }
+
+        ChangeQuestState(id, quest.state);
     }
 
     private void FinishQuest(string id)

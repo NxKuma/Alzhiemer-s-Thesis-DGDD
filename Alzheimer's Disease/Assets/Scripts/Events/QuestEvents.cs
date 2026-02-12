@@ -23,6 +23,15 @@ public class QuestEvents
         }
     }
 
+    public event Action<string, int> onSetQuestStepIndex;
+    public void SetQuestStepIndex(string id, int stepIndex)
+    {
+        if (onSetQuestStepIndex != null)
+        {
+            onSetQuestStepIndex(id, stepIndex);
+        }
+    }
+
     public event Action<string> onFinishQuest;
     public void FinishQuest(string id)
     {

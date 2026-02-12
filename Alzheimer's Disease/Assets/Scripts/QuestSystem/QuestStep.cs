@@ -8,6 +8,17 @@ public abstract class QuestStep : MonoBehaviour
     private string questId;
     private int stepIndex;
 
+    public string QuestId => questId;
+    public int StepIndex => stepIndex;
+
+    protected bool IsFinished => isFinished;
+    protected void SetFinishedState(bool finished)
+    {
+        isFinished = finished;
+    }
+
+    protected virtual bool DestroyOnFinish => true;
+
     public void InitializeQuestStep(string questId, int stepIndex, string questStepState)
     {
         this.questId = questId;
@@ -24,7 +35,10 @@ public abstract class QuestStep : MonoBehaviour
         {
             isFinished = true;
             GameEventsManager.Instance.questEvents.AdvanceQuest(questId);
-            Destroy(this.gameObject);
+            if (DestroyOnFinish)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 

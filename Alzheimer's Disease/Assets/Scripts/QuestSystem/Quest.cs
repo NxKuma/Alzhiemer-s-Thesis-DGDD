@@ -47,6 +47,16 @@ public class Quest
         currentQuestStepIndex++;
     }
 
+    public void SetCurrentStepIndex(int stepIndex)
+    {
+        currentQuestStepIndex = Mathf.Clamp(stepIndex, 0, info.questStepPrefabs.Length);
+    }
+
+    public int GetCurrentStepIndex()
+    {
+        return currentQuestStepIndex;
+    }
+
     public bool CurrentStepExists()
     {
         return (currentQuestStepIndex < info.questStepPrefabs.Length);
