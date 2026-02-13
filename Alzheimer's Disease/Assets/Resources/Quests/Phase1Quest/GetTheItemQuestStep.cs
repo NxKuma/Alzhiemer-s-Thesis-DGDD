@@ -55,6 +55,7 @@ public class GetTheItemQuestStep: QuestStep
         SetFinishedState(false);
         string status = "I think I misplaced the " + _itemRequired.GetItemName() + "...";
         ChangeState("", status);
+        if (_triggerHandler != null) _triggerHandler.PlayerInventory.ItemAdded += ItemCollected;
 
         // Force the quest back onto this step (this also destroys the current active step object for the quest).
         GameEventsManager.Instance.questEvents.SetQuestStepIndex(QuestId, StepIndex);
