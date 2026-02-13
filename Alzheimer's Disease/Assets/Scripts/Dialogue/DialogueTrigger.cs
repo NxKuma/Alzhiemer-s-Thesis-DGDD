@@ -77,10 +77,20 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (_playerInRange && !_dialogueManager.DialogueIsPlaying)
+        if (_playerInRange && !_dialogueManager.DialogueIsPlaying && Physics.SphereCast(_interactorSource.position, 0.2f, _interactorSource.forward,
+                       out RaycastHit hitOneInfo, _interactRange, LayerMask.GetMask("NPCFace")))
         {
-            _interactUI.GetComponent<CanvasGroup>().alpha = 1f;
-            if (Input.GetKeyDown(KeyCode.E))
+           
+            if (hitOneInfo.collider.GetComponent<BoxCollider>() && hitOneInfo.collider.GetComponent<BoxCollider>().name.Contains("Clone"))
+            {
+                // Debug.Log("Player looking at NPC Model");
+                _interactUI.GetComponent<CanvasGroup>().alpha = 1f;
+
+            }
+
+            
+            
+            if (Input.GetKeyDown(KeyCode.E) && _interactUI.GetComponent<CanvasGroup>().alpha == 1f)
             {
                 Vector3 origin = _interactorSource.position + _interactorSource.forward * 0.2f;
                 Ray r = new Ray(origin, _interactorSource.forward);
@@ -103,20 +113,7 @@ public class DialogueTrigger : MonoBehaviour
                             _dialogueManager.EnterDialogueMode(_inkJSON);
                             _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.PuzzleSolving); // Set to dialogue state
 
-                        // if (_dbgCallEvent)
-                        // {
-                        // }
-                        // else Debug.Log("[DialogueTrigger] NPCInteracted skipped (debug)");
-
-                        // if (_dbgCallNpcInteract)
-                        // {   
-                        // }
-                        // else Debug.Log("[DialogueTrigger] npc.Interact skipped (debug)");
-
-                        // if (_dbgCallEnterDialogue)
-                        // {
-                        // }
-                        // else Debug.Log("[DialogueTrigger] EnterDialogueMode skipped (debug)");
+                       
                     }
                 }
             }

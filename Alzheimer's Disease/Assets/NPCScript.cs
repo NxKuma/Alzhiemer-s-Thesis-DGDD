@@ -18,14 +18,20 @@ public class NPCScript : MonoBehaviour
     
     void Awake()
     {
+        //Get the Model first 
         _nPCModel = this.transform.GetChild(0).gameObject;
         GameObject npcMesh = Instantiate(_npcData.GetNPCPrefab(), this.transform);
-        
+        npcMesh.layer = LayerMask.NameToLayer("NPCFace");
+        string npcName = _npcData.GetNPCName();
+
         //Make sure the Model is facing forward
-        if(_npcData.GetNPCName().Contains("Wife")) npcMesh.transform.rotation = Quaternion.Euler(0,45,0);
+        if(npcName.Contains("Wife")) npcMesh.transform.rotation = Quaternion.Euler(0,45,0);
         else npcMesh.transform.rotation = Quaternion.Euler(0,90,0);
+
+        //Lower the NPC model to align with the ground plane
         this.transform.localPosition = new Vector3(this.transform.localPosition.x, -1.2f, this.transform.localPosition.z);
-        if(_npcData.GetNPCName().Contains("Daughter")) 
+
+        if(npcName.Contains("Daughter")) 
         {
             npcMesh.transform.localScale = Vector3.one * _npcData.GetNPCSize();  
             npcMesh.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material = _npcData.GetNPCMaterial();   
@@ -35,6 +41,7 @@ public class NPCScript : MonoBehaviour
         
         }
 
+        // Reparent all children of the original NPC model under the new NPC mesh, adjusting their transforms as needed.
         while (_nPCModel.transform.childCount > 0)
         {
             Transform child = _nPCModel.transform.GetChild(0);
@@ -62,26 +69,34 @@ public class NPCScript : MonoBehaviour
                 Destroy(child.gameObject);
         }
 
+        // When reparenting, the NPC mesh may lose its collider, so we add a new one here. We use a SphereCollider sized to the combined bounds of the NPC mesh renderers to ensure it encompasses the whole model for interaction purposes.
         // Add a SphereCollider sized to the NPC mesh bounds
         Renderer[] renderers = npcMesh.GetComponentsInChildren<Renderer>(true);
         if (renderers.Length > 0)
         {
-            Bounds combinedBounds = renderers[0].bounds;
-            foreach (var rend in renderers)
-            {
-                combinedBounds.Encapsulate(rend.bounds);
-            }
+            // Bounds combinedBounds = renderers[0].bounds;
+            // foreach (var rend in renderers)
+            // {
+            //     combinedBounds.Encapsulate(rend.bounds);
+            // }
 
-            SphereCollider sc = npcMesh.GetComponent<SphereCollider>();
-            if (sc == null) sc = npcMesh.AddComponent<SphereCollider>();
+            Bounds combinedBounds = npcMesh.GetComponentInChildren<SkinnedMeshRenderer>().bounds;
+
+            BoxCollider sc = npcMesh.GetComponent<BoxCollider>();
+            if (sc == null) sc = npcMesh.AddComponent<BoxCollider>();
             
             // Convert world-space bounds center to local space
             Vector3 localCenter = npcMesh.transform.InverseTransformPoint(combinedBounds.center);
             sc.center = localCenter;
             
-            // Radius is half the largest extent of the bounds
-            // float maxExtent = Mathf.Max(combinedBounds.size.x, combinedBounds.size.y, combinedBounds.size.z) / 5f;
-            sc.radius = 0.3f;
+            // Set the size of the BoxCollider to match the combined bounds
+            Vector3 localSize = npcMesh.transform.InverseTransformVector(combinedBounds.size);
+            // sc.size = new Vector3(Mathf.Abs(localSize.x), Mathf.Abs(localSize.y), Mathf.Abs(localSize.z)); // Ensure size is positive
+            Vector3 sizeToChange;
+            if(npcName.Contains("Wife")) sizeToChange = new Vector3(0.38f, 1.8f, 0.35f);
+            else if(npcName.Contains("Daughter")) sizeToChange = new Vector3(0.27f, 1.721977f, 0.25f);
+            else sizeToChange = new Vector3(0.33f, 1.932664f, 0.21f);
+            sc.size = sizeToChange;
         }
     }
 

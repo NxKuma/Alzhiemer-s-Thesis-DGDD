@@ -216,6 +216,7 @@ public class FirstPersonController : MonoBehaviour
     public float highlightOutlineThickness = 0.01f;
     public float highlightLerpSpeed = 12f;
 
+
     private void DetectAndPickupItem()
     {
         // safety checks
@@ -223,17 +224,33 @@ public class FirstPersonController : MonoBehaviour
             return;
 
         // interaction distance (hardcoded so no new serialized fields are required)
-        float interactRange = 2.5f;
+        float interactRange = 2f;
         float hoverScale = 2.2f;
         float lerpSpeed = 5.5f;
         int mask = LayerMask.GetMask("Item");
+        int npcMask = LayerMask.GetMask("NPC");
 
         if (playerCamera != null)
         {
             Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * interactRange, Color.green);
+            
         }
+
         // raycast from camera forward
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        
+        //Another raycast to check if looking at NPC, so DialogueTrigger only turns on when looking at the NPC Model Itself.
+        // if(Physics.Raycast(ray, out RaycastHit hitOne, interactRange, npcMask, QueryTriggerInteraction.Collide))
+        // {
+        //     // try to find NPCScript on hit collider or its parent
+        //     MeshCollider npcMesh = null;
+        //     if (hitOne.collider.attachedRigidbody != null) npcMesh = hitOne.collider.attachedRigidbody.GetComponent<MeshCollider>();
+
+        //     if (npcMesh == null) npcMesh = hitOne.collider.GetComponentInParent<MeshCollider>();
+        //     if (npcMesh == null) npcMesh = hitOne.collider.GetComponentInChildren<MeshCollider>();
+        // }
+
+
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange, mask, QueryTriggerInteraction.Collide))
         {
             // try to find ItemScript on hit collider or its parent
