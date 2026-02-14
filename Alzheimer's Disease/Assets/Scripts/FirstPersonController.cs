@@ -35,12 +35,14 @@ public class FirstPersonController : MonoBehaviour
     public bool lockCursor = true;
     public bool crosshair = true;
     public Sprite crosshairImage;
+    public Sprite crosshairGrab;
+    public Sprite crosshairSpeak;
     public Color crosshairColor = Color.white;
 
     // Internal Variables
     private float yaw = 0.0f;
     private float pitch = 0.0f;
-    private Image crosshairObject;
+    [SerializeField] private Image crosshairObject;
 
     #region Camera Zoom Variables
 
@@ -153,8 +155,10 @@ public class FirstPersonController : MonoBehaviour
 
         if (crosshairObject != null)
         {
+            crosshairObject.rectTransform.localScale = Vector3.one*0.35f;
             _crosshairDefaultColor = crosshairObject.color;
             _crosshairDefaultScale = crosshairObject.rectTransform.localScale;
+            // Debug.Log("Crosshair default scale set to: " + _crosshairDefaultScale);
         }
 
     }
@@ -723,6 +727,16 @@ public class FirstPersonController : MonoBehaviour
             EditorGUILayout.BeginHorizontal(); 
             EditorGUILayout.PrefixLabel(new GUIContent("Crosshair Image", "Sprite to use as the crosshair.")); 
             fpc.crosshairImage = (Sprite)EditorGUILayout.ObjectField(fpc.crosshairImage, typeof(Sprite), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal(); 
+            EditorGUILayout.PrefixLabel(new GUIContent("Crosshair Grab", "Sprite to use as the crosshair when grabbing an object.")); 
+            fpc.crosshairGrab = (Sprite)EditorGUILayout.ObjectField(fpc.crosshairGrab, typeof(Sprite), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal(); 
+            EditorGUILayout.PrefixLabel(new GUIContent("Crosshair Speak", "Sprite to use as the crosshair when speaking to an NPC.")); 
+            fpc.crosshairSpeak = (Sprite)EditorGUILayout.ObjectField(fpc.crosshairSpeak, typeof(Sprite), false);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();

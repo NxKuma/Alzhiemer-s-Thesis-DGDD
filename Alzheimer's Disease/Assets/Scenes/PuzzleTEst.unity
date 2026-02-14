@@ -3734,6 +3734,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4459864850019384740, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      propertyPath: crosshair
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459864850019384740, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      propertyPath: crosshairGrab
+      value: 
+      objectReference: {fileID: 21300000, guid: c5ef2c3812b1dc147bb43d037cd853ee, type: 3}
+    - target: {fileID: 4459864850019384740, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      propertyPath: crosshairImage
+      value: 
+      objectReference: {fileID: 21300000, guid: be4ce60e2c9768c44b9b10b9c5258045, type: 3}
+    - target: {fileID: 4459864850019384740, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      propertyPath: crosshairSpeak
+      value: 
+      objectReference: {fileID: 21300000, guid: 731035bc33c84c44c984b26915ea2250, type: 3}
     - target: {fileID: 4459864850019384750, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
       propertyPath: m_Name
       value: FirstPersonController (1)
