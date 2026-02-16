@@ -19,9 +19,16 @@ public class GetTheItemQuestStep: QuestStep
         }
         if (_triggerHandler.PlayerInventory.GetItemList().Contains(_itemRequired))
         {
-            status = "I already have the " + _itemRequired.GetItemName() + ".";
-            ChangeState("", status);
-            FinishQuestStep();
+            if(TriggerAreaScript.GetItemStatus(_itemRequired) == ItemStatus.Hidden)
+            {  
+                status = "I already have the " + _itemRequired.GetItemName() + ".";
+                ChangeState("", status);
+                FinishQuestStep();
+            }else if(TriggerAreaScript.GetItemStatus(_itemRequired) == ItemStatus.Dropped)
+            {
+                status = "I think I misplaced the " + _itemRequired.GetItemName() + "...";
+                ChangeState("", status);
+            }
         }
     }
 
@@ -60,6 +67,8 @@ public class GetTheItemQuestStep: QuestStep
         // Force the quest back onto this step (this also destroys the current active step object for the quest).
         GameEventsManager.Instance.questEvents.SetQuestStepIndex(QuestId, StepIndex);
     }
+
+    public Item GetItemRequired() => _itemRequired;
 
     protected override void SetQuestStepState(string state)
     {

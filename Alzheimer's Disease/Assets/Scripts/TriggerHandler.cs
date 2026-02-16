@@ -57,4 +57,6 @@ public class TriggerHandler : MonoBehaviour
             }
         }
     }
+
+    public TriggerAreaScript GetCurrentArea() => _currentArea;
 }

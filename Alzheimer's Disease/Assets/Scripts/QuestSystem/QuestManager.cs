@@ -6,6 +6,7 @@ public class QuestManager : MonoBehaviour
 {
     [Header("Config")]
     [SerializeField] private bool loadQuestState = true;
+    [SerializeField] private TriggerHandler _triggerHandlerPrefab;
 
     private Dictionary<string, Quest> questMap;
 
@@ -167,6 +168,18 @@ public class QuestManager : MonoBehaviour
     {
         Quest quest = GetQuestById(id);
         ChangeQuestState(quest.info.id, QuestState.FINISHED);
+
+        // Get the QuestSO for this quest and check the GetItemQuestSteps to mark them complete so that it can be removed in the inventory.
+        QuestInfoSO questInfo = quest.info;
+        foreach (GameObject itemQuest in questInfo.questStepPrefabs)
+        {
+            if (itemQuest.GetComponent<GetTheItemQuestStep>() != null)
+            {
+                GetTheItemQuestStep getTheItemQuestStep = itemQuest.GetComponent<GetTheItemQuestStep>();
+                _triggerHandlerPrefab.PlayerInventory.Inventory_CompleteItem(getTheItemQuestStep.GetItemRequired());
+            }
+        }
+
     }
 
 

@@ -6,6 +6,7 @@ public class Inventory
     private List<Item> _items;
     public event System.Action<Item> ItemAdded; // subscribers receive the added item
     public event System.Action<Item> ItemDropped; // subscribers receive the removed item
+    public event System.Action<Item> ItemComplete; // subscribers receive the completed item
     public Inventory()
     {
         _items = new List<Item>();
@@ -47,6 +48,17 @@ public class Inventory
             Debug.Log("Dropped: " + item.GetItemName());
         }
     }
+
+     //This is to remove the item from the inventory
+    public void Inventory_CompleteItem(Item item)
+    {   
+        if (_items.Contains(item))
+        {
+            ItemComplete?.Invoke(item);
+            Debug.Log("Completed: " + item.GetItemName());
+        }
+    }
+
 
     public List<Item> GetItemList()
     {

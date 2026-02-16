@@ -50,6 +50,7 @@ public class InventoryManager : MonoBehaviour
             _internalInventory = TriggerHandler.Instance.PlayerInventory;
             _internalInventory.ItemAdded += AddToInventoryUI;
             _internalInventory.ItemDropped += RemoveFromInventoryUI;
+            _internalInventory.ItemComplete += RemoveFromInventoryUI;
         }
     }
     private void AddToInventoryUI(Item newItem)

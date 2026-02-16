@@ -4,5 +4,6 @@ public enum ItemStatus
 {
     Dropped,
     Hidden,
-    Spawned
+    Spawned,
+    Complete
 }

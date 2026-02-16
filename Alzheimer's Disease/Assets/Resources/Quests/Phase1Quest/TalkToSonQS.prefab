@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _npcName: Son
   _inkBoolVariableName: 
-  _autoCompleteWhenInkIntAtLeast: -1
+  _autoCompleteWhenInkIntAtLeast: 2
   _autoCompleteWhenInkFloatAtLeast: 1.2
   _inkIntVariableName: gamePhase
   _setBoolWhenAutoCompletedByPhase: 1
