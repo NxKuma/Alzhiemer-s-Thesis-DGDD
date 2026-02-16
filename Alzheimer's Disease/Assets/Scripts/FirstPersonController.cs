@@ -155,7 +155,7 @@ public class FirstPersonController : MonoBehaviour
 
         if (crosshairObject != null)
         {
-            crosshairObject.rectTransform.localScale = Vector3.one*0.35f;
+            crosshairObject.rectTransform.localScale = Vector3.one*0.15f;
             _crosshairDefaultColor = crosshairObject.color;
             _crosshairDefaultScale = crosshairObject.rectTransform.localScale;
             // Debug.Log("Crosshair default scale set to: " + _crosshairDefaultScale);
@@ -219,7 +219,7 @@ public class FirstPersonController : MonoBehaviour
     private ItemScript _hoveredItem;
     public float highlightOutlineThickness = 0.01f;
     public float highlightLerpSpeed = 12f;
-
+    public Material highlightMaterial;
 
     private void DetectAndPickupItem()
     {
@@ -229,10 +229,10 @@ public class FirstPersonController : MonoBehaviour
 
         // interaction distance (hardcoded so no new serialized fields are required)
         float interactRange = 2f;
-        float hoverScale = 2.2f;
+        float hoverScale = 4f;
         float lerpSpeed = 5.5f;
         int mask = LayerMask.GetMask("Item");
-        int npcMask = LayerMask.GetMask("NPC");
+        int npcMask = LayerMask.GetMask("NPCFace");
 
         if (playerCamera != null)
         {
@@ -243,33 +243,46 @@ public class FirstPersonController : MonoBehaviour
         // raycast from camera forward
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         
-        //Another raycast to check if looking at NPC, so DialogueTrigger only turns on when looking at the NPC Model Itself.
-        // if(Physics.Raycast(ray, out RaycastHit hitOne, interactRange, npcMask, QueryTriggerInteraction.Collide))
-        // {
-        //     // try to find NPCScript on hit collider or its parent
-        //     MeshCollider npcMesh = null;
-        //     if (hitOne.collider.attachedRigidbody != null) npcMesh = hitOne.collider.attachedRigidbody.GetComponent<MeshCollider>();
+        // Another raycast to check if looking at NPC, so DialogueTrigger only turns on when looking at the NPC Model Itself.
+        if(Physics.Raycast(ray, out RaycastHit hitOne, interactRange, npcMask, QueryTriggerInteraction.Collide))
+        {
+            // try to find NPCScript on hit collider or its parent
+            MeshCollider npcMesh = null;
+            if (hitOne.collider.attachedRigidbody != null) npcMesh = hitOne.collider.attachedRigidbody.GetComponent<MeshCollider>();
 
-        //     if (npcMesh == null) npcMesh = hitOne.collider.GetComponentInParent<MeshCollider>();
-        //     if (npcMesh == null) npcMesh = hitOne.collider.GetComponentInChildren<MeshCollider>();
-        // }
-
-
-        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, mask, QueryTriggerInteraction.Collide))
+            if (npcMesh == null) npcMesh = hitOne.collider.GetComponentInParent<MeshCollider>();
+            if (npcMesh != null) 
+            {
+                crosshairObject.sprite = crosshairSpeak;
+                // crosshairObject.color = Color.Lerp(crosshairObject.color, Color.green, Time.deltaTime * lerpSpeed);
+                Vector3 hoverTarget = _crosshairDefaultScale * hoverScale;
+                    crosshairObject.rectTransform.localScale = Vector3.Lerp(
+                        crosshairObject.rectTransform.localScale,
+                        hoverTarget,
+                        Time.deltaTime * lerpSpeed
+                    );
+            }
+        }
+        else if (Physics.Raycast(ray, out RaycastHit hit, interactRange, mask, QueryTriggerInteraction.Collide))
         {
             // try to find ItemScript on hit collider or its parent
             ItemScript itemScript = null;
+            Color highlightColor = crosshairObject.color;
             if (hit.collider.attachedRigidbody != null) itemScript = hit.collider.attachedRigidbody.GetComponent<ItemScript>();
 
             if (itemScript == null) itemScript = hit.collider.GetComponentInParent<ItemScript>();
             if (itemScript == null) itemScript = hit.collider.GetComponentInChildren<ItemScript>();
-
+            Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
 
             if (itemScript != null)
             {
-                Color highlightColor = Color.yellow;
-
+                highlightColor = Color.yellow ; // you can adjust the highlight color as needed
+                // if(highlightColor == null) highlightColor = Color.yellow;
+                crosshairObject.material = highlightMaterial;
+                crosshairObject.material.SetTexture("_MainTex", hitRenderer.material.mainTexture);
+                crosshairObject.sprite = crosshairGrab;
                 crosshairObject.color = Color.Lerp(crosshairObject.color, highlightColor, Time.deltaTime * lerpSpeed);
+                
                 itemScript.TweenShadowThickness(highlightOutlineThickness, highlightLerpSpeed);
                 Vector3 hoverTarget = _crosshairDefaultScale * hoverScale;
                     crosshairObject.rectTransform.localScale = Vector3.Lerp(
@@ -312,20 +325,24 @@ public class FirstPersonController : MonoBehaviour
             }
 
         }
+        else
+        {
+            crosshairObject.material = null;
+            crosshairObject.color = Color.Lerp(crosshairObject.color, Color.white, Time.deltaTime * 8f);
+            crosshairObject.sprite = crosshairImage;
+            crosshairObject.rectTransform.localScale = Vector3.Lerp(
+            crosshairObject.rectTransform.localScale,
+            _crosshairDefaultScale,
+            Time.deltaTime * lerpSpeed
+        );
+        }
 
         if (_hoveredItem != null)
         {
             _hoveredItem.TweenShadowThickness(0f, highlightLerpSpeed);
             _hoveredItem = null;
         }
-
-        crosshairObject.color = Color.Lerp(crosshairObject.color, Color.white, Time.deltaTime * 8f);
         
-        crosshairObject.rectTransform.localScale = Vector3.Lerp(
-            crosshairObject.rectTransform.localScale,
-            _crosshairDefaultScale,
-            Time.deltaTime * lerpSpeed
-        );
     }
 
     #endregion
@@ -742,6 +759,11 @@ public class FirstPersonController : MonoBehaviour
             EditorGUILayout.BeginHorizontal();
             fpc.crosshairColor = EditorGUILayout.ColorField(new GUIContent("Crosshair Color", "Determines the color of the crosshair."), fpc.crosshairColor);
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            fpc.highlightMaterial = (Material)EditorGUILayout.ObjectField(new GUIContent("Highlight Material", "Material to use for highlighting objects."), fpc.highlightMaterial, typeof(Material), false);
+            EditorGUILayout.EndHorizontal();
+
             EditorGUI.indentLevel--; 
         }
 

@@ -3750,6 +3750,10 @@ PrefabInstance:
       propertyPath: crosshairSpeak
       value: 
       objectReference: {fileID: 21300000, guid: 731035bc33c84c44c984b26915ea2250, type: 3}
+    - target: {fileID: 4459864850019384740, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
+      propertyPath: highlightMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d80457f94ce0d94fb042bfe1021f784, type: 2}
     - target: {fileID: 4459864850019384750, guid: 02a00303ed534ba46b114634b2e91d85, type: 3}
       propertyPath: m_Name
       value: FirstPersonController (1)
