@@ -44,10 +44,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5320e1f91823d9b4eb0e88d25c7f0252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _globalsInkFile:
+    inkAsset: {fileID: 102900000, guid: a9bd5acf36808214da0d4a6f30753fac, type: 3}
+    jsonAssetDirectory: {fileID: 0}
+    jsonAsset: {fileID: 0}
+    unhandledCompileErrors: []
+    recursiveIncludeErrorPaths: []
+    errors: []
+    warnings: []
+    todos: []
+    masterInkAssets: []
+    localIncludePaths: []
+    includes: []
   _dialoguePanel: {fileID: 0}
   _dialogueText: {fileID: 0}
+  _displayNameText: {fileID: 0}
+  _nextIcon: {fileID: 0}
   _choices:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   _controller: {fileID: 0}
+  _npcs:
+  - {fileID: 11400000, guid: 7fb1c56f04507ab4bb2d361ab201cc77, type: 2}
+  - {fileID: 11400000, guid: fb7569edc67267b4580e75141c996975, type: 2}
+  - {fileID: 11400000, guid: 2f1883af06c8611459f986903d1d4b5c, type: 2}
+  - {fileID: 11400000, guid: 64370685a3f80744cbb1648f5a9a7cda, type: 2}

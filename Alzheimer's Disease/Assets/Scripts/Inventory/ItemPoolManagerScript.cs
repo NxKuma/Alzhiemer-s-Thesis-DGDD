@@ -51,6 +51,7 @@ public class ItemPoolManagerScript : MonoBehaviour
         {
             if (iS.GetItemResource() == item)
             {
+                Debug.Log($"Setting {item.GetItemName()} spawnable in pool");
                 _spawnPool[iS] = true;
                 return;
             }

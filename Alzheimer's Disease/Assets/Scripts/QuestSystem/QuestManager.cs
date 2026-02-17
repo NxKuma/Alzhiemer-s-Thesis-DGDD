@@ -71,11 +71,18 @@ public class QuestManager : MonoBehaviour
     {
         // start true and prove to be false
         bool meetsRequirements = true;
-        return true;
+        // return true;
         
+        // Treat null/empty prerequisites as "no requirements"
+        if (quest.info.questPrerequisites == null || quest.info.questPrerequisites.Length <= 0)
+        {
+            return meetsRequirements;
+        }
+
         // check quest prerequisites for completion
         foreach (QuestInfoSO prerequisiteQuestInfo in quest.info.questPrerequisites)
         {
+            if (prerequisiteQuestInfo == null) continue;
             if (GetQuestById(prerequisiteQuestInfo.id).state != QuestState.FINISHED)
             {
                 meetsRequirements = false;
@@ -109,19 +116,15 @@ public class QuestManager : MonoBehaviour
     {
         Quest quest = GetQuestById(id);
 
-        // move on to the next step
-        quest.MoveToNextStep();
-
-        // if there are more steps, instantiate the next one
-        if (quest.CurrentStepExists())
+        // Move on to the next unfinished step (skipping any steps already completed).
+        if (quest.AdvanceToNextUnfinishedStep())
         {
             quest.InstantiateCurrentQuestStep(this.transform);
+            return;
         }
-        // if there are no more steps, then we've finished all of them for this quest
-        else
-        {
-            ChangeQuestState(quest.info.id, QuestState.CAN_FINISH);
-        }
+
+        // No unfinished steps remain.
+        ChangeQuestState(quest.info.id, QuestState.CAN_FINISH);
     }
 
     private void SetQuestStepIndex(string id, int stepIndex)
@@ -152,7 +155,12 @@ public class QuestManager : MonoBehaviour
                 continue;
             }
 
-            Destroy(activeStep.gameObject);
+            // Keep completed steps in the scene (some steps use DestroyOnFinish=false).
+            // This prevents rewinds from wiping already-finished step objects.
+            if (!activeStep.IsFinishedStep)
+            {
+                Destroy(activeStep.gameObject);
+            }
         }
 
         // Ensure the target step exists in the scene.

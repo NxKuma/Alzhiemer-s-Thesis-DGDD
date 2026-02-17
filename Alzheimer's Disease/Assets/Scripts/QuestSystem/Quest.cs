@@ -47,6 +47,18 @@ public class Quest
         currentQuestStepIndex++;
     }
 
+    public bool AdvanceToNextUnfinishedStep()
+    {
+        currentQuestStepIndex++;
+        while (CurrentStepExists()
+            && questStepStates[currentQuestStepIndex] != null
+            && questStepStates[currentQuestStepIndex].state == "FINISHED")
+        {
+            currentQuestStepIndex++;
+        }
+        return CurrentStepExists();
+    }
+
     public void SetCurrentStepIndex(int stepIndex)
     {
         currentQuestStepIndex = Mathf.Clamp(stepIndex, 0, info.questStepPrefabs.Length);
@@ -113,32 +125,46 @@ public class Quest
 
         if (state == QuestState.REQUIREMENTS_NOT_MET)
         {
-            fullStatus = "Requirements are not yet met to start this quest.";
+            fullStatus = "I don't know what to do with this yet.";
         }
         else if (state == QuestState.CAN_START)
         {
-            fullStatus = "This quest can be started!";
+            fullStatus = "I have to find someone!";
         }
         else 
         {
-            // display all previous quests with strikethroughs
-            for (int i = 0; i < currentQuestStepIndex; i++)
+            // Display steps using explicit FINISHED state so rewinds don't "unfinish" history.
+            for (int i = 0; i < questStepStates.Length; i++)
             {
-                fullStatus += "<s>" + questStepStates[i].status + "</s>\n";
+                if (questStepStates[i] == null) continue;
+                if (string.IsNullOrWhiteSpace(questStepStates[i].status)) continue;
+
+                bool isCurrent = (i == currentQuestStepIndex) && CurrentStepExists();
+                bool isFinishedStep = questStepStates[i].state == "FINISHED";
+
+                if (isCurrent)
+                {
+                    fullStatus += questStepStates[i].status + "\n";
+                }
+                else if (isFinishedStep)
+                {
+                    fullStatus += "<s>" + questStepStates[i].status + "</s>\n";
+                }
             }
-            // display the current step, if it exists
-            if (CurrentStepExists())
+
+            // If we have a current step but no status yet, fall back to the old behavior.
+            if (CurrentStepExists() && string.IsNullOrWhiteSpace(questStepStates[currentQuestStepIndex].status))
             {
                 fullStatus += questStepStates[currentQuestStepIndex].status;
             }
             // when the quest is completed or turned in
             if (state == QuestState.CAN_FINISH)
             {
-                fullStatus += "The quest is ready to be turned in.";
+                fullStatus += "I think I have all that I need.";
             }
             else if (state == QuestState.FINISHED)
             {
-                fullStatus += "The quest has been completed!";
+                fullStatus += "I did this already...";
             }
         }
 

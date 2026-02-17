@@ -23,6 +23,17 @@ public class PuzzleCAnvasScript : MonoBehaviour
     // Saved layouts per NPC: list of (slotName -> pieceName)
     private class SlotSave { public string slotName; public string pieceName; }
     private Dictionary<string, List<SlotSave>> _savedLayouts = new Dictionary<string, List<SlotSave>>();
+
+    private static void ReparentAndNormalize(Transform child, Transform newParent)
+    {
+        if (child == null || newParent == null) return;
+        child.SetParent(newParent, false);
+        child.localScale = Vector3.one;
+        if (child is RectTransform rt)
+        {
+            rt.localScale = Vector3.one;
+        }
+    }
     
     private void Awake() {
         
@@ -163,12 +174,12 @@ public class PuzzleCAnvasScript : MonoBehaviour
             if (piece == null) continue;
             if (!string.IsNullOrEmpty(npcName) && (piece.name.Contains(npcName.Split('-')[0]) || piece.name.Contains(npcName) ) )
             {
-                piece.transform.SetParent(_puzzleAreaParent);
+                ReparentAndNormalize(piece.transform, _puzzleAreaParent);
                 piece.SetActive(true);
             }
             else
             {
-                piece.transform.SetParent(_storageParent);
+                ReparentAndNormalize(piece.transform, _storageParent);
                 piece.SetActive(false);
             }
         }
@@ -179,7 +190,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
         foreach (GameObject piece in _puzzlePiecesList)
         {
             if (piece == null) continue;
-            piece.transform.SetParent(_storageParent, false);
+            ReparentAndNormalize(piece.transform, _storageParent);
             piece.SetActive(false);
         }
     }
@@ -217,11 +228,11 @@ public class PuzzleCAnvasScript : MonoBehaviour
             // find piece by name in our list
             GameObject piece = _puzzlePiecesList.Find(p => p != null && p.name == s.pieceName);
             if (piece == null) continue;
-            piece.transform.SetParent(slot, false);
+            ReparentAndNormalize(piece.transform, slot);
             piece.SetActive(true);
             // reset local transform so it snaps into slot
             RectTransform rt = piece.GetComponent<RectTransform>();
-            if (rt != null) { rt.anchoredPosition = Vector2.zero; rt.localRotation = Quaternion.identity; }
+            if (rt != null) { rt.anchoredPosition = Vector2.zero; rt.localRotation = Quaternion.identity; rt.localScale = Vector3.one; }
         }
     }
 

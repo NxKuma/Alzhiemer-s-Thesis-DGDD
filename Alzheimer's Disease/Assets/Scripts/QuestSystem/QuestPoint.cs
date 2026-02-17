@@ -21,9 +21,20 @@ public class QuestPoint : MonoBehaviour
 
     private QuestIcon questIcon;
 
+    private void Awake()
+    {
+        if (questInfoForPoint != null)
+        {
+            questId = questInfoForPoint.id;
+        }
+    }
+
     private void Start() 
     {
-        questId = questInfoForPoint.id;
+        if (string.IsNullOrEmpty(questId) && questInfoForPoint != null)
+        {
+            questId = questInfoForPoint.id;
+        }
         questIcon = GetComponentInChildren<QuestIcon>();
         if (questIcon == null)
         {

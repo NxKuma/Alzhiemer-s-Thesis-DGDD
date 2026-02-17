@@ -5,6 +5,7 @@ public class CanvasManager : MonoBehaviour
 {
     public static CanvasManager Instance { get; private set; }
     [SerializeField] private Canvas[] _majorCanvasList;
+    [SerializeField] private FirstPersonController _player;
     private Canvas _activeCanvas;
     private EPlayerState _playerState = EPlayerState.Roam ;
     private Dictionary<Canvas, EPlayerState[]> _canvasDictionary = new Dictionary<Canvas, EPlayerState[]>();
@@ -77,6 +78,14 @@ public class CanvasManager : MonoBehaviour
 
     private void CheckState()
     {
+        if (_playerState != EPlayerState.PuzzleSolving && _playerState != EPlayerState.Dialouging && _playerState != EPlayerState.InventoryAccess)
+        {
+            _player.SetCrosshair(true);
+        }
+        else
+        {
+            _player.SetCrosshair(false);
+        }
         foreach (Canvas canvas in _majorCanvasList)
         {
             if (_canvasDictionary.TryGetValue(canvas, out var validStates) &&

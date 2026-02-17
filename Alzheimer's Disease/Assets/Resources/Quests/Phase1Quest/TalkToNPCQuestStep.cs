@@ -19,7 +19,7 @@ public class TalkToNPC : QuestStep
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        string status = "I need to talk to " + _npcName;
+        string status = "I need to talk to my " + _npcName;
         ChangeState("", status);
 
         if (HasAlreadyTalkedToNpc())

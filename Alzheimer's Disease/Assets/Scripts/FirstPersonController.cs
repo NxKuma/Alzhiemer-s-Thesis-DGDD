@@ -163,6 +163,19 @@ public class FirstPersonController : MonoBehaviour
 
     }
 
+    public void SetCrosshair(bool value)
+    {
+        crosshair = value;
+        if (!crosshair)
+        {
+            crosshairObject.gameObject.SetActive(false);
+        }
+        else
+        {
+            crosshairObject.gameObject.SetActive(true);
+        }
+    }
+
     void Start()
     {
         if(lockCursor)
