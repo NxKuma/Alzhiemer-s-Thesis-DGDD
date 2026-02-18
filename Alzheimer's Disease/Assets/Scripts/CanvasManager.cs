@@ -78,7 +78,7 @@ public class CanvasManager : MonoBehaviour
 
     private void CheckState()
     {
-        if (_playerState != EPlayerState.PuzzleSolving && _playerState != EPlayerState.Dialouging && _playerState != EPlayerState.InventoryAccess)
+        if (_playerState != EPlayerState.PuzzleSolving && _playerState != EPlayerState.Dialouging && _playerState != EPlayerState.InventoryAccess && _playerState != EPlayerState.QuestAccess)
         {
             _player.SetCrosshair(true);
         }

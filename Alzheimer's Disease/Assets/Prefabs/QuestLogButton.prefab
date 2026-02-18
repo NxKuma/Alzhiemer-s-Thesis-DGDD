@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1581692589446888917}
   - component: {fileID: 488035964744969376}
   - component: {fileID: 4839640433266798896}
+  - component: {fileID: 6068532976693386800}
   m_Layer: 0
   m_Name: QuestLogButton
   m_TagString: Untagged
@@ -134,6 +135,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a00b1951145194ab9d9b6bb6a8199b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &6068532976693386800
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328373891801358372}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &666816565621847942
 GameObject:
   m_ObjectHideFlags: 0
