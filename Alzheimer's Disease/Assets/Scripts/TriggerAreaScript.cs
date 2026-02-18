@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class TriggerAreaScript : MonoBehaviour
 {
@@ -39,7 +40,9 @@ public class TriggerAreaScript : MonoBehaviour
     private bool SpawnItemInArea(Item item)
     {
         Debug.Log("Attempting to spawn " + item.GetItemName() + " in " + _areaName);
+        
         if (_areaCollider == null) _areaCollider = GetComponent<Collider>();
+
 
         Bounds b = _areaCollider.bounds;
 

@@ -50,7 +50,7 @@ public class ItemPoolManagerScript : MonoBehaviour
         foreach (ItemScript iS in _itemPool)
         {
             if (iS.GetItemResource() == item)
-            {
+            {   
                 Debug.Log($"Setting {item.GetItemName()} spawnable in pool");
                 _spawnPool[iS] = true;
                 return;
