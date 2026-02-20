@@ -19,6 +19,7 @@ public class FirstPersonController : MonoBehaviour
 
     private Vector3 _crosshairDefaultScale;
     private Color _crosshairDefaultColor; // optional but useful
+    private SFXManager sFXManager;
     private Rigidbody rb;
 
     #region Camera Movement Variables
@@ -178,6 +179,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
+        sFXManager = SFXManager.Instance;
         if(lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -551,6 +553,7 @@ public class FirstPersonController : MonoBehaviour
                 isWalking = false;
             }
 
+            PlayFootstepSound();
             // All movement calculations shile sprint is active
             if (enableSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)
             {
@@ -661,6 +664,18 @@ public class FirstPersonController : MonoBehaviour
             walkSpeed *= speedReduction;
 
             isCrouched = true;
+        }
+    }
+
+    private void PlayFootstepSound()
+    {
+        if (sFXManager != null && isGrounded && isWalking)
+        {
+            sFXManager.PlaySFX("steps", true);
+        }
+        else
+        {
+            sFXManager.StopSFX("steps");
         }
     }
 

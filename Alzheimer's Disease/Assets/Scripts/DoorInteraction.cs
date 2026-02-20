@@ -18,9 +18,11 @@ public class DoorInteraction : MonoBehaviour
     private Camera playerCamera;
     private Transform currentLookedAtDoor;
     private bool isInteracting = false;
+    private SFXManager sfxManager;
 
     void Start()
     {
+        sfxManager = SFXManager.Instance;
         playerCamera = GetComponentInChildren<Camera>();
         if (playerCamera == null)
         {
@@ -54,6 +56,7 @@ public class DoorInteraction : MonoBehaviour
         {
             currentLookedAtDoor = hit.transform;
             ToggleDoor(currentLookedAtDoor);
+            sfxManager.PlaySFX("door");
         }
     }
 
