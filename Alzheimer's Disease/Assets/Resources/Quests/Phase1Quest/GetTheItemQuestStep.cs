@@ -66,6 +66,7 @@ public class GetTheItemQuestStep: QuestStep
 
         // Force the quest back onto this step (this also destroys the current active step object for the quest).
         GameEventsManager.Instance.questEvents.SetQuestStepIndex(QuestId, StepIndex);
+        // GameEventsManager.Instance
     }
 
     public Item GetItemRequired() => _itemRequired;

@@ -195,6 +195,16 @@ public class QuestManager : MonoBehaviour
     {
         Quest quest = GetQuestById(id);
         quest.StoreQuestStepState(questStepState, stepIndex);
+
+        // If a quest was marked FINISHED, but one of its steps becomes unfinished again
+        // (e.g., the player drops a required item), reopen the quest.
+        if (quest.state == QuestState.CAN_FINISH
+            && questStepState != null)
+        {
+            quest.SetCurrentStepIndex(stepIndex);
+            quest.state = QuestState.IN_PROGRESS;
+        }
+
         ChangeQuestState(id, quest.state);
     }
 
