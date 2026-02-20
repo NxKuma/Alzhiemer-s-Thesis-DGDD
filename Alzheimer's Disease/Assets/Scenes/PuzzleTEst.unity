@@ -8230,13 +8230,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 1867979965}
   _audioClips:
-  - {fileID: 8300000, guid: d1961f73350dd7e459633c9f6a89a103, type: 3}
-  - {fileID: 8300000, guid: ff60a88c7dc8dc44986f90d2318fb05f, type: 3}
-  - {fileID: 8300000, guid: 39fa30c9d509948409378e05b1bc60eb, type: 3}
+  - {fileID: 8300000, guid: fe8577d2edeb232408dff83c19f9b488, type: 3}
+  - {fileID: 8300000, guid: 7f44097333f2bac4ab4d364c4f2deeb6, type: 3}
+  - {fileID: 8300000, guid: 5e33e7270e11d3f4db3c04723c9bb5c3, type: 3}
   - {fileID: 8300000, guid: ee531634d3f82ee4d84ab3d239a3ee01, type: 3}
-  - {fileID: 8300000, guid: ed0b9498d4e9d1d408f1a4eec279e465, type: 3}
-  - {fileID: 8300000, guid: 90ebb0e57202ad6439ad91a7b7222848, type: 3}
-  - {fileID: 8300000, guid: 27a4519b99ac0d4469a60e5d16dc1a31, type: 3}
+  - {fileID: 8300000, guid: afe8e49c2dcff9247806cfc4c1c4d5e5, type: 3}
+  - {fileID: 8300000, guid: 8d0ac4f96469fdf4fbf4fe8f5d424948, type: 3}
+  - {fileID: 8300000, guid: 6e6f6a0adec611f4d8ec8d671449549e, type: 3}
 --- !u!82 &1867979965
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8294,7 +8294,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.507
       inSlope: 0
       outSlope: 0
       tangentMode: 0

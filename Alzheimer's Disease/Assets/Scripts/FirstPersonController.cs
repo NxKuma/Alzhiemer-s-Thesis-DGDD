@@ -312,6 +312,7 @@ public class FirstPersonController : MonoBehaviour
                     if (_hoveredItem != null) _hoveredItem.TweenShadowThickness(0f, highlightLerpSpeed);
                     _hoveredItem = itemScript;
                     _hoveredItem.TweenShadowThickness(highlightOutlineThickness, highlightLerpSpeed);
+                    sFXManager.PlaySFX("puzzle_glow", true);
                 }
 
                 // pickup on left mouse button (LMB)
@@ -323,6 +324,10 @@ public class FirstPersonController : MonoBehaviour
                         Item itemAsset = itemScript.GetItemResource();
                         if (itemAsset != null)
                         {
+                            sFXManager.StopSFX("puzzle_glow");
+                            if(itemAsset.GetItemtype() == Item.eItemType.JigsawPuzzle) sFXManager.PlaySFX("puzzle_pickup");
+                            else sFXManager.PlaySFX("stash");
+
                             TriggerHandler.Instance.PlayerInventory.Inventory_AddItem(itemAsset);
                             Debug.Log($"Picked up {itemAsset.GetItemName()}");
 
@@ -669,13 +674,13 @@ public class FirstPersonController : MonoBehaviour
 
     private void PlayFootstepSound()
     {
-        if (sFXManager != null && isGrounded && isWalking)
+        if (sFXManager != null && isGrounded && isWalking && sFXManager.IsSFXPlaying("steps") == false)
         {
             sFXManager.PlaySFX("steps", true);
         }
         else
         {
-            if(sFXManager.IsSFXPlaying("steps")) sFXManager.StopSFX("steps");
+            if(sFXManager.IsSFXPlaying("steps") && !isWalking) sFXManager.StopSFX("steps");
         }
     }
 

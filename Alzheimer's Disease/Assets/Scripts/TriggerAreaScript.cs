@@ -9,11 +9,17 @@ public class TriggerAreaScript : MonoBehaviour
     private static Dictionary<Item, ItemStatus> _itemList = new Dictionary<Item, ItemStatus>();
     private static bool _hasPlayer = false;
     private Collider _areaCollider;
+    private SFXManager sFXManager;
 
     void Awake()
     {
         this.GetComponent<Renderer>().enabled = false;
     }
+
+    void Start()
+    {
+        sFXManager = SFXManager.Instance;
+    } 
 
     //DON'T DELETE THIS: Used for triggering spawn and drop areas
     public void DetectPlayer()
@@ -109,6 +115,7 @@ public class TriggerAreaScript : MonoBehaviour
 
         Debug.Log($"Dropped {item.GetItemName()} in {_areaName}");
         SetItemStatus(item, ItemStatus.Dropped);
+        sFXManager.PlaySFX("drop_item");
     }
 
     public void SpawnItem(Item item)

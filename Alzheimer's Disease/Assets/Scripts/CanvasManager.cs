@@ -11,7 +11,8 @@ public class CanvasManager : MonoBehaviour
     private Dictionary<Canvas, EPlayerState[]> _canvasDictionary = new Dictionary<Canvas, EPlayerState[]>();
     
     public event System.Action<EPlayerState> OnCanvasStateChanged; // subscribers will be notified when the canvas state changes
-    
+    private SFXManager sFXManager;
+
     public enum EPlayerState
     {
         Roam,
@@ -46,6 +47,7 @@ public class CanvasManager : MonoBehaviour
 
     void Start()
     {
+        sFXManager = SFXManager.Instance;
         foreach(Canvas canvas in _majorCanvasList)
         {
             if(canvas.name.Contains("UI"))
@@ -85,6 +87,7 @@ public class CanvasManager : MonoBehaviour
         else
         {
             _player.SetCrosshair(false);
+            sFXManager.StopSFX(sFXManager.GetCurrentPlayingSFX());
         }
         foreach (Canvas canvas in _majorCanvasList)
         {
