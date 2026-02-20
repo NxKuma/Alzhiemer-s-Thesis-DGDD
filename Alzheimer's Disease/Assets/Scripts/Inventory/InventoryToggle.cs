@@ -7,20 +7,26 @@ public class InventoryToggle : MonoBehaviour
     [SerializeField] private FirstPersonController _fps;
     [SerializeField] private RectTransform _inventoryRect;
     [SerializeField] private RectTransform _iconRect;
+    [SerializeField] private RectTransform _questRect;
     [SerializeField] private GameObject _pauseIcon;
     private Vector2 _invCurrentPosition;
     private Vector2 _invInitialPosition;
     private Vector2 _invHiddenPosition;
     private Vector2 _iconCurrentPosition;
+    private Vector2 _questCurrentPosition;
     private Vector2 _iconInitialPosition;
+    private Vector2 _questInitialPosition;
     private Vector2 _iconHiddenPosition;
+    private Vector2 _questHiddenPosition;
     private DialogueManager _dialogueManager;
     private CanvasGroup _iconCanvasGroup;
+    private CanvasGroup _questCanvasGroup;
     private CanvasManager _canvasManager;
     [SerializeField] private float toggleDuration = 0.25f;
     private bool _isOpen = true;
     private Coroutine _toggleRoutine;
     private Coroutine _iconBlinkRoutine;
+    private Coroutine _questBlinkRoutine;
     [SerializeField] private float iconBlinkDuration = 0.4f; // total time for one blink (to yellow and back)
 
     // Puzzle-area hover fields (transferred from InventoryManager)
@@ -40,7 +46,7 @@ public class InventoryToggle : MonoBehaviour
         // _iconRect = iconChild != null ? iconChild.GetComponent<RectTransform>() : null;
         // _inventoryRect = child != null ? child.GetComponent<RectTransform>() : null;
 
-        if (_iconRect == null || _inventoryRect == null)
+        if (_iconRect == null || _inventoryRect == null || _questRect)
         {
             Debug.LogWarning("InventoryToggle: missing RectTransform on expected children. Check hierarchy.");
         }
@@ -50,14 +56,18 @@ public class InventoryToggle : MonoBehaviour
         _dialogueManager = DialogueManager.GetInstance();
         _invCurrentPosition = _inventoryRect.anchoredPosition;
         _invInitialPosition = _invCurrentPosition;
-        _invHiddenPosition = -_invInitialPosition; 
+        _invHiddenPosition = -_invInitialPosition*1.5f; 
         _canvasManager = CanvasManager.Instance;
         _iconCurrentPosition = _iconRect.anchoredPosition;
+        _questCurrentPosition = _questRect.anchoredPosition;
         _iconInitialPosition = _iconCurrentPosition;
+        _questInitialPosition = _questCurrentPosition;
         // _iconHiddenPosition = new Vector2(_iconInitialPosition.x + 151f, _iconInitialPosition.y);
         _iconHiddenPosition = new Vector2(_iconInitialPosition.x, _iconInitialPosition.y - 100f);
+        _questHiddenPosition = new Vector2(_questInitialPosition.x, _questInitialPosition.y - 100f);
 
         _iconCanvasGroup = this.GetComponent<CanvasGroup>();
+        _questCanvasGroup = this.GetComponent<CanvasGroup>();
         _isOpen = true;
         _fps.StopStartPlayer(!_isOpen);
         ToggleInventory();
@@ -117,8 +127,10 @@ public class InventoryToggle : MonoBehaviour
         if (_dialogueManager != null && _dialogueManager.DialogueIsPlaying)
         {
             _iconCanvasGroup.alpha = 0f;
+            _questCanvasGroup.alpha = 0f;
         }else{
             _iconCanvasGroup.alpha = 1f;
+            _questCanvasGroup.alpha = 1f;
         }
 
         // Puzzle-area hover handling (transferred from InventoryManager)
@@ -153,6 +165,9 @@ public class InventoryToggle : MonoBehaviour
         Vector2 iconStart = _iconRect.anchoredPosition;
         Vector2 iconEnd = open ? _iconInitialPosition : _iconHiddenPosition;
 
+        Vector2 questStart = _questRect.anchoredPosition;
+        Vector2 questEnd = open ? _questInitialPosition : _questHiddenPosition;
+
         float elapsed = 0f;
 
         while (elapsed < toggleDuration)
@@ -165,18 +180,23 @@ public class InventoryToggle : MonoBehaviour
             
             // move icon and make it invisible when inventory is open
             _iconRect.anchoredPosition = Vector2.Lerp(iconStart, iconEnd, ease);
+            _questRect.anchoredPosition = Vector2.Lerp(questStart, questEnd, ease);
             float iconAlpha = open ? 1f - ease : ease;
+            float questAlpha = open ? 1f - ease : ease;
             float pauseIconAlpha = open ? ease: 1f - ease;
             _iconRect.GetComponent<CanvasGroup>().alpha = iconAlpha;
+            _questRect.GetComponent<CanvasGroup>().alpha = questAlpha;
             _pauseIcon.GetComponent<CanvasGroup>().alpha = pauseIconAlpha;
             yield return null;
         }
 
         _inventoryRect.anchoredPosition = invEnd;
         _iconRect.anchoredPosition = iconEnd;
+        _questRect.anchoredPosition = questEnd;
         _isOpen = open;
         _invCurrentPosition = invEnd;
         _iconCurrentPosition = iconEnd;
+        _questCurrentPosition = questEnd;
         _toggleRoutine = null;
     }
 
