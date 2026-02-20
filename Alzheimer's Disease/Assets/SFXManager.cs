@@ -6,18 +6,9 @@ public class SFXManager : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip[] _audioClips;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         Instance = this;
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void PlaySFX(string sfxName, bool islooping = false)
@@ -56,5 +47,10 @@ public class SFXManager : MonoBehaviour
             Debug.Log($"Stopping SFX: {sfxName}");
             _audioSource.Stop();
         }
+    }
+    
+    public bool IsSFXPlaying(string sfxName)
+    {
+        return _audioSource.isPlaying && _audioSource.clip != null && _audioSource.clip.name == sfxName;
     }
 }

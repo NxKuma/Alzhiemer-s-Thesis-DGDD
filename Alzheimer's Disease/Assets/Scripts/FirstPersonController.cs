@@ -179,7 +179,6 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
-        sFXManager = SFXManager.Instance;
         if(lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -224,6 +223,7 @@ public class FirstPersonController : MonoBehaviour
             sprintBar.gameObject.SetActive(false);
         }
 
+        sFXManager = SFXManager.Instance;
         #endregion
     }
 
@@ -675,7 +675,7 @@ public class FirstPersonController : MonoBehaviour
         }
         else
         {
-            sFXManager.StopSFX("steps");
+            if(sFXManager.IsSFXPlaying("steps")) sFXManager.StopSFX("steps");
         }
     }
 
