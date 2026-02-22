@@ -351,15 +351,17 @@ public class FirstPersonController : MonoBehaviour
             crosshairObject.color = Color.Lerp(crosshairObject.color, Color.white, Time.deltaTime * 8f);
             crosshairObject.sprite = crosshairImage;
             crosshairObject.rectTransform.localScale = Vector3.Lerp(
-            crosshairObject.rectTransform.localScale,
-            _crosshairDefaultScale,
-            Time.deltaTime * lerpSpeed
-        );
+                crosshairObject.rectTransform.localScale,
+                _crosshairDefaultScale,
+                Time.deltaTime * lerpSpeed
+            );
+            if(sFXManager.IsSFXPlaying("puzzle_glow")) sFXManager.StopSFX("puzzle_glow");
         }
 
         if (_hoveredItem != null)
         {
             _hoveredItem.TweenShadowThickness(0f, highlightLerpSpeed);
+
             _hoveredItem = null;
         }
         
