@@ -6,10 +6,11 @@ INCLUDE globals.ink
 - 1: -> phase1
 - 1.1: -> phase1check
 - 2: -> phase2start
-- 2.1: -> phase2GetDishSoap
-- 2.2: -> phase2DishSoapReceived
-- 2.3: -> phase2GetTrashBags
-- 2.4: -> phase2TrashBagsReceived
+- 2.1: -> phase2check
+// - 2.1: -> phase2GetDishSoap
+// - 2.2: -> phase2DishSoapReceived
+// - 2.3: -> phase2GetTrashBags
+// - 2.4: -> phase2TrashBagsReceived
 - 3: -> phase3start
 - 3.1: -> phase3GetTape
 - 3.2: -> phase3TapeReceived
@@ -122,10 +123,11 @@ Did you find the stuff? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     Let me know when you do. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 + [Yeah.] 
     Yeah, I have them. #speaker:Anton #portrait:Character_Anton_Neutral
-    { p1q1s1done and p1q1d1done: 
+    { p1BrushDone and p1RollerDone: 
         -> phase1complete
     - else:
-        Haha, very funny. Let me know when you actually get them. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
+        Haha, very funny. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
+        Let me know when you actually get them. 
     }
 -
 -> DONE
@@ -145,6 +147,13 @@ Of course, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 === phase2start ===
 She seems busy. #speaker:Anton portrait:Character_Anton_Neutral
 -> DONE
+
+=== phase2check ===
+{ p2SoapDone:
+    -> phase2DishSoapReceived
+  - else:
+    -> phase2GetDishSoap
+}
 
 === phase2GetDishSoap ===
 Rosa. #speaker:Anton #portrait:Character_Anton_Neutral
@@ -229,27 +238,38 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
     Take care, Mahal.
 -
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
-~ gamePhase = 2.2
+~ p2SoapDone = true
+// ~ gamePhase = 2.2
 -> DONE
 
 === phase2DishSoapReceived ===
-She's back to painting. #speaker:Anton #portrait:Character_Anton_Neutral
--> DONE
-
-=== phase2GetTrashBags ===
-She seems busy. #speaker:Anton #portrait:Character_Anton_Neutral
--> DONE
-
-=== phase2TrashBagsReceived ===
 The door looks beautiful. #speaker:Anton #portrait:Character_Anton_Neutral
 Aw! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 Thank you, Mahal.
 -> DONE
 
+// === phase2GetTrashBags ===
+// She seems busy. #speaker:Anton #portrait:Character_Anton_Neutral
+// -> DONE
+
+// === phase2TrashBagsReceived ===
+// The door looks beautiful. #speaker:Anton #portrait:Character_Anton_Neutral
+// Aw! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+// Thank you, Mahal.
+// -> DONE
+
 === phase3start ===
 Hello, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
-...Hello. #speaker:Anton #portrait:Character_Anton_Neutral
+... #speaker:Anton #portrait:Character_Anton_Neutral
+Hm.
 -> DONE
+
+=== phase3check ===
+{ p3TapeDone:
+    -> phase3TapeReceived
+  - else:
+    -> phase3GetTape
+}
 
 === phase3GetTape ===
 Rosa? #speaker:Anton #portrait:Character_Anton_Neutral
@@ -290,7 +310,8 @@ Right.
 I'll go do that.
 Thank you.
 You're welcome, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
-~ gamePhase = 3.2
+~ p3TapeDone = true
+// ~ gamePhase = 3.2
 -> DONE
 
 === phase3TapeReceived ===
@@ -304,4 +325,59 @@ I'll be okay here. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 It's almost time... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
 Rosa? #speaker:Anton #portrait:Character_Anton_Neutral
 I'll be okay... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+-> DONE
+
+=== phase5 ===
+Mahal? #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+Rosa? #speaker:Anton #portrait:Character_Anton_Neutral
+They sent a letter.
+Who?
+Benji and Liza. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+Oh. #speaker:Anton #portrait:Character_Anton_Neutral
+What does it say?
+A goodbye and well wishes... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+They said they'll try to visit every month. 
+Tell them not to bother. #speaker:Anton #portrait:Character_Anton_Neutral
+If we're just a nuisance to them anyway.
+Anton. #speaker:Ros?ly? #portrait:Character_Rosalyn_Angry
+What?! #speaker:Anton #portrait:Character_Anton_Angry
+If it's such a chore being around us, then they don't need to be around.
+\(sigh) 
+Anton... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+You know this is why they left. right? 
+You keep fighting us.
+You make it hard for us to take care of you.
+I don't need to be taken care of! #speaker:Anton #portrait:Character_Anton_Angry
+Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+It's okay. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+We need some help and that's okay.
+... #speaker:Anton #portrait:Character_Anton_Neutral
+Hmp.
+We don't need any help. 
+We can handle ourselves just fine.
+... #speaker:R?salyn #portrait:Character_Rosalyn_Sad
+I'm... 
+I'm not so sure about that anymore...
+...
+What?
+Mahal. #speaker:Rosal?n #portrait:Character_Rosalyn_Sad
+I'm sorry, but...
+Just thinking practically.
+We're getting old.
+And this house is too big for just both of us.
+A helping hand would be nice.
+And they could help me take care of you too...
+... #speaker:Anton #portrait:Character_Anton_Neutral
+I don't want to fight over this, Mahal. #speaker:Rosaly? #portrait:Character_Rosalyn_Sad
+I...
+I think it's for our own good too.
+... #speaker:Anton #portrait:Character_Anton_Neutral
+Fine.
+Thank you, Mahal. #speaker:Ros?l?n #portrait:Character_Rosalyn_Neutral
+And... #speaker:R?sal?n #portrait:Character_Rosalyn_Sad
+I truly am sorry.
+... #speaker:Anton #portrait:Character_Anton_Neutral
+Hm.
+... #speaker:Rosal?? #portrait:Character_Rosalyn_Sad
+... #speaker:Anton #portrait:Character_Anton_Sad
 -> DONE
