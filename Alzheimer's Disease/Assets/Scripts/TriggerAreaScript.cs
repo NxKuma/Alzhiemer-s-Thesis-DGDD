@@ -11,6 +11,10 @@ public class TriggerAreaScript : MonoBehaviour
     private Collider _areaCollider;
     private SFXManager sFXManager;
 
+    //TESTING ONLY - TO BE REMOVED LATER
+    private Music music;
+    private event System.Action<string> PlayerEntered;
+
     void Awake()
     {
         this.GetComponent<Renderer>().enabled = false;
@@ -19,12 +23,17 @@ public class TriggerAreaScript : MonoBehaviour
     void Start()
     {
         sFXManager = SFXManager.Instance;
+        music = Music.Instance;
     } 
 
     //DON'T DELETE THIS: Used for triggering spawn and drop areas
     public void DetectPlayer()
     {
         Debug.Log("Player Entered: " + _areaName);
+        if(_areaName == "LivingRoom" && music != null)
+        {
+            music.SwapTrack();
+        }
         _hasPlayer = true;
         if(TriggerHandler.Instance != null) TriggerHandler.Instance.PlayerInRoom(this);
     }

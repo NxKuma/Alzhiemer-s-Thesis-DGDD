@@ -26,6 +26,7 @@ public class TriggerHandler : MonoBehaviour
 
     }
 
+
     public void PlayerInRoom(TriggerAreaScript area)
     {
         _currentArea = area;
