@@ -305,6 +305,7 @@ public class FirstPersonController : MonoBehaviour
                         hoverTarget,
                         Time.deltaTime * lerpSpeed
                     );
+                if(itemScript.GetItemResource().GetItemtype() == Item.eItemType.JigsawPuzzle) sFXManager.PlaySFX("puzzle_glow", true);
 
                 // start highlight tween for this item and stop previous
                 if (_hoveredItem != itemScript)
@@ -312,7 +313,6 @@ public class FirstPersonController : MonoBehaviour
                     if (_hoveredItem != null) _hoveredItem.TweenShadowThickness(0f, highlightLerpSpeed);
                     _hoveredItem = itemScript;
                     _hoveredItem.TweenShadowThickness(highlightOutlineThickness, highlightLerpSpeed);
-                    sFXManager.PlaySFX("puzzle_glow", true);
                 }
 
                 // pickup on left mouse button (LMB)

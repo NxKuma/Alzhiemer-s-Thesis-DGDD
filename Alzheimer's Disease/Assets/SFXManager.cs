@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,7 +25,8 @@ public class SFXManager : MonoBehaviour
         foreach (AudioSource source in _audioSource)
         {
             fadingCoroutines[source] = false;
-        }   
+        }
+        
     }
 
     private AudioSource GetAvailableAudioSource()
@@ -37,14 +39,14 @@ public class SFXManager : MonoBehaviour
             }
         }
         Debug.LogWarning("SFXManager: All audio sources are currently playing. Consider increasing the number of audio sources for better performance.");
-        return _audioSource[0]; // fallback to first audio source if all are busy
+        return null; // fallback to first audio source if all are busy
     } 
 
     private AudioSource GetAudioSourcePlaying(string sfxName)
     {
         foreach (AudioSource source in _audioSource)
         {
-            if (source.isPlaying && source.clip != null && source.clip.name == sfxName)
+            if (source.isPlaying && source.clip != null && source.clip.name.Contains(sfxName))
             {
                 return source;
             }
@@ -52,17 +54,23 @@ public class SFXManager : MonoBehaviour
         return null;
     }
 
-    public void PlaySFX(string sfxName, bool islooping = false)
+    public async Task PlaySFX(string sfxName, bool islooping = false)
     {
-        AudioSource availAudio = GetAvailableAudioSource();
-        availAudio.volume = 1f;
-
-        if (IsSFXPlaying(sfxName, availAudio))
+        // Only allow one AudioSource to play a given SFX at a time.
+        if (GetAudioSourcePlaying(sfxName) != null)
         {
-            Debug.Log($"SFX '{sfxName}' is already playing on the selected audio source. Skipping play request.");
+            Debug.Log($"SFX '{sfxName}' is already playing on another audio source. Skipping play request.");
             return;
         }
 
+        AudioSource availAudio = GetAvailableAudioSource();
+        if (availAudio == null)
+        {
+            Debug.LogWarning($"SFXManager: No available audio source to play SFX '{sfxName}'. Skipping play request.");
+            return;
+        }
+
+        availAudio.volume = 1f;
         foreach (AudioClip clip in _audioClips)
         {
             if (clip.name.Contains(sfxName))
@@ -83,9 +91,12 @@ public class SFXManager : MonoBehaviour
                 }
                 else
                 {
+                    // StopAllCoroutines(); // stop any ongoing fade coroutines to prevent volume conflicts
                     Debug.Log($"Playing one-shot SFX: {sfxName}");
                     availAudio.loop = false;
                     availAudio.PlayOneShot(clip);
+                    await Task.Delay((int)(clip.length * 1000)); // wait for clip to finish playing
+                    availAudio.clip = null; // clear clip reference after playing one-shot to free up audio source for next use
                     return;
                 }
             }
@@ -93,7 +104,7 @@ public class SFXManager : MonoBehaviour
         Debug.LogWarning($"SFXManager: No audio clip found with name {sfxName}");
     }
 
-    public void StopSFX(string sfxName)
+    public async void StopSFX(string sfxName)
     {
         AudioSource audioSource = GetAudioSourcePlaying(sfxName);
         if (audioSource != null)
@@ -101,7 +112,11 @@ public class SFXManager : MonoBehaviour
             if (audioSource.loop && !fadingCoroutines[audioSource])
             {
                 Debug.Log($"Stopping looping SFX: {sfxName}");
-                StartCoroutine(FadeOutSFXCoroutine(audioSource, 0.5f)); // fade out over 0.5 seconds
+                
+                Task fade = FadeOutSFXAsync(audioSource, 0.5f);
+                await fade;
+                ResetAudioSource(audioSource);
+
             }
             else
             {
@@ -119,7 +134,7 @@ public class SFXManager : MonoBehaviour
 
     public bool IsSFXPlaying(string sfxName, AudioSource specificSource)
     {
-        return specificSource != null && specificSource.isPlaying && specificSource.clip != null && specificSource.clip.name == sfxName;
+        return specificSource != null && specificSource.isPlaying && specificSource.clip != null && specificSource.clip.name.Contains(sfxName);
     }
 
     public string GetCurrentPlayingSFX()
@@ -134,7 +149,7 @@ public class SFXManager : MonoBehaviour
         return null;
     }
 
-    private IEnumerator FadeOutSFXCoroutine(AudioSource audioSource, float fadeDuration)
+    private async Task FadeOutSFXAsync(AudioSource audioSource, float fadeDuration)
     {
         float startVolume = audioSource.volume;
         float elapsedTime = 0f;
@@ -143,13 +158,17 @@ public class SFXManager : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             audioSource.volume = Mathf.Lerp(startVolume, 0f, elapsedTime / fadeDuration);
-            yield return null;
+            await Task.Yield();
         }
-
-        audioSource.Stop();
-        audioSource.volume = startVolume; // reset volume for next time
-        fadingCoroutines[audioSource] = false;
     }
 
-    
+    private void ResetAudioSource(AudioSource audioSource)
+    {
+        audioSource.Stop();
+        audioSource.volume = 1f; // reset volume for next time
+        fadingCoroutines[audioSource] = false;
+        audioSource.clip = null;
+    }
+
+
 }
