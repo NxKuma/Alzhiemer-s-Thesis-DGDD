@@ -8,9 +8,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
+
 
 #if UNITY_EDITOR
-    using UnityEditor;
+using UnityEditor;
     using System.Net;
 #endif
 
@@ -305,7 +307,7 @@ public class FirstPersonController : MonoBehaviour
                         hoverTarget,
                         Time.deltaTime * lerpSpeed
                     );
-                if(itemScript.GetItemResource().GetItemtype() == Item.eItemType.JigsawPuzzle) sFXManager.PlaySFX("puzzle_glow", true);
+                if(itemScript.GetItemResource().GetItemtype() == Item.eItemType.JigsawPuzzle) _ = sFXManager.PlaySFX("puzzle_glow", true);
 
                 // start highlight tween for this item and stop previous
                 if (_hoveredItem != itemScript)
@@ -325,8 +327,8 @@ public class FirstPersonController : MonoBehaviour
                         if (itemAsset != null)
                         {
                             sFXManager.StopSFX("puzzle_glow");
-                            if(itemAsset.GetItemtype() == Item.eItemType.JigsawPuzzle) sFXManager.PlaySFX("puzzle_pickup");
-                            else sFXManager.PlaySFX("stash");
+                            if(itemAsset.GetItemtype() == Item.eItemType.JigsawPuzzle) _ = sFXManager.PlaySFX("puzzle_pickup");
+                            else _ = sFXManager.PlaySFX("stash");
 
                             TriggerHandler.Instance.PlayerInventory.Inventory_AddItem(itemAsset);
                             Debug.Log($"Picked up {itemAsset.GetItemName()}");
