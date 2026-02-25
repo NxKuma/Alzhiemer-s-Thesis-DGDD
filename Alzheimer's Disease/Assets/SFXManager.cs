@@ -109,7 +109,7 @@ public class SFXManager : MonoBehaviour
         AudioSource audioSource = GetAudioSourcePlaying(sfxName);
         if (audioSource != null)
         {
-            if (audioSource.loop && !fadingCoroutines[audioSource])
+            if (audioSource.loop || !fadingCoroutines[audioSource])
             {
                 Debug.Log($"Stopping looping SFX: {sfxName}");
                 
@@ -118,7 +118,7 @@ public class SFXManager : MonoBehaviour
                 ResetAudioSource(audioSource);
 
             }
-            else
+            else if (!audioSource.loop)
             {
                 Debug.Log($"Stopping SFX: {sfxName}");
                 audioSource.Stop();
@@ -164,10 +164,10 @@ public class SFXManager : MonoBehaviour
 
     private void ResetAudioSource(AudioSource audioSource)
     {
-        audioSource.Stop();
-        audioSource.volume = 1f; // reset volume for next time
         fadingCoroutines[audioSource] = false;
+        audioSource.Stop();
         audioSource.clip = null;
+        audioSource.volume = 1f; // reset volume for next time
     }
 
 

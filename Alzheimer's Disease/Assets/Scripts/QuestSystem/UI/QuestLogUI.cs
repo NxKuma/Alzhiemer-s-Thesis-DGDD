@@ -18,11 +18,13 @@ public class QuestLogUI : MonoBehaviour
     private Button firstSelectedButton;
     private CanvasGroup _canvasGroup;
     private CanvasManager _canvasManager;
+    private SFXManager _sFXManager;
 
     private void Start( )
     {
         _canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
         _canvasManager = CanvasManager.Instance;
+        _sFXManager = SFXManager.Instance;
         _canvasGroup.alpha = 0f; // start hidden
         GameEventsManager.Instance.inputEvents.onQuestLogTogglePressed += QuestLogTogglePressed;
         GameEventsManager.Instance.questEvents.onQuestStateChange += QuestStateChange;
@@ -58,6 +60,7 @@ public class QuestLogUI : MonoBehaviour
         _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.QuestAccess);
         GameEventsManager.Instance.playerEvents.DisablePlayerMovement();
         _player.StopStartPlayer(false);
+        _ = _sFXManager.PlaySFX("Quest");
         // note - this needs to happen after the content parent is set active,
         // or else the onSelectAction won't work as expected
         if (firstSelectedButton != null)

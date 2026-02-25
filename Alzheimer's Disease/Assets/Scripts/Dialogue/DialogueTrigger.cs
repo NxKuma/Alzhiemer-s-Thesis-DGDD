@@ -88,8 +88,6 @@ public class DialogueTrigger : MonoBehaviour
 
             }
 
-            
-            
             if (Input.GetKeyDown(KeyCode.E) && _interactUI.GetComponent<CanvasGroup>().alpha == 1f)
             {
                 Vector3 origin = _interactorSource.position + _interactorSource.forward * 0.2f;

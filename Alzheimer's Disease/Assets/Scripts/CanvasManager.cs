@@ -90,8 +90,8 @@ public class CanvasManager : MonoBehaviour
         {
             _player.SetCrosshair(false);
 
-            string[] sfxList = new string[] {"OpenInventory", "puzzle", "Quest", "DaughterInLaw", "Son", "Wife"};
-            if(!Array.Exists(sfxList, sfx => sFXManager.GetCurrentPlayingSFX().Contains(sfx)))
+            List<String> sfxList = new List<string> {"OpenInventory", "puzzle", "Quest", "DaughterInLaw", "Son", "Wife"};
+            if(!sfxList.Contains(sFXManager.GetCurrentPlayingSFX()) && sFXManager.GetCurrentPlayingSFX() != null)
             {
                 sFXManager.StopSFX(sFXManager.GetCurrentPlayingSFX());
             }

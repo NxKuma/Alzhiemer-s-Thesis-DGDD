@@ -39,6 +39,12 @@ public class ItemScript : MonoBehaviour
             iSbc.center = mesh.bounds.center;
             iSbc.size = mesh.bounds.size;
             bc.size = mesh.bounds.size;
+
+            if (_isSpinning)
+            {
+                bc.isTrigger = true;
+                iSbc.isTrigger = true;
+            }
         }
 
         if (_itemResource.GetItemMaterial() != null)
