@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -80,14 +81,21 @@ public class CanvasManager : MonoBehaviour
 
     private void CheckState()
     {
-        if (_playerState != EPlayerState.PuzzleSolving && _playerState != EPlayerState.Dialouging && _playerState != EPlayerState.InventoryAccess && _playerState != EPlayerState.QuestAccess)
+        if (_playerState != EPlayerState.PuzzleSolving && _playerState != EPlayerState.Dialouging 
+            && _playerState != EPlayerState.InventoryAccess && _playerState != EPlayerState.QuestAccess)
         {
             _player.SetCrosshair(true);
         }
         else
         {
             _player.SetCrosshair(false);
-            sFXManager.StopSFX(sFXManager.GetCurrentPlayingSFX());
+
+            string[] sfxList = new string[] {"OpenInventory", "puzzle", "Quest", "DaughterInLaw", "Son", "Wife"};
+            if(!Array.Exists(sfxList, sfx => sFXManager.GetCurrentPlayingSFX().Contains(sfx)))
+            {
+                sFXManager.StopSFX(sFXManager.GetCurrentPlayingSFX());
+            }
+            
         }
         foreach (Canvas canvas in _majorCanvasList)
         {

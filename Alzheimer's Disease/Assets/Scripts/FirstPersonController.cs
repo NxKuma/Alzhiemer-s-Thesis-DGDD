@@ -328,7 +328,7 @@ public class FirstPersonController : MonoBehaviour
                         {
                             sFXManager.StopSFX("puzzle_glow");
                             if(itemAsset.GetItemtype() == Item.eItemType.JigsawPuzzle) _ = sFXManager.PlaySFX("puzzle_pickup");
-                            else _ = sFXManager.PlaySFX("stash");
+                            else _ = sFXManager.PlaySFX("ItemTake");
 
                             TriggerHandler.Instance.PlayerInventory.Inventory_AddItem(itemAsset);
                             Debug.Log($"Picked up {itemAsset.GetItemName()}");

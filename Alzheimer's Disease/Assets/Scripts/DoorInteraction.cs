@@ -56,7 +56,7 @@ public class DoorInteraction : MonoBehaviour
         {
             currentLookedAtDoor = hit.transform;
             ToggleDoor(currentLookedAtDoor);
-            sfxManager.PlaySFX("door");
+            
         }
     }
 
@@ -72,10 +72,12 @@ public class DoorInteraction : MonoBehaviour
         if (isOpen)
         {
             CloseDoor(actualDoor);
+            _ = sfxManager.PlaySFX("DoorClose");
         }
         else
         {
             OpenDoor(actualDoor);
+            _ = sfxManager.PlaySFX("door");
         }
     }
 

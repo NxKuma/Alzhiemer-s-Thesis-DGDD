@@ -38,6 +38,7 @@ public class InventoryToggle : MonoBehaviour
     private Vector2 _puzzleCountOriginalAnchoredPos;
     private Vector2 _puzzleCountTargetAnchoredPos;
     private bool _isPuzzleHovered;
+    private SFXManager _sFXManager;
 
     void Awake()
     {
@@ -53,7 +54,7 @@ public class InventoryToggle : MonoBehaviour
     }
     void Start()
     {
-        _dialogueManager = DialogueManager.GetInstance();
+        _sFXManager = SFXManager.Instance;
         _invCurrentPosition = _inventoryRect.anchoredPosition;
         _invInitialPosition = _invCurrentPosition;
         _invHiddenPosition = -_invInitialPosition*1.5f; 
@@ -120,6 +121,7 @@ public class InventoryToggle : MonoBehaviour
         {
             ToggleInventory();
             Cursor.lockState = CursorLockMode.Confined;
+            if(!_isOpen) _sFXManager.PlaySFX("OpenInventory");
             _canvasManager.SetPlayerState(!_isOpen ? (int)CanvasManager.EPlayerState.InventoryAccess : (int)CanvasManager.EPlayerState.Roam);
             
         }
@@ -151,6 +153,8 @@ public class InventoryToggle : MonoBehaviour
         Cursor.visible = !_isOpen;
         if (Cursor.visible) Cursor.lockState = CursorLockMode.Confined;
         else Cursor.lockState = CursorLockMode.Locked;
+        
+
         _fps.StopStartPlayer(_isOpen);
         // stop any existing animation
         if (_toggleRoutine != null) StopCoroutine(_toggleRoutine);
