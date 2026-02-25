@@ -85,7 +85,8 @@ Come now. Let's finish lunch. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 
 
 === phase1 ===
-Hm. This house is getting old. #speaker:Anton #portrait:Character_Anton_Neutral
+Hm. #speaker:Anton #portrait:Character_Anton_Neutral
+This house is getting old. 
 I know, Mahal. That's why I'm redecorating! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 Do you like the color?
 + [No]
@@ -123,7 +124,7 @@ Did you find the stuff? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     Let me know when you do. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 + [Yeah.] 
     Yeah, I have them. #speaker:Anton #portrait:Character_Anton_Neutral
-    { p1BrushDone and p1RollerDone: 
+    { p1BrushDone and p1RollerDone and p1SonDone and p1DILDone  : 
         -> phase1complete
     - else:
         Haha, very funny. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral

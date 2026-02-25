@@ -27,7 +27,7 @@ Hey, Pa. #speaker:B?nj? #portrait:Character_Benji_Neutral
 -> DONE
 
 === phase1check ===
-{p1RollerDone:
+{p1SonDone and p1HaveRoller:
     -> phase1RollerReceived
 - else:
     -> phase1GetRoller
@@ -92,8 +92,9 @@ We want him to have his own.
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 I guess that's good too.
 Thanks, Pa. #speaker:Benj? #portrait:Character_Benji_Happy
-~ p1q1s1done = true // delete after
-~ p1RollerDone = true
+// ~ p1q1s1done = true // delete after
+// ~ p1RollerDone = true
+~ p1SonDone = true
 // ~ gamePhase = 1.2
 -> DONE
 
@@ -168,7 +169,7 @@ Uh.
     Okay. #speaker:B??j? #portrait:Character_Benji_Sad
     Let me know when you do.
 + [Yes.] #speaker:Anton #portrait:Character_Anton_Neutral
-    {p2SoapDone and p2TrashDone:
+    {p2HaveSoap and p2HaveTrash and p2WifeDone and p2DILDone:
         -> phase2TrashBagsReceived
     - else:
         ...? #speaker:B?n?? #portrait:Character_Benji_Neutral
@@ -288,7 +289,7 @@ Family...
 -> DONE
 
 === phase3check ===
-{ p3TapeDone:
+{ p3WifeDone and p3HaveTape: // need to have talked to wife and gotten the 
     -> phase3TapeReceived
   - else:
     -> phase3GetTape    
@@ -344,7 +345,7 @@ Go find Liza, Pa.
 -> DONE
 
 === phase4check ===
-{ p4GameDone:
+{ p4HaveGame:
     -> phase4PuzzleReceived
   - else:
     -> phase4GetPuzzle
@@ -352,7 +353,13 @@ Go find Liza, Pa.
 
 === phase4GetPuzzle ===
 Hm? #speaker:Be??? #portrait:Character_Benji_Neutral
-
+Uh... #speaker:Anton #portrait:Character_Anton_Neutral
+I'm forgetting something.
+What is it? #speaker:B?nj? #portrait:Character_Benji_Neutral
+It's uh... #speaker:Anton #portrait:Character_Anton_Neutral
+It's fine.
+I'll remember.
+... #speaker:B???? #portrait:Character_Benji_Neutral
 -> DONE
 
 === phase4PuzzleReceived ===

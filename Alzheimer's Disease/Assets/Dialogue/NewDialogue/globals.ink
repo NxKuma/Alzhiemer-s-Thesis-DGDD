@@ -1,14 +1,24 @@
 VAR gamePhase = 1
-VAR phase1ItemsComplete = false
+// VAR phase1ItemsComplete = false
 VAR momPieces = 0
 VAR sonPieces = 0
 VAR dilPieces = 0
-VAR p1BrushDone = false
-VAR p1RollerDone = false
-VAR p2SoapDone = false
-VAR p2TrashDone = false
-VAR p3TapeDone = false
-VAR p4GameDone = false
+
+// variables to be edited when the respective item is received
+VAR p1HaveBrush = false
+VAR p1HaveRoller = false
+VAR p2HaveSoap = false
+VAR p2HaveTrash = false
+VAR p3HaveTape = false
+VAR p4HaveGame = false
+
+// variables to be edited when respective npc is spoken to
+VAR p1SonDone = false
+VAR p1DILDone = false
+VAR p2WifeDone = false
+VAR p2DILDone = false
+VAR p3WifeDone = false
+VAR p4SonDone = false
 
 //delete after
 VAR p1q1s1done = false
