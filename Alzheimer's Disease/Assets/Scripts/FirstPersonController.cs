@@ -63,7 +63,7 @@ public class FirstPersonController : MonoBehaviour
 
     #region Movement Variables
 
-    public bool playerCanMove = true;
+    public bool playerCanMove = false;
     public float walkSpeed = 5f;
     public float maxVelocityChange = 10f;
 
@@ -97,6 +97,8 @@ public class FirstPersonController : MonoBehaviour
     private float sprintBarHeight;
     private bool isSprintCooldown = false;
     private float sprintCooldownReset;
+    private bool _canInteract = false; 
+    public bool CanUseMenus { get; private set; } = false;
 
     #endregion
 
@@ -164,6 +166,14 @@ public class FirstPersonController : MonoBehaviour
             // Debug.Log("Crosshair default scale set to: " + _crosshairDefaultScale);
         }
 
+    }
+
+    public void SetTutorialRestrictions(bool movement, bool rotation, bool interaction, bool menus)
+    {
+        playerCanMove = movement;   
+        cameraCanMove = rotation;   
+        _canInteract = interaction; 
+        CanUseMenus = menus;
     }
 
     public void SetCrosshair(bool value)
@@ -243,6 +253,12 @@ public class FirstPersonController : MonoBehaviour
         // safety checks
         if (playerCamera == null || crosshairObject == null)
             return;
+
+        if (!_canInteract) 
+        {
+            crosshairObject.sprite = crosshairImage;
+            return; 
+        }
 
         // interaction distance (hardcoded so no new serialized fields are required)
         float interactRange = 2f;
@@ -332,6 +348,12 @@ public class FirstPersonController : MonoBehaviour
 
                             TriggerHandler.Instance.PlayerInventory.Inventory_AddItem(itemAsset);
                             Debug.Log($"Picked up {itemAsset.GetItemName()}");
+
+                            // Tutorial Trigger
+                            if (TutorialManager.Instance != null && TutorialManager.Instance.GetCurrentStep() == 2)
+                            {
+                                TutorialManager.Instance.CompleteStep();
+                            }
 
                             // remove object from scene (use SetActive(false) if you want pooling)
                             itemScript.TweenShadowThickness(0f, highlightLerpSpeed);

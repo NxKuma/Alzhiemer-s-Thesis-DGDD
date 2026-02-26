@@ -117,6 +117,8 @@ public class InventoryToggle : MonoBehaviour
 
     void Update()
     {
+        if (_fps != null && !_fps.CanUseMenus) return;
+
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
