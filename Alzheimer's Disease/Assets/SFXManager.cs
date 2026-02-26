@@ -56,6 +56,7 @@ public class SFXManager : MonoBehaviour
 
     public async Task PlaySFX(string sfxName, bool islooping = false)
     {
+        float pitcchVariation = Random.Range(0.925f, 1.075f);
         // Only allow one AudioSource to play a given SFX at a time.
         if (GetAudioSourcePlaying(sfxName) != null)
         {
@@ -94,6 +95,7 @@ public class SFXManager : MonoBehaviour
                     // StopAllCoroutines(); // stop any ongoing fade coroutines to prevent volume conflicts
                     Debug.Log($"Playing one-shot SFX: {sfxName}");
                     availAudio.loop = false;
+                    availAudio.pitch = pitcchVariation;
                     availAudio.PlayOneShot(clip);
                     await Task.Delay((int)(clip.length * 1000)); // wait for clip to finish playing
                     availAudio.clip = null; // clear clip reference after playing one-shot to free up audio source for next use

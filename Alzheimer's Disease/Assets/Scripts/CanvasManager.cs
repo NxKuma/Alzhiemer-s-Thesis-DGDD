@@ -42,7 +42,6 @@ public class CanvasManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void OnDestroy()

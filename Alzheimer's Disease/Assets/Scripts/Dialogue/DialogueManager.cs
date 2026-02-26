@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using System;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -61,6 +62,7 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueVariables _dialogueVar;
     private CanvasManager _canvasManager;
+    private SFXManager _sFXManager;
 
     public bool TryGetGlobalInkBool(string variableName, out bool value)
     {
@@ -196,6 +198,7 @@ public class DialogueManager : MonoBehaviour
             index++;
         }
         _canvasManager = CanvasManager.Instance;
+        _sFXManager = SFXManager.Instance;
     }
 
     private void Update()
@@ -213,7 +216,9 @@ public class DialogueManager : MonoBehaviour
             {
                 if(Input.GetMouseButtonDown(0))
                 {
+                    _ = _sFXManager.PlaySFX("button");
                     ContinueStory();
+
                 }
             }
         }
@@ -303,11 +308,23 @@ public class DialogueManager : MonoBehaviour
                     {
                         string spName = sp.name.ToLower();
                         string tagValueLower = tagValue.ToLower();
+                        string sfxName = String.Empty;
+
+                        // if(tagValueLower.Contains("liza"))
+                        // {
+                        //     sfxName = "Daughter";
+                        // }else if(tagValueLower.Contains("benji")){
+                        //     sfxName = "Son";
+                        // }else if(tagValueLower.Contains("rosa")){
+                        //     sfxName = "Wife";
+                        // }
+
                         //Add a function that has a percentage threshold for each sprite, and if the current completion percentage is above that threshold, it can be used as a portrait. This way we can have portraits that change based on how much of the sprite has been completed.
                         if (_spriteCompletion == 0)
                         {  
                             if (spName.Contains(tagValueLower)) // Check if the sprite name contains the tag value (ignoring case and after splitting by '_')
                             {
+                                // if(!spName.Contains("anton")) _ = _sFXManager.PlaySFX(sfxName);
                                 SetCurrentNPC(sp);
                                 break;
                             }
@@ -323,6 +340,7 @@ public class DialogueManager : MonoBehaviour
                             if (spName.Contains(_spriteCompletion.ToString()) && spName.Contains(tagValueLower.Split('_')[1])) // Check if the sprite name contains the tag value and "30" (ignoring case and after splitting by '_')
                             {
                                 Debug.Log("portrait= " + tagValue + ", sprite = " + sp.name);
+                                // _ = _sFXManager.PlaySFX(sfxName);
                                 SetCurrentNPC(sp);
                                 break;
                             }

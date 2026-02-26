@@ -16,6 +16,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private CanvasGroup _canvasGroup;
     private DialogueManager _dialogueManager;
     private CanvasManager _canvasManager;
+    private SFXManager _sFXManager;
     private Inventory _puzzleInventory;
     private string _nPCName;
     private bool _hasRandomized = false;
@@ -66,7 +67,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
         {
             _dialogueManager = DialogueManager.GetInstance();
         }
-
+        _sFXManager = SFXManager.Instance;
         _canvasManager = CanvasManager.Instance;
         _canvasManager.OnCanvasStateChanged += (state) => {
             if (state == CanvasManager.EPlayerState.PuzzleSolving)
@@ -96,6 +97,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
         {
             if(Input.GetMouseButtonDown(0))
             {
+                _ = _sFXManager.PlaySFX("button");
                 _dialogueManager.SetSpriteCompletion(CheckPuzzleAccuracy());
                 _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Dialouging);
             }

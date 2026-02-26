@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class PuzzleDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {   
     public Image puzzleImage;
+    private SFXManager _sFXManager;
     [HideInInspector] public Transform _parentAfterDrag;
 
     // private void Update() {
@@ -15,12 +16,14 @@ public class PuzzleDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private void Start()
     {
+        _sFXManager = SFXManager.Instance;
         Image childImage = gameObject.GetComponentInChildren<Image>();
         childImage.preserveAspect = true;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        _ = _sFXManager.PlaySFX("Hand");
         _parentAfterDrag = transform.parent;
         if (transform.root.Find("PuzzleCanvas") == null) transform.SetParent(GameObject.FindGameObjectWithTag("PuzzleCanvas").transform);
         else transform.SetParent(transform.root.Find("PuzzleCanvas").transform);
@@ -36,6 +39,7 @@ public class PuzzleDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        _ = _sFXManager.PlaySFX("-Put");
         transform.SetParent(_parentAfterDrag);
         puzzleImage.raycastTarget = true;
 

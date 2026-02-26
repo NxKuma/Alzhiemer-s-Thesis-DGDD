@@ -170,7 +170,8 @@ public class FirstPersonController : MonoBehaviour
 
     public void SetTutorialRestrictions(bool movement, bool rotation, bool interaction, bool menus)
     {
-        playerCanMove = movement;   
+        // playerCanMove = movement;
+        StopStartPlayer(movement);
         cameraCanMove = rotation;   
         _canInteract = interaction; 
         CanUseMenus = menus;

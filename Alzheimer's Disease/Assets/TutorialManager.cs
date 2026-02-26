@@ -1,18 +1,21 @@
 using UnityEngine;
-using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private CanvasGroup[] _tutorialSteps;
-    [SerializeField] private float _fadeSpeed = 2f;
-    [SerializeField] private float _fadeDuration = 1f;
-    [SerializeField] private float _startDelay = 3f;
+    [SerializeField] private float _fadeSpeed = 3f;
+    [SerializeField] private float _fadeDuration = 0.25f;
+    [SerializeField] private float _startDelay = 2f;
     [SerializeField] private FirstPersonController _player;
     
     private bool _canDetectInput = false;
     private int _currentStep = 0;
     private bool _isTransitioning = false;
+
+    private CancellationTokenSource _lifetimeCts;
 
     public static TutorialManager Instance { get; private set; }
 
@@ -26,7 +29,7 @@ public class TutorialManager : MonoBehaviour
         
         LockAllInputs();
         EnableCurrentStepInput();
-        StartCoroutine(StartInputDelay());
+        StartInputDelayAsync(GetLifetimeToken());
     }
 
     private void Awake()
@@ -34,11 +37,39 @@ public class TutorialManager : MonoBehaviour
         // Singleton setup
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+
+        _lifetimeCts = new CancellationTokenSource();
     }
 
-    private IEnumerator StartInputDelay()
+    private CancellationToken GetLifetimeToken()
     {
-        yield return new WaitForSeconds(_startDelay);
+        return _lifetimeCts?.Token ?? CancellationToken.None;
+    }
+
+    private static async Task NextFrameAsync(CancellationToken token)
+    {
+        if (token.IsCancellationRequested) return;
+        await Task.Yield();
+    }
+
+    private static async Task WaitForSecondsScaledAsync(float seconds, CancellationToken token)
+    {
+        if (seconds <= 0f) return;
+
+        float elapsed = 0f;
+        while (elapsed < seconds)
+        {
+            if (token.IsCancellationRequested) return;
+            await Task.Yield();
+            elapsed += Time.deltaTime;
+        }
+    }
+
+    private async void StartInputDelayAsync(CancellationToken token)
+    {
+        await WaitForSecondsScaledAsync(_startDelay, token);
+        if (token.IsCancellationRequested) return;
+
         _canDetectInput = true;
         EnableCurrentStepInput();
     }
@@ -73,15 +104,15 @@ public class TutorialManager : MonoBehaviour
     {
         if (_currentStep < _tutorialSteps.Length - 1)
         {
-            StartCoroutine(TransitionStepRoutine());
+            TransitionStepAsync(GetLifetimeToken());
         }
         else
         {
-            StartCoroutine(FadeOutCanvas());
+            FadeOutCanvasAsync(GetLifetimeToken());
         }
     }
 
-    private IEnumerator TransitionStepRoutine()
+    private async void TransitionStepAsync(CancellationToken token)
     {
         int oldStep = _currentStep;
         _isTransitioning = true;
@@ -90,7 +121,8 @@ public class TutorialManager : MonoBehaviour
         {
             while (CanvasManager.Instance.GetPlayerState() != CanvasManager.EPlayerState.Roam)
             {
-                yield return null; 
+                if (token.IsCancellationRequested) return;
+                await NextFrameAsync(token);
             }
         }
 
@@ -99,11 +131,12 @@ public class TutorialManager : MonoBehaviour
 
         while (elapsed < _fadeDuration)
         {
+            if (token.IsCancellationRequested) return;
             elapsed += Time.deltaTime;
             float normalizedTime = elapsed / _fadeDuration;
             _tutorialSteps[oldStep].alpha = 1 - normalizedTime;
             _tutorialSteps[nextStep].alpha = normalizedTime;
-            yield return null;
+            await NextFrameAsync(token);
         }
 
         _tutorialSteps[oldStep].alpha = 0;
@@ -135,7 +168,7 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeOutCanvas()
+    private async void FadeOutCanvasAsync(CancellationToken token)
     {
         _isTransitioning = true;
                 CanvasGroup parentGroup = GetComponent<CanvasGroup>();
@@ -145,9 +178,10 @@ public class TutorialManager : MonoBehaviour
 
         while (progress < 1)
         {
+            if (token.IsCancellationRequested) return;
             progress += Time.deltaTime * _fadeSpeed;
             parentGroup.alpha = Mathf.Lerp(startAlpha, 0, progress);
-            yield return null;
+            await NextFrameAsync(token);
         }
 
         CanvasManager.Instance.FinishTutorial();
