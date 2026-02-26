@@ -1576,6 +1576,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1915159564971239599, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 778018392}
+    - target: {fileID: 1915159564971239599, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MakeChoice
+      objectReference: {fileID: 0}
     - target: {fileID: 2069153635513662137, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1659,6 +1667,22 @@ PrefabInstance:
     - target: {fileID: 3231932743471473256, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
       propertyPath: m_Name
       value: DialogueCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5096571030688227292, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 778018392}
+    - target: {fileID: 5096571030688227292, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MakeChoice
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443370862117631465, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 778018392}
+    - target: {fileID: 5443370862117631465, guid: d2a7e529ec1420440b744d5dbb5c029c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MakeChoice
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4043,6 +4067,10 @@ PrefabInstance:
       propertyPath: _dialogueText
       value: 
       objectReference: {fileID: 908910362}
+    - target: {fileID: 6634918963150384907, guid: 0a91a75e97f8a57499e97d4ce2166db1, type: 3}
+      propertyPath: _debugDialogue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6634918963150384907, guid: 0a91a75e97f8a57499e97d4ce2166db1, type: 3}
       propertyPath: _dialoguePanel
       value: 

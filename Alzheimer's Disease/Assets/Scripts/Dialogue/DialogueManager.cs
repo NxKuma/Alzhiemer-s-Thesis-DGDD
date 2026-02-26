@@ -8,6 +8,7 @@ using Ink.UnityIntegration;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -251,9 +252,11 @@ public class DialogueManager : MonoBehaviour
         _dialoguePanel.GetComponent<CanvasGroup>().alpha = 0f;
         _dialogueText.text = "";
 
+        if(SceneManager.GetActiveScene().name == "Backstory") SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        _controller.StopStartPlayer(true);
+        if(_controller != null) _controller.StopStartPlayer(true);
         _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Roam);
     }
 
