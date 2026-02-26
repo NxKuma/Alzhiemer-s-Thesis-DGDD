@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
+    public static QuestManager Instance { get; private set; }
     [Header("Config")]
     [SerializeField] private bool loadQuestState = true;
     [SerializeField] private TriggerHandler _triggerHandlerPrefab;
@@ -12,6 +13,18 @@ public class QuestManager : MonoBehaviour
 
     // quest start requirements
     private int currentPlayerLevel;
+
+    private void Awake() {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     // private void Start()
     // {

@@ -10,6 +10,10 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
 {
+    private void Awake() {
+        DontDestroyOnLoad(gameObject);    
+    }
+
     public void MovePressed(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled)

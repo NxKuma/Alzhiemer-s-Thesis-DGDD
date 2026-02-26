@@ -23,5 +23,7 @@ public class GameEventsManager : MonoBehaviour
         inputEvents = new InputEvents();
         playerEvents = new PlayerEvents();
         dialogueEvents = new DialogueEvents();
+
+        DontDestroyOnLoad(this.gameObject);
     }
 }

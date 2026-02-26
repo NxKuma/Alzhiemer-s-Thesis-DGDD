@@ -171,6 +171,8 @@ public class DialogueManager : MonoBehaviour
                 _spriteLists = _spriteLists.Append(sp).ToArray();
             }
         }
+
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public static DialogueManager GetInstance()

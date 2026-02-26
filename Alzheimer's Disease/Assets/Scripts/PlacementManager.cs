@@ -111,6 +111,7 @@ public class PlacementDictionary : ISerializationCallbackReceiver
 
 public class PlacementManager : MonoBehaviour
 {
+    public static PlacementManager Instance { get; private set; }
     [SerializeField] private RoomManager _roomManager;
     [SerializeField] private DialogueManager _dialogueManager;
     [SerializeField] private ItemPoolManagerScript _itemPoolManager;
@@ -125,6 +126,18 @@ public class PlacementManager : MonoBehaviour
     private void OnValidate()
     {
         AutoPopulatePlacementKeys();
+    }
+
+    private void Awake() {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning("Multiple PlacementManager instances detected. There should only be one PlacementManager in the scene.", this);
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+
+        DontDestroyOnLoad(this.gameObject);
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
