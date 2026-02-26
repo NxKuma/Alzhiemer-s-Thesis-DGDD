@@ -2,19 +2,15 @@ INCLUDE globals.ink
 
 { gamePhase:
 - 0: //tutorial
-- 0.1: //
 - 1: -> phase1
 - 1.1: -> phase1check
 - 2: -> phase2start
 - 2.1: -> phase2check
-// - 2.1: -> phase2GetDishSoap
-// - 2.2: -> phase2DishSoapReceived
-// - 2.3: -> phase2GetTrashBags
-// - 2.4: -> phase2TrashBagsReceived
 - 3: -> phase3start
-- 3.1: -> phase3GetTape
-- 3.2: -> phase3TapeReceived
+- 3.1: -> phase3check
 - 4: -> phase4
+- 4.1: -> phase4
+- 5: -> phase5
 }
 
 === lunch ===
@@ -141,8 +137,7 @@ Now you'll know which room is which.
 ... #speaker:Anton #portrait:Character_Anton_Neutral
 Thank you, Rosa. 
 Of course, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
-// complete signal here
-~gamePhase = 2
+~ gamePhase = 2
 -> DONE
 
 === phase2start ===
@@ -239,8 +234,6 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
     Take care, Mahal.
 -
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
-// ~ p2SoapDone = true
-// ~ gamePhase = 2.2
 ~ p2WifeDone = true
 -> DONE
 
@@ -249,16 +242,6 @@ The door looks beautiful. #speaker:Anton #portrait:Character_Anton_Neutral
 Aw! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 Thank you, Mahal.
 -> DONE
-
-// === phase2GetTrashBags ===
-// She seems busy. #speaker:Anton #portrait:Character_Anton_Neutral
-// -> DONE
-
-// === phase2TrashBagsReceived ===
-// The door looks beautiful. #speaker:Anton #portrait:Character_Anton_Neutral
-// Aw! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
-// Thank you, Mahal.
-// -> DONE
 
 === phase3start ===
 Hello, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
@@ -313,7 +296,6 @@ I'll go do that.
 Thank you.
 You're welcome, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 ~ p3WifeDone = true
-// ~ gamePhase = 3.2
 -> DONE
 
 === phase3TapeReceived ===
@@ -339,6 +321,34 @@ Oh. #speaker:Anton #portrait:Character_Anton_Neutral
 What does it say?
 A goodbye and well wishes... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
 They said they'll try to visit every month. 
+{ sonPieces > 8 and dilPieces > 8:
+    -> phase5GoodEnd
+- else:
+    -> phase5BadEnd
+}
+= phase5GoodEnd
+Mm. #speaker:Anton #portrait:Character_Anton_Neutral
+They better bring our grandchild.
+I'm sure they will, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+When the time comes.
+...
+It's just the two of us again. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+...
+Yes, it is. #speaker:Anton #portrait:Character_Anton_Neutral
+It seems like the first time in a long time.
+The house feels... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+Bigger...
+... #speaker:Anton #portrait:Character_Anton_Neutral
+We'll find a way to fill the space again. 
+Together.
+... #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+Together.
+... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+So... #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+What would you like for dinner?
+-> DONE
+
+= phase5BadEnd
 Tell them not to bother. #speaker:Anton #portrait:Character_Anton_Neutral
 If we're just a nuisance to them anyway.
 Anton. #speaker:Ros?ly? #portrait:Character_Rosalyn_Angry

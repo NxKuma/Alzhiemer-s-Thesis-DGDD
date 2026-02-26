@@ -2,23 +2,13 @@ INCLUDE globals.ink
 
 { gamePhase:
 - 0: //tutorial
-- 0.1: //
 - 1: -> phase1
 - 1.1: -> phase1check
-// - 1.1: -> phase1GetRoller
-// - 1.2: -> phase1RollerReceived
-// - 1.3: -> phase1GetBrush
-// - 1.4: -> phase1BrushReceived
 - 2: -> phase2start
 - 2.1: -> phase2check
-// - 2.1: -> phase2GetDishSoap
-// - 2.2: -> phase2DishSoapReceived
-// - 2.3: -> phase2GetTrashBags
-// - 2.4: -> phase2TrashBagsReceived
 - 3: -> phase3start
-- 3.1: -> phase3GetTape
-- 3.2: -> phase3TapeReceived
-- 4: -> phase4
+- 3.1: -> phase3check
+- 4: -> phase4start
 }
 
 === phase1 ===
@@ -92,10 +82,7 @@ We want him to have his own.
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 I guess that's good too.
 Thanks, Pa. #speaker:Benj? #portrait:Character_Benji_Happy
-// ~ p1q1s1done = true // delete after
-// ~ p1RollerDone = true
 ~ p1SonDone = true
-// ~ gamePhase = 1.2
 -> DONE
 
 === phase1RollerReceived ===
@@ -182,74 +169,26 @@ Uh.
 -
 -> DONE
 
-// p sure we can delete these from here
-=== phase2GetDishSoap ===
-
--> DONE
-
-=== phase2DishSoapReceived ===
-Here you go. #speaker:Anton #portrait:Character_Anton_Neutral
-Thanks, Pa. #speaker:Be??i #portrait:Character_Benji_Happy
-Actually...
-While you're here, can you get some trashbags too?
-Those should be in the bathroom.
-One of the cabinets under the sink.
-+ [Why?] #speaker:Anton #portrait:Character_Anton_Neutral
-    Why not get it yourself?
-    Aren't you done with the dishes?
-    \(sigh) #speaker:B?nj? #portrait:Character_Benji_Sad
-    I wish.
-    The oil is being stubborn.
-    The new dish soap should help better. #speaker:Ben?? #portrait:Character_Benji_Neutral
-    But until then...
-    Trashbags?
-    \(sigh) #speaker:Anton #portrait:Character_Anton_Neutral
-    Fine.
-+ Sure.  #speaker:Anton #portrait:Character_Anton_Neutral
-    How do you know they're there?
-    From the last time we got groceries. #speaker:Ben?? #portrait:Character_Benji_Neutral
-    We put them there, remember?
-    You were with me.
-    ... #speaker:Anton #portrait:Character_Anton_Neutral
-    Right.
-    Of course, I remember.
-    That was just last week.
-    ... #speaker:B???i #portrait:Character_Benji_Sad
-    Last month, Pa.
-    ... #speaker:Anton #portrait:Character_Anton_Sad
-    \(sigh) #speaker:???j? #portrait:Character_Benji_Sad
-    It's okay, Pa. #speaker:??nj? #portrait:Character_Benji_Neutral
-    You don't need to force yourself.
-    Can you just get the trashbags?
-    ... #speaker:Anton #portrait:Character_Anton_Sad
-    Okay.
-- 
-Thanks again, Pa. #speaker:Ben?i #portrait:Character_Benji_Happy
-// ~ gamePhase = 2.3
--> DONE
-
-=== phase2GetTrashBags ===
-I'm missing something. #speaker:Anton #portrait:Character_Anton_Neutral
--> DONE
-// to here. i just have commitment issues
-
-
 === phase2TrashBagsReceived ===
 #test here if enough pieces
-{ dilPieces > 6:
+{ sonPieces > 6:
     -> recognized
     - else:
     -> notRecognized
         
 }
 = recognized
-TODO: Write recognized scenario (while still forcing DIL out).
 Here. #speaker:Anton #portrait:Character_Anton_Neutral
-Thanks, Pa.
-Are you about done? #speaker:Anton #portrait:Character_Anton_Neutral
-Yeah.
--> DONE
+Thanks, Pa. #speaker:Benj? #portrait:Character_Benji_Happy
+Are you about done with the dishes? #speaker:Anton #portrait:Character_Anton_Neutral
+Yeah, I am. #speaker:Benji #portrait:Character_Benji_Neutral
+I'll finish up here.
+You can sit on the couch or something.
+Thanks again, Pa.
+Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 ~ gamePhase = 3
+-> DONE
+
 = notRecognized
 What are you doing in my house?! #speaker:Anton #portrait:Character_Anton_Angry
 What? #speaker:????? #portrait:Character_Benji_Neutral
@@ -280,7 +219,7 @@ Our family.
 ... #speaker:Anton #portrait:Character_Anton_Sad
 Our...
 Family...
-#black out here
+// black out here
 ~ gamePhase = 3
 -> DONE
 
@@ -289,7 +228,8 @@ Family...
 -> DONE
 
 === phase3check ===
-{ p3WifeDone and p3HaveTape: // need to have talked to wife and gotten the 
+// need to have talked to wife and gotten the tape
+{ p3WifeDone and p3HaveTape: 
     -> phase3TapeReceived
   - else:
     -> phase3GetTape    
@@ -370,13 +310,12 @@ I'll remember.
 }
 = phase4RememberBenji
 I found the puzzle. #speaker:Anton #portrait:Character_Anton_Neutral
-Oh!
-Where'd you find it?
-TODO: Put location  #speaker:Anton #portrait:Character_Anton_Neutral
-Thanks for finding it, Pa.
-Open it to check if it still has all its pieces. #speaker:Anton #portrait:Character_Anton_Neutral
-Right.
-...
+Oh! #speaker:Benji #portrait:Character_Benji_Happy
+That's amazing. Pa!
+Thanks for finding it. #speaker:Benji #portrait:Character_Benji_Happy
+You should open it to check if it still has all its pieces. #speaker:Anton #portrait:Character_Anton_Neutral
+Right. #speaker:Benji #portrait:Character_Benji_Happy
+... #speaker:Benji #portrait:Character_Benji_Neutral
 I'm not counting this.
 Wanna piece it together, Pa?
 Just like old times.
@@ -414,8 +353,8 @@ Thanks, kid.
 = phase4PuzzleEnd
 Oh, you found it. #speaker:??? #portrait:Character_Liza_Neutral
 I'll put it in the luggage, now.
+
 // TAKEN FROM LIZA'S FILE
-// === phase4PuzzleReceived === 
 { dilPieces > 8:
     -> phase4RememberLiza
 - else:
@@ -423,8 +362,34 @@ I'll put it in the luggage, now.
 }
 = phase4RememberLiza
 Mm. #speaker:Anton #portrait:Character_Anton_Neutral
-
-TODO: Good end
+... #speaker:Liza #portrait:Character_Liza_Neutral
+Thanks.
+For helping out with the move.
+... #speaker:Anton #portrait:Character_Anton_Neutral
+Mm.
+... #speaker:Benj? #portrait:Character_Benji_Neutral
+Well...
+That's a start, I suppose.
+Really, though, Pa. #speaker:Benji #portrait:Character_Benji_Happy
+Thanks. #speaker:Benji #portrait:Character_Benji_Happy
+... #speaker:Anton #portrait:Character_Anton_Neutral
+Mm.
+You're welcome.
+... #speaker:Benji #portrait:Character_Benji_Happy
+The truck's arriving in an hour. #speaker:Benji #portrait:Character_Benji_Neutral
+We'll do one last check of our things.
+Then...
+We'll be going, I suppose. #speaker:Benji #portrait:Character_Benji_Sad
+... 
+... #speaker:Anton #portrait:Character_Anton_Neutral
+We'll miss you.
+Heh... #speaker:Benj? #portrait:Character_Benji_Happy
+We'll miss you too, Pa. 
+You guys take care here, okay? #speaker:Benji #portrait:Character_Benji_Neutral
+We will. #speaker:Anton #portrait:Character_Anton_Neutral
+You take care too.
+See you around, Pa.
+//blackout
 ~gamePhase = 5
 -> DONE
 
@@ -438,16 +403,12 @@ Let go of that puzzle box! #speaker:Anton #portrait:Character_Anton_Angry
 + [Take it back.]
 + [Take it back.]
 + [Take it back.]
-+ [Take it back.]
 -
 What are you doing?! #speaker:??? #portrait:Character_Liza_Angry
 Let go! #speaker:Anton #portrait:Character_Anton_Angry
 This is my son's treasure!
 You are not taking it from me!
 From us!
-+ [Take. It. Back.]
-+ [Take. It. Back.]
-+ [Take. It. Back.]
 + [Take. It. Back.]
 + [Take. It. Back.]
 + [Take. It. Back.]
@@ -488,13 +449,4 @@ Stay away from Liza for the time being.
 ... #speaker:Anton #portrait:Character_Anton_Sad
 I'm sorry.
 ~ gamePhase = 5
--> DONE
-
-
-=== phase4 ===
-Hm? #speaker:??? #portrait:Character_Benji_Neutral
-It's nothing. #speaker:Anton #portrait:Character_Anton_Neutral
-You just...
-Remind me of someone.
-...? #speaker:??? #portrait:Character_Benji_Neutral
 -> DONE

@@ -2,22 +2,12 @@ INCLUDE globals.ink
 
 { gamePhase:
 - 0: //tutorial
-- 0.1: //
 - 1: -> phase1
 - 1.1: -> phase1check
-// - 1.1: -> phase1GetRoller
-// - 1.2: -> phase1RollerReceived
-// - 1.3: -> phase1GetBrush
-// - 1.4: -> phase1BrushReceived
 - 2: -> phase2start
 - 2.1: -> phase2check
-// - 2.1: -> phase2GetDishSoap
-// - 2.2: -> phase2DishSoapReceived
-// - 2.3: -> phase2GetTrashBags
-// - 2.4: -> phase2TrashBagsReceived
 - 3: -> phase3start
-// - 3.1: -> phase3GetTape
-// - 3.2: -> phase3TapeReceived
+- 3.1: -> phase3check
 - 4: -> phase4start
 - 4.1: -> phase4check
 }
@@ -33,16 +23,6 @@ Hello, po, Tito. #speaker:Liz? #portrait:Character_Liza_Neutral
 - else:
     -> phase1GetBrush
 }
-
-// === phase1GetRoller ===
-// Who is this person? #speaker:Anton #portrait:Character_Anton_Neutral
-// ...
-// Focus, Anton.
-// -> DONE
-
-// === phase1RollerReceived ===
-// I was supposed to do something else... #speaker:Anton #portrait:Character_Anton_Neutral
-// -> DONE
 
 === phase1GetBrush ===
 Who are you? #speaker:Anton #portrait:Character_Anton_Neutral
@@ -95,10 +75,7 @@ Here. #speaker:L?z? #portrait:Character_Liza_Neutral
 ... #speaker:Anton #portrait:Character_Anton_Neutral
 Thank you.
 Mhm. #speaker:Li?? #portrait:Character_Liza_Neutral
-// ~ p1q1d1done = true
-// ~ p1BrushDone = true
 ~ p1DILDone = true
-// ~ gamePhase = 1.4
 -> DONE
 
 === phase1BrushReceived ===
@@ -120,15 +97,6 @@ I should leave.
     -> phase2GetTrashBags
 }
 
-// === phase2GetDishSoap ===
-// I shouldn't be here. #speaker:Anton #portrait:Character_Anton_Neutral
-// -> DONE
-
-// === phase2DishSoapReceived ===
-// Who is this person? #speaker:Anton #portrait:Character_Anton_Neutral
-// ...
-// I should get back to the task first.
-// -> DONE
 
 === phase2GetTrashBags ===
 Excuse me. #speaker:Anton #portrait:Character_Anton_Neutral
@@ -177,7 +145,6 @@ Now, can you please leave me alone?
 The sooner you do, the sooner we're out of each others' hair.
 Fine. #speaker:Anton #portrait:Character_Anton_Neutral
 ~ p2DILDone = true
-// ~ gamePhase = 2.4
 -> DONE
 
 === phase2TrashBagsReceived ===
@@ -185,7 +152,7 @@ Good riddance. #speaker:Anton #portrait:Character_Anton_Neutral
 -> DONE
 
 === phase3start ===
-Why are there so many boxes? #speaker:Anton #portrait:Character_Anton_Neutral
+Why are there so many boxes here? #speaker:Anton #portrait:Character_Anton_Neutral
 We're moving out. #speaker:Li?? #portrait:Character_Liza_Neutral
 Remember?
 Like you wanted us to?
@@ -205,21 +172,8 @@ Thanks, Pa. #speaker:Be??i #portrait:Character_Benji_Neutral
 -> DONE
 
 === phase3check ===
-// { p3WifeDone:
-//     -> phase3TapeReceived
-//   - else:
-//     -> phase3GetTape    
-// }
 Hmp. #speaker:Anton #portrait:Character_Anton_Neutral
 -> DONE
-
-// === phase3GetTape ===
-// Hmp. #speaker:Anton #portrait:Character_Anton_Neutral
-// -> DONE
-
-// === phase3TapeReceived ===
-// Hm. #speaker:Anton #portrait:Character_Anton_Neutral
-// -> DONE
 
 === phase4start ===
 ... #speaker:Anton #portrait:Character_Anton_Neutral
@@ -273,76 +227,5 @@ I'm surprised you found it.
 That's good.
 Go show Benji.
 I'm sure he'll be happy to see it.
+Mm. #speaker:Anton #portrait:Character_Anton_Neutral
 -> DONE
-
-// this will have to go into benji's file for it to flow
-// === phase4PuzzleReceived ===
-// { dilPieces > 8:
-//     -> phase4Remember
-// - else:
-//     -> phase4Forgot
-// }
-// = phase4Remember
-// TODO: Good end
-
-// = phase4Forgot
-// Is that...? #speaker:Anton #portrait:Character_Anton_Neutral
-// Hey! #speaker:Anton #portrait:Character_Anton_Angry
-// This again... #speaker:??? #portrait:Character_Liza_Neutral
-// Don't touch that! #speaker:Anton #portrait:Character_Anton_Angry
-// What is it this time?! #speaker:??? #portrait:Character_Liza_Angry
-// Let go of that puzzle box! #speaker:Anton #portrait:Character_Anton_Angry
-// + [Take it back.]
-// + [Take it back.]
-// + [Take it back.]
-// + [Take it back.]
-// -
-// What are you doing?! #speaker:??? #portrait:Character_Liza_Angry
-// Let go! #speaker:Anton #portrait:Character_Anton_Angry
-// This is my son's treasure!
-// You are not taking it from me!
-// From us!
-// + [Take. It. Back.]
-// + [Take. It. Back.]
-// + [Take. It. Back.]
-// + [Take. It. Back.]
-// + [Take. It. Back.]
-// + [Take. It. Back.]
-// -
-// This is the last thing for the move! #speaker:??? #portrait:Character_Liza_Angry
-// We're literally done after this!
-// Stop being so stubborn!
-// And let.
-// Us.
-// Go!
-// + [Protect your family.]
-// -
-// AH! #speaker:??? #portrait:Character_Liza_Angry
-// What's going on in here?! #speaker:??? #portrait:Character_Benji_Neutral
-// Liza?! #speaker:??? #portrait:Character_Benji_Angry
-// Pa, what did you do?! 
-// ...What? #speaker:Anton #portrait:Character_Anton_Sad
-// What happened? #speaker:Rosaly? #portrait:Character_Rosalyn_Neutral
-// Oh my god. #speaker:Rosal?? #portrait:Character_Rosalyn_Sad
-// Anton, what did you do?
-// I- #speaker:Anton #portrait:Character_Anton_Sad
-// I didn't-
-// She was-
-// Oh, thank god. #speaker:??? #portrait:Character_Benji_Sad
-// She's okay.
-// ...
-// Maybe it's a good thing we're moving after all.
-// ... #speaker:Rosa??? #portrait:Character_Rosalyn_Sad
-// ... #speaker:Anton #portrait:Character_Anton_Sad
-// ...You should get a caregiver, Ma. #speaker:??? #portrait:Character_Benji_Sad
-// I don't want this to happen to you too. #speaker:??? #portrait:Character_Benji_Neutral
-// I would never- #speaker:Anton #portrait:Character_Anton_Angry
-// You just did, Pa. #speaker:B???? #portrait:Character_Benji_Neutral
-// You just did. #speaker:B???? #portrait:Character_Benji_Sad
-// ...
-// The truck's coming in an hour. #speaker:B???? #portrait:Character_Benji_Neutral
-// Stay away from Liza for the time being.
-// ... #speaker:Anton #portrait:Character_Anton_Sad
-// I'm sorry.
-// ~ gamePhase = 5
-// -> DONE
