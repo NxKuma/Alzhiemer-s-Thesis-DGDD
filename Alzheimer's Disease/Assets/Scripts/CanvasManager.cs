@@ -84,11 +84,11 @@ public class CanvasManager : MonoBehaviour
         if (_playerState != EPlayerState.PuzzleSolving && _playerState != EPlayerState.Dialouging 
             && _playerState != EPlayerState.InventoryAccess && _playerState != EPlayerState.QuestAccess)
         {
-            _player.SetCrosshair(true);
+            if(_player != null) _player.SetCrosshair(true);
         }
         else
         {
-            _player.SetCrosshair(false);
+            if(_player != null) _player.SetCrosshair(false);
 
             List<String> sfxList = new List<string> {"OpenInventory", "puzzle", "Quest", "DaughterInLaw", "Son", "Wife"};
             if(!sfxList.Contains(sFXManager.GetCurrentPlayingSFX()) && sFXManager.GetCurrentPlayingSFX() != null)

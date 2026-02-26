@@ -232,7 +232,7 @@ public class DialogueManager : MonoBehaviour
         // Enable the cursor and disable camera movement.
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
-        _controller.StopStartPlayer(false);
+        if(_controller != null) _controller.StopStartPlayer(false);
 
         // Default Values for Name and Portrait
         _displayNameText.text = "???";

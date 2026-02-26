@@ -1,7 +1,7 @@
 INCLUDE globals.ink
 
 { gamePhase:
-- 0: //tutorial
+- 0: -> lunch
 - 0.1: //
 - 1: -> phase1
 - 1.1: -> phase1check
