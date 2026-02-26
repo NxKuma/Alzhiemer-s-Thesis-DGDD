@@ -124,7 +124,7 @@ Did you find the stuff? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     Let me know when you do. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 + [Yeah.] 
     Yeah, I have them. #speaker:Anton #portrait:Character_Anton_Neutral
-    { p1BrushDone and p1RollerDone and p1SonDone and p1DILDone  : 
+    { p1HaveBrush and p1HaveRoller and p1SonDone and p1DILDone  : 
         -> phase1complete
     - else:
         Haha, very funny. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
@@ -150,7 +150,7 @@ She seems busy. #speaker:Anton portrait:Character_Anton_Neutral
 -> DONE
 
 === phase2check ===
-{ p2SoapDone:
+{ p2HaveSoap and p2WifeDone:
     -> phase2DishSoapReceived
   - else:
     -> phase2GetDishSoap
@@ -239,8 +239,9 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
     Take care, Mahal.
 -
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
-~ p2SoapDone = true
+// ~ p2SoapDone = true
 // ~ gamePhase = 2.2
+~ p2WifeDone = true
 -> DONE
 
 === phase2DishSoapReceived ===
@@ -266,7 +267,7 @@ Hm.
 -> DONE
 
 === phase3check ===
-{ p3TapeDone:
+{ p3HaveTape and p3WifeDone:
     -> phase3TapeReceived
   - else:
     -> phase3GetTape
@@ -311,7 +312,7 @@ Right.
 I'll go do that.
 Thank you.
 You're welcome, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
-~ p3TapeDone = true
+~ p3WifeDone = true
 // ~ gamePhase = 3.2
 -> DONE
 

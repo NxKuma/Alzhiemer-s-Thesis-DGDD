@@ -413,6 +413,7 @@ Thanks, kid.
 
 = phase4PuzzleEnd
 Oh, you found it. #speaker:??? #portrait:Character_Liza_Neutral
+I'll put it in the luggage, now.
 // TAKEN FROM LIZA'S FILE
 // === phase4PuzzleReceived === 
 { dilPieces > 8:
@@ -421,16 +422,18 @@ Oh, you found it. #speaker:??? #portrait:Character_Liza_Neutral
     -> phase4ForgotLiza
 }
 = phase4RememberLiza
+Mm. #speaker:Anton #portrait:Character_Anton_Neutral
+
 TODO: Good end
 ~gamePhase = 5
 -> DONE
 
 = phase4ForgotLiza
-Is that...? #speaker:Anton #portrait:Character_Anton_Neutral
+What are you- #speaker:Anton #portrait:Character_Anton_Neutral
 Hey! #speaker:Anton #portrait:Character_Anton_Angry
 This again... #speaker:??? #portrait:Character_Liza_Neutral
 Don't touch that! #speaker:Anton #portrait:Character_Anton_Angry
-What is it this time?! #speaker:??? #portrait:Character_Liza_Angry
+What now?! #speaker:??? #portrait:Character_Liza_Angry
 Let go of that puzzle box! #speaker:Anton #portrait:Character_Anton_Angry
 + [Take it back.]
 + [Take it back.]
