@@ -22,7 +22,8 @@ public class PuzzleDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public void OnBeginDrag(PointerEventData eventData)
     {
         _parentAfterDrag = transform.parent;
-        transform.SetParent(transform.root.Find("PuzzleCanvas"));
+        if (transform.root.Find("PuzzleCanvas") == null) transform.SetParent(GameObject.FindGameObjectWithTag("PuzzleCanvas").transform);
+        else transform.SetParent(transform.root.Find("PuzzleCanvas").transform);
         transform.SetAsLastSibling();
         puzzleImage.raycastTarget = false;
     }

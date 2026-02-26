@@ -1,4 +1,4 @@
-VAR gamePhase = 0
+VAR gamePhase = 1
 VAR phase1ItemsComplete = false
 VAR momPieces = 0
 VAR sonPieces = 0

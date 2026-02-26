@@ -1,7 +1,7 @@
 INCLUDE globals.ink
 
 { gamePhase:
-- 0: -> lunch
+- 0: //-> lunch
 - 0.1: //
 - 1: -> phase1
 - 1.1: -> phase1check
@@ -40,7 +40,7 @@ Isn't that right, dear?
     I don't remember. 
     ... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     That's okay, Mahal. It's been a long time anyway.
-+ She's right. #speaker:Anton #portrait:Character_Anton_Neutral
++ [She's right]. #speaker:Anton #portrait:Character_Anton_Neutral
     She used to run Barangay Calesa with an iron fist like she was never pregnant at all!
     Walking around like she owns the place.
     Scolding the local ruffians.

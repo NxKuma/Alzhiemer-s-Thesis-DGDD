@@ -91,6 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puzzleImage: {fileID: 8437497684743164484}
   _parentAfterDrag: {fileID: 0}
+  _puzzleCanvas: {fileID: 4257436236488215644, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
 --- !u!1 &5420351750422721359
 GameObject:
   m_ObjectHideFlags: 0
