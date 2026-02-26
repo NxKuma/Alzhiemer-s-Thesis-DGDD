@@ -9,7 +9,7 @@ VAR p1HaveBrush = false
 VAR p1HaveRoller = false
 VAR p2HaveSoap = false
 VAR p2HaveTrash = false
-VAR p3HaveTape = false
+VAR p3HaveBox = false
 VAR p4HaveGame = false
 
 // variables to be edited when respective npc is spoken to

@@ -250,20 +250,20 @@ Hm.
 -> DONE
 
 === phase3check ===
-{ p3HaveTape and p3WifeDone:
-    -> phase3TapeReceived
+{ p3HaveBox and p3WifeDone:
+    -> phase3BoxReceived
   - else:
-    -> phase3GetTape
+    -> phase3GetBox
 }
 
-=== phase3GetTape ===
+=== phase3GetBox ===
 Rosa? #speaker:Anton #portrait:Character_Anton_Neutral
 Hm? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
-Oh. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+Oh! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 Yes, mahal?
-We need some tape for the boxes. #speaker:Anton #portrait:Character_Anton_Neutral
+We need one more box for them. #speaker:Anton #portrait:Character_Anton_Neutral
 Do you have any?
-Tape? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
+We should have more... #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
 Here you go.
 Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
 You're welcome. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
@@ -289,7 +289,7 @@ Thank you, Mahal.
 I love you.
 I love you too. #speaker:Anton #portrait:Character_Anton_Neutral
 Now... #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
-Don't you need to give that tape to someone? 
+Don't you need to give that box to someone? 
 Oh. #speaker:Anton #portrait:Character_Anton_Neutral
 Right.
 I'll go do that.
@@ -298,8 +298,8 @@ You're welcome, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 ~ p3WifeDone = true
 -> DONE
 
-=== phase3TapeReceived ===
-Did you give the tape yet? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
+=== phase3BoxReceived ===
+Did you give the box yet? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
 Not yet. #speaker:Anton #portrait:Character_Anton_Neutral
 Go do that, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
 I'll be okay here. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy

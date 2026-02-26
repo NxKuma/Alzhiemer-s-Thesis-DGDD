@@ -40,17 +40,17 @@ I was just washing my brushes. #speaker:Liza #portrait:Character_Liza_Neutral
 ... #speaker:Anton #portrait:Character_Anton_Neutral
 Those aren't yours.
 ...What? #speaker:Li?a #portrait:Character_Liza_Neutral
-Those aren't your brushes! #speaker:Anton #portrait:Character_Anton_Angry
-Those are Rosa's!
-Give them back!
-What?! #speaker:L??? #portrait:Character_Liza_Angry
+Those aren't your brushes! #speaker:Anton #portrait:Character_Anton_Angry #effect:shake
+Those are Rosa's! 
+Give them back! 
+What?! #speaker:L??? #portrait:Character_Liza_Angry #effect:tense
 No!
 What do you mean, "No"? #speaker:Anton #portrait:Character_Anton_Angry
-How dare you!
+How dare you! #effect:shake
 She gave them to me! #speaker:L??a #portrait:Character_Liza_Angry
 You were there when she did!
 I- #speaker:Anton #portrait:Character_Anton_Angry
-What? #speaker:Anton #portrait:Character_Anton_Neutral
+What? #speaker:Anton #portrait:Character_Anton_Neutral #effect:none
 Why would she do that?
 ... #speaker:L?za #portrait:Character_Liza_Angry
 You told her to. #speaker:L??a #portrait:Character_Liza_Neutral
@@ -70,7 +70,7 @@ I'm used to it.
 Was there something you needed? #speaker:Liz? #portrait:Character_Liza_Neutral
 I uh- #speaker:Anton #portrait:Character_Anton_Neutral
 I think I did need those brushes.
-Rosa needs it.
+Rosa needs them.
 Here. #speaker:L?z? #portrait:Character_Liza_Neutral
 ... #speaker:Anton #portrait:Character_Anton_Neutral
 Thank you.
@@ -110,10 +110,11 @@ I just need the trashbags. #speaker:Anton #portrait:Character_Anton_Neutral
 I can do it myself.
 Please move.
 It's fine. #speaker:L??? #portrait:Character_Liza_Neutral
-I', already here.
+I'm already here.
 ... #speaker:Anton #portrait:Character_Anton_Neutral
-Who do you think you are?! #speaker:Anton #portrait:Character_Anton_Neutral
-\(sigh) Again? #speaker:L??a #portrait:Character_Liza_Neutral
+Who do you think you are?! #speaker:Anton #portrait:Character_Anton_Neutral #effect:shake
+\(sigh) #speaker:L??a #portrait:Character_Liza_Neutral
+Again? 
 I'm Liza.
 Your daughter-in-law.
 Daughter? #speaker:Anton #portrait:Character_Anton_Neutral
@@ -123,7 +124,7 @@ Your son's wife?
 Wife? #speaker:Anton #portrait:Character_Anton_Neutral
 My son is married?
 When did he-
-About a year ago, now. #speaker:L?z? #portrait:Character_Liza_Neutral
+About a year ago, now. #speaker:L?z? #portrait:Character_Liza_Neutral #effect:tense
 And I've been staying here for more than that.
 Why can't you ever seem to remember me?
 You can't even remember my name! #speaker:L?z? #portrait:Character_Liza_Angry
@@ -132,7 +133,7 @@ L-I-Z-A.
 Liza.
 It's not even that hard of a name.
 ... #speaker:Anton #portrait:Character_Anton_Neutral
-Excuse you, Liza.
+How dare you.
 Are you this rude to everyone you talk to?
 Especially in someone else's house?
 Anyone else would have kicked you out by now.
@@ -155,7 +156,7 @@ Good riddance. #speaker:Anton #portrait:Character_Anton_Neutral
 Why are there so many boxes here? #speaker:Anton #portrait:Character_Anton_Neutral
 We're moving out. #speaker:Li?? #portrait:Character_Liza_Neutral
 Remember?
-Like you wanted us to?
+Like you wanted us to? #effect:shake
 Liza, don't be like that. #speaker:Be??i #portrait:Character_Benji_Sad
 Sorry, Pa.
 She's just...
@@ -164,7 +165,7 @@ Hmp. #speaker:L?za #portrait:Character_Liza_Neutral
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 \(sigh) #speaker:B?nj? #portrait:Character_Benji_Sad
 You said you'd help us with the packing, Pa. #speaker:B??ji #portrait:Character_Benji_Neutral
-Can you find some packing tape?
+Can you find a spare box?
 ... #speaker:Anton #portrait:Character_Anton_Neutral
 Fine.
 Thanks, Pa. #speaker:Be??i #portrait:Character_Benji_Neutral
@@ -188,24 +189,24 @@ I...
 I've been meaning to ask.
 There was something Benji wanted to bring with us.
 An old puzzle set?
-A puzzle set? #speaker:Anton #portrait:Character_Anton_Neutral
+A puzzle set? #speaker:Anton #portrait:Character_Anton_Neutral #effect:vignette
 What would he want with that?
 He wants to play with it when our child arrives. #speaker:Li?? #portrait:Character_Liza_Neutral
 Fatherly bond or something.
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
-Like my son and I used to do...
+Like Ben and I used to do... 
 Yeah. #speaker:L?z? #portrait:Character_Liza_Neutral
 He mentioned that.
 ...
-\(sigh)
+\(sigh) #effect:none
 This is a long shot.
 But do you know where you kept it?
-... #speaker:Anton #portrait:Character_Anton_Neutral
+... #speaker:Anton #portrait:Character_Anton_Neutral #effect:vignette
 I think I do.
 Great. #speaker:L??? #portrait:Character_Liza_Neutral
 If you do, show it to Benji.
 He'll be happy you found it.
-Okay. #speaker:Anton #portrait:Character_Anton_Neutral
+Okay. #speaker:Anton #portrait:Character_Anton_Neutral #effect:none
 ~ gamePhase = 4.1
 -> DONE
 
