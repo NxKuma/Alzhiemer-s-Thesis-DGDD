@@ -163,7 +163,7 @@ public class DialogueVariables
 
     private void VariablesToStory(Story story)
     {
-        foreach(KeyValuePair<string, Ink.Runtime.Object> var in variables)
+        foreach (KeyValuePair<string, Ink.Runtime.Object> var in variables)
         {
             story.variablesState.SetGlobal(var.Key, var.Value);
         }
