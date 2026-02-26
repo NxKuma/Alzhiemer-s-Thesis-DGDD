@@ -13,6 +13,13 @@ public class CanvasManager : MonoBehaviour
     
     public event System.Action<EPlayerState> OnCanvasStateChanged; // subscribers will be notified when the canvas state changes
     private SFXManager sFXManager;
+    private bool _tutorialFinished = false;
+
+    public void FinishTutorial()
+    {
+        _tutorialFinished = true;
+        CheckState();
+    }
 
     public enum EPlayerState
     {
@@ -99,25 +106,20 @@ public class CanvasManager : MonoBehaviour
         }
         foreach (Canvas canvas in _majorCanvasList)
         {
+            bool isTutorialCanvas = canvas.name.Contains("Tutorial");
+            
             if (_canvasDictionary.TryGetValue(canvas, out var validStates) &&
                 System.Array.IndexOf(validStates, _playerState) >= 0)
             {
-                // _activeCanvas = canvas;
                 canvas.gameObject.SetActive(true);
-                if (_playerState != EPlayerState.Roam)
-                {
-                    canvas.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
-                }
-                
+            }
+            else if (isTutorialCanvas && !_tutorialFinished) 
+            {
+                canvas.gameObject.SetActive(true);
             }
             else
             {
                 canvas.gameObject.SetActive(false);
-                if (_playerState != EPlayerState.Roam)
-                {
-                    canvas.gameObject.GetComponent<CanvasGroup>().alpha = 0f;
-
-                }
             }
         }
     }

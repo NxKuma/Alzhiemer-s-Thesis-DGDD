@@ -68,7 +68,12 @@ public class DoorInteraction : MonoBehaviour
         if (actualDoor == null) return;
 
         bool isOpen = IsDoorOpen(actualDoor);
-        
+
+        if (TutorialManager.Instance != null && TutorialManager.Instance.GetCurrentStep() == 3)
+        {
+            TutorialManager.Instance.CompleteStep();
+        }
+
         if (isOpen)
         {
             CloseDoor(actualDoor);
