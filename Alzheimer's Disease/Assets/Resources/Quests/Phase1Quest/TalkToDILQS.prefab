@@ -45,8 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _npcName: Daughter
-  _inkBoolVariableName: 
-  _autoCompleteWhenInkIntAtLeast: -1
-  _autoCompleteWhenInkFloatAtLeast: 1.4
-  _inkIntVariableName: gamePhase
+  _inkBoolVariableName: p1DILDone
+  _autoCompleteWhenInkFloatAtLeast: -1
   _setBoolWhenAutoCompletedByPhase: 1

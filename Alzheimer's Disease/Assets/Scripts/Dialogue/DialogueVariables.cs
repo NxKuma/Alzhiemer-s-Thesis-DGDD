@@ -6,7 +6,7 @@ using System.IO;
 
 public class DialogueVariables
 {
-    private Dictionary<string, Ink.Runtime.Object> variables;
+    private static Dictionary<string, Ink.Runtime.Object> variables;
 
     public bool ContainsVariable(string name)
     {
@@ -45,6 +45,7 @@ public class DialogueVariables
         }
 
         variables[name] = new BoolValue(value);
+        Debug.Log("Variable changed: " + name + " = " + value);
     }
 
     public bool TryGetInt(string name, out int value)
@@ -79,6 +80,7 @@ public class DialogueVariables
         }
 
         variables[name] = new IntValue(value);
+        Debug.Log("Variable changed: " + name + " = " + value);
     }
 
     public bool TryGetFloat(string name, out float value)
@@ -120,10 +122,17 @@ public class DialogueVariables
         }
 
         variables[name] = new FloatValue(value);
+        Debug.Log("Variable changed: " + name + " = " + value);
+
     }
 
     public DialogueVariables(string globalsFilePath)
     {
+        if (variables != null)
+        {
+            return;
+        }
+
         // compile the story
         string inkFileContents = File.ReadAllText(globalsFilePath);
         Ink.Compiler compiler = new Ink.Compiler(inkFileContents);

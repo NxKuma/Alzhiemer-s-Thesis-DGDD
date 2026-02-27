@@ -121,12 +121,14 @@ public class NPCScript : MonoBehaviour
 
     public void OnInteract(string NPCName)
     {   
+        // This listener should not re-broadcast the event back onto the bus.
+        // Re-emitting here causes recursive / duplicated NPC interaction events.
+        if (string.IsNullOrWhiteSpace(NPCName)) return;
+        if (!_npcData.GetNPCName().Equals(NPCName)) return;
         if (_hasInteracted) return;
-        // mark as interacted before broadcasting to avoid re-entrant recursion
+
         _hasInteracted = true;
-        Debug.Log("NPC ONINTERACT TRIGGERED (sent from NPC.cs)");
-        if (_gameEventsManager != null)
-            _gameEventsManager.npcEvents.NPCInteracted(NPCName);
+        Debug.Log("NPC ONINTERACT TRIGGERED");
     } 
 
     public string GetNPCName() => _npcData.GetNPCName();

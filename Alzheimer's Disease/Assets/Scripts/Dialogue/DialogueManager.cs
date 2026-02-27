@@ -60,7 +60,7 @@ public class DialogueManager : MonoBehaviour
     private bool _choicesAvailable;
     public bool DialogueIsPlaying { get; private set; }
 
-    private DialogueVariables _dialogueVar;
+    private static DialogueVariables _dialogueVar;
     private CanvasManager _canvasManager;
     private SFXManager _sFXManager;
 
@@ -120,6 +120,7 @@ public class DialogueManager : MonoBehaviour
             Debug.LogWarning("DialogueManager.SetGlobalInkInt called before globals were initialized.");
             return;
         }
+        
 
         _dialogueVar.SetInt(variableName, value);
 
@@ -163,9 +164,18 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null) Debug.LogWarning("Found more than one Dialouge Manager in the scene.");
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         _instance = this;
-        _dialogueVar = new DialogueVariables(_globalsInkFile.filePath);
+
+        if (_dialogueVar == null)
+        {
+            _dialogueVar = new DialogueVariables(_globalsInkFile.filePath);
+        }
 
         foreach (NPC npc in _npcs)
         {
@@ -175,7 +185,14 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-        DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+        }
     }
 
     public static DialogueManager GetInstance()
@@ -199,6 +216,7 @@ public class DialogueManager : MonoBehaviour
         }
         _canvasManager = CanvasManager.Instance;
         _sFXManager = SFXManager.Instance;
+        
     }
 
     private void Update()
@@ -257,12 +275,11 @@ public class DialogueManager : MonoBehaviour
         _dialoguePanel.GetComponent<CanvasGroup>().alpha = 0f;
         _dialogueText.text = "";
 
-        if(SceneManager.GetActiveScene().name == "Backstory") SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         if(_controller != null) _controller.StopStartPlayer(true);
         _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Roam);
+        if(SceneManager.GetActiveScene().name == "Backstory") SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private void ContinueStory()

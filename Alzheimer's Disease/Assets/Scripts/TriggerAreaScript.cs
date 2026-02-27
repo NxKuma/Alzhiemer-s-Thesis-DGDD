@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 public class TriggerAreaScript : MonoBehaviour
 {
     [SerializeField] private ItemDatabase _itemDatabase;
+    [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private string _areaName;
     private static Dictionary<Item, ItemStatus> _itemList = new Dictionary<Item, ItemStatus>();
     private static bool _hasPlayer = false;
@@ -54,36 +55,41 @@ public class TriggerAreaScript : MonoBehaviour
 
     private bool SpawnItemInArea(Item item)
     {
-        Debug.Log("Attempting to spawn " + item.GetItemName() + " in " + _areaName);
+        // Debug.Log("Attempting to spawn " + item.GetItemName() + " in " + _areaName);
         
-        if (_areaCollider == null) _areaCollider = GetComponent<Collider>();
+        // if (_areaCollider == null) _areaCollider = GetComponent<Collider>();
 
 
-        Bounds b = _areaCollider.bounds;
+        // Bounds b = _areaCollider.bounds;
 
-        // sample in bounds
-        Vector3 candidate = RandomPointInBounds(b);
+        // // sample in bounds
+        // Vector3 candidate = RandomPointInBounds(b);
 
-        // ensure the sampled point is actually inside the collider volume (ClosestPoint returns the closest point on collider surface)
-        Vector3 closest = _areaCollider.ClosestPoint(candidate);
+        // // ensure the sampled point is actually inside the collider volume (ClosestPoint returns the closest point on collider surface)
+        // Vector3 closest = _areaCollider.ClosestPoint(candidate);
 
-        // If closest != candidate (distance > small epsilon) then candidate lies outside the collider volume
-        while (Vector3.Distance(closest, candidate) > 0.05f)
-             candidate = RandomPointInBounds(b); // not inside; try again
+        // // If closest != candidate (distance > small epsilon) then candidate lies outside the collider volume
+        // while (Vector3.Distance(closest, candidate) > 0.05f)
+        //      candidate = RandomPointInBounds(b); // not inside; try again
 
-        // Raycast down from above to find ground surface
-        Vector3 rayStart = candidate + Vector3.up * (b.extents.y + 2f);
-        int mask = LayerMask.GetMask("Ground");
-        float rayDistance = b.extents.y + 4f;
-        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, rayDistance, mask))
-        {
-            Vector3 spawnPos = hit.point;
-            return InstantiateItemAt(item, spawnPos);
-        }
-        else
-        {
-            return InstantiateItemAt(item, candidate);
-        }
+        // // Raycast down from above to find ground surface
+        // Vector3 rayStart = candidate + Vector3.up * (b.extents.y + 2f);
+        // int mask = LayerMask.GetMask("Ground");
+        // float rayDistance = b.extents.y + 4f;
+        // if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, rayDistance, mask))
+        // {
+        //     Vector3 spawnPos = hit.point;
+        //     return InstantiateItemAt(item, spawnPos);
+        // }
+        // else
+        // {
+        //     return InstantiateItemAt(item, candidate);
+        // }
+
+        int randomIndex = Random.Range(0, _spawnPoints.Length); 
+        Vector3 spawnPos = _spawnPoints[randomIndex].position;
+        return InstantiateItemAt(item, spawnPos);
+
     }
 
     private bool InstantiateItemAt(Item item, Vector3 pos)

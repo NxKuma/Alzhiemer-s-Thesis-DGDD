@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemRequired: {fileID: 11400000, guid: 1a9ec89760e0ef146b7c9752e2dd49f1, type: 2}
+  _inkVariableToSetOnCompletion: p1HaveBucket

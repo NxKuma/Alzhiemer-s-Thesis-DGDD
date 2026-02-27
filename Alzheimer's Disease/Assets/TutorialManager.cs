@@ -76,6 +76,8 @@ public class TutorialManager : MonoBehaviour
 
     void Update()
     {
+
+        Debug.Log($"Current Step: {_currentStep}, CanDetectInput: {_canDetectInput}, IsTransitioning: {_isTransitioning}");
         if (!_canDetectInput || _isTransitioning) return;
 
         // Logic for completing steps

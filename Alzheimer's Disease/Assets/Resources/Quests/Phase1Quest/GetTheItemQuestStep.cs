@@ -3,6 +3,7 @@ using UnityEngine;
 public class GetTheItemQuestStep: QuestStep
 {
     [SerializeField] private Item _itemRequired;
+    [SerializeField] private string _inkVariableToSetOnCompletion;
     private TriggerHandler _triggerHandler;
 
     protected override bool DestroyOnFinish => false;
@@ -46,6 +47,8 @@ public class GetTheItemQuestStep: QuestStep
         Debug.Log("Item Collected: " + item.GetItemName());
         if (item != _itemRequired) return;
 
+        DialogueManager dialogueManager = DialogueManager.GetInstance();
+        dialogueManager.SetGlobalInkBool(_inkVariableToSetOnCompletion, true);
         string status = "I have collected the " + _itemRequired.GetItemName() + ".";
         ChangeState("", status);
 
@@ -58,6 +61,8 @@ public class GetTheItemQuestStep: QuestStep
     {
         if (item != _itemRequired) return;
 
+        DialogueManager dialogueManager = DialogueManager.GetInstance();
+        dialogueManager.SetGlobalInkBool(_inkVariableToSetOnCompletion, false);
         // Mark this step as unfinished again.
         SetFinishedState(false);
         string status = "I think I misplaced the " + _itemRequired.GetItemName() + "...";

@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemRequired: {fileID: 11400000, guid: 63be14bd4994c8249b5ac9c667d6acd0, type: 2}
+  _inkVariableToSetOnCompletion: p1HaveRoller

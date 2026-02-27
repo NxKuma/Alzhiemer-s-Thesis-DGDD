@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     private int[] _puzzleCounts;
     private Inventory _internalInventory;
     private int _inventorySlotCount;
+    private DialogueManager _dialogueManager;
     void Awake()
     {
         _inventorySlotCount = _visibleInventory.transform.childCount;
@@ -44,6 +45,7 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {  
+        _dialogueManager = DialogueManager.GetInstance();
         if (TriggerHandler.Instance != null && TriggerHandler.Instance.PlayerInventory != null)
         {
             Debug.Log("Subscribing to inventory events in InventoryManager.");
@@ -83,6 +85,7 @@ public class InventoryManager : MonoBehaviour
                     _puzzleCounts[0] = int.Parse(_puzzleCountTexts[0].text.Substring(0,1));
                     _puzzleCounts[0]++;
                     _puzzleCountTexts[0].text = _puzzleCounts[0].ToString() + "/9";
+                    _dialogueManager.SetGlobalInkInt("momPieces", _puzzleCounts[0]);
                     break;
                 }
                 else if (newItem.GetItemName().Contains("Son")) 
@@ -90,6 +93,7 @@ public class InventoryManager : MonoBehaviour
                     _puzzleCounts[1] = int.Parse(_puzzleCountTexts[1].text.Substring(0,1));
                     _puzzleCounts[1]++;
                     _puzzleCountTexts[1].text = _puzzleCounts[1].ToString() + "/9";
+                    _dialogueManager.SetGlobalInkInt("sonPieces", _puzzleCounts[1]);
                     break;
                 }
                 else if (newItem.GetItemName().Contains("Daughter-In-Law")) 
@@ -97,6 +101,7 @@ public class InventoryManager : MonoBehaviour
                     _puzzleCounts[2] = int.Parse(_puzzleCountTexts[2].text.Substring(0,1));
                     _puzzleCounts[2]++;
                     _puzzleCountTexts[2].text = _puzzleCounts[2].ToString() + "/9";
+                    _dialogueManager.SetGlobalInkInt("dilPieces", _puzzleCounts[2]);
                     break;
                 }
             }
@@ -128,18 +133,24 @@ public class InventoryManager : MonoBehaviour
                     _puzzleCounts[0] = int.Parse(_puzzleCountTexts[0].text.Substring(0,1));
                     _puzzleCounts[0]--;
                     _puzzleCountTexts[0].text = _puzzleCounts[0].ToString() + "/9";
+                    _dialogueManager.SetGlobalInkInt("momPieces", _puzzleCounts[0]);
+                    break;
                 }
                 else if (removedItem.GetItemName().Contains("Son")) 
                 {
                     _puzzleCounts[1] = int.Parse(_puzzleCountTexts[1].text.Substring(0,1));
                     _puzzleCounts[1]--;
                     _puzzleCountTexts[1].text = _puzzleCounts[1].ToString() + "/9";
+                    _dialogueManager.SetGlobalInkInt("sonPieces", _puzzleCounts[1]);
+                    break;
                 }
                 else if (removedItem.GetItemName().Contains("Daughter-In-Law")) 
                 {
                     _puzzleCounts[2] = int.Parse(_puzzleCountTexts[2].text.Substring(0,1));
                     _puzzleCounts[2]--;
                     _puzzleCountTexts[2].text = _puzzleCounts[2].ToString() + "/9";
+                    _dialogueManager.SetGlobalInkInt("dilPieces", _puzzleCounts[2]);
+                    break;
                 }
             }
         }

@@ -120,7 +120,7 @@ Did you find the stuff? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     Let me know when you do. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 + [Yeah.] 
     Yeah, I have them. #speaker:Anton #portrait:Character_Anton_Neutral
-    { p1HaveBrush and p1HaveRoller and p1SonDone and p1DILDone  : 
+    { p1HaveBrush and p1HaveRoller and p1SonDone and p1DILDone and p1HaveBucket : 
         -> phase1complete
     - else:
         Haha, very funny. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
@@ -265,6 +265,7 @@ We need some tape for the boxes. #speaker:Anton #portrait:Character_Anton_Neutra
 Do you have any?
 Tape? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
 Here you go.
+Take the box with you since they need it too.
 Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
 You're welcome. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
 ... #speaker:Anton #portrait:Character_Anton_Neutral

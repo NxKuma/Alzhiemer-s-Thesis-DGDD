@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemRequired: {fileID: 11400000, guid: de6441708553dea43b4c1ccf7930cf13, type: 2}
+  _inkVariableToSetOnCompletion: p2HaveSoap

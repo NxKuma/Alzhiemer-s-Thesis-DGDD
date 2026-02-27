@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemRequired: {fileID: 11400000, guid: 09292f3716de0084897d5e379f77a322, type: 2}
+  _inkVariableToSetOnCompletion: p4HaveGame

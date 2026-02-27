@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemRequired: {fileID: 11400000, guid: 2a6889d8f7d4afe46a7787cc613ec1b0, type: 2}
+  _inkVariableToSetOnCompletion: p1HaveBrush

@@ -6,6 +6,7 @@ VAR dilPieces = 0
 
 // variables to be edited when the respective item is received
 VAR p1HaveBrush = false
+VAR p1HaveBucket = false
 VAR p1HaveRoller = false
 VAR p2HaveSoap = false
 VAR p2HaveTrash = false

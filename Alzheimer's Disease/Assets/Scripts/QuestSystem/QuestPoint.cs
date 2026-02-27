@@ -52,6 +52,7 @@ public class QuestPoint : MonoBehaviour
     private void OnDisable()
     {
         GameEventsManager.Instance.questEvents.onQuestStateChange -= QuestStateChange;
+        GameEventsManager.Instance.npcEvents.onNPCInteract -= NPCInteract;
         GameEventsManager.Instance.inputEvents.onSubmitPressed -= SubmitPressed;
     }
 

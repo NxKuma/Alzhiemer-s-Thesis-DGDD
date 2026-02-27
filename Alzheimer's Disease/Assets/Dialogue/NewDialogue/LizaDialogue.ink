@@ -165,6 +165,7 @@ Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 \(sigh) #speaker:B?nj? #portrait:Character_Benji_Sad
 You said you'd help us with the packing, Pa. #speaker:B??ji #portrait:Character_Benji_Neutral
 Can you find some packing tape?
+I think it's in one of the balikbayan boxes over
 ... #speaker:Anton #portrait:Character_Anton_Neutral
 Fine.
 Thanks, Pa. #speaker:Be??i #portrait:Character_Benji_Neutral
