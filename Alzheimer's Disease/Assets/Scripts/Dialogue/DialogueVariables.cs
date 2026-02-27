@@ -8,6 +8,9 @@ public class DialogueVariables
 {
     private static Dictionary<string, Ink.Runtime.Object> variables;
 
+    public bool isListening {get; private set;} = false;
+    private Dictionary<string, string> _setVariableCache = new Dictionary<string, string>(); 
+    
     public bool ContainsVariable(string name)
     {
         return !string.IsNullOrWhiteSpace(name) && variables.ContainsKey(name);
@@ -44,8 +47,9 @@ public class DialogueVariables
             return;
         }
 
-        variables[name] = new BoolValue(value);
-        Debug.Log("Variable changed: " + name + " = " + value);
+        if(!isListening) _setVariableCache[name] = value.ToString();
+        else variables[name] = new BoolValue(value);
+        // Debug.Log("Variable changed: " + name + " = " + value);
     }
 
     public bool TryGetInt(string name, out int value)
@@ -79,8 +83,9 @@ public class DialogueVariables
             return;
         }
 
-        variables[name] = new IntValue(value);
-        Debug.Log("Variable changed: " + name + " = " + value);
+        if(!isListening) _setVariableCache[name] = value.ToString();
+        else variables[name] = new IntValue(value);
+        // Debug.Log("Variable changed: " + name + " = " + value);
     }
 
     public bool TryGetFloat(string name, out float value)
@@ -121,8 +126,8 @@ public class DialogueVariables
             return;
         }
 
-        variables[name] = new FloatValue(value);
-        Debug.Log("Variable changed: " + name + " = " + value);
+        if(!isListening) _setVariableCache[name] = value.ToString();
+        else variables[name] = new FloatValue(value);
 
     }
 
@@ -153,10 +158,39 @@ public class DialogueVariables
         // VariablesToStory() must be called before subscribing to the event
         VariablesToStory(story);
         story.variablesState.variableChangedEvent += VariableChanged;
+        isListening = true;
+        if(_setVariableCache.Count > 0)
+        {
+            Debug.Log("Applying cached variable changes to story:");
+            foreach (KeyValuePair<string, string> kvp in _setVariableCache)
+            {
+                Debug.Log($"Evaluating: {kvp.Key} = {kvp.Value}");
+                // Attempt to parse the value as int or float before setting as string
+                if (int.TryParse(kvp.Value, out int intValue))
+                {
+                    Debug.Log($"Setting int variable: {kvp.Key} = {intValue}");
+                    story.variablesState.SetGlobal(kvp.Key, new IntValue(intValue)); 
+                    // SetInt(kvp.Key, intValue);
+                }
+                else if (float.TryParse(kvp.Value, out float floatValue))
+                {
+                    story.variablesState.SetGlobal(kvp.Key, new FloatValue(floatValue)); 
+                    // SetFloat(kvp.Key, floatValue);
+                }
+                else if (bool.TryParse(kvp.Value, out bool boolValue))
+                {
+                    story.variablesState.SetGlobal(kvp.Key, new BoolValue(boolValue)); 
+                    // SetBool(kvp.Key, new BoolValue(boolValue));
+                }
+            }
+            _setVariableCache.Clear();
+        }
+
     }
 
     public void StopListening(Story story)
     {
+        isListening = false;
         story.variablesState.variableChangedEvent -= VariableChanged;
     }
 
@@ -168,6 +202,8 @@ public class DialogueVariables
             variables.Remove(name);
             variables.Add(name, value);
         }
+
+
     }
 
     private void VariablesToStory(Story story)

@@ -25,6 +25,7 @@ public class QuestLogButton : MonoBehaviour, ISelectHandler
         this.buttonText.text = displayName;
         this.onSelectAction = selectAction;
         sFXManager = SFXManager.Instance;
+        _defaultNavigation = button.navigation; // cache the default navigation settings for when we want to re-enable selection
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -47,7 +48,9 @@ public class QuestLogButton : MonoBehaviour, ISelectHandler
         // Extra safety: prevent it from being part of explicit navigation graphs
         if (selectable)
         {
+
             button.navigation = _defaultNavigation;
+
         }
         else
         {

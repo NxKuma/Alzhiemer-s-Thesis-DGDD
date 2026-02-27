@@ -60,14 +60,14 @@ public class SFXManager : MonoBehaviour
         // Only allow one AudioSource to play a given SFX at a time.
         if (GetAudioSourcePlaying(sfxName) != null)
         {
-            Debug.Log($"SFX '{sfxName}' is already playing on another audio source. Skipping play request.");
+            // Debug.Log($"SFX '{sfxName}' is already playing on another audio source. Skipping play request.");
             return;
         }
 
         AudioSource availAudio = GetAvailableAudioSource();
         if (availAudio == null)
         {
-            Debug.LogWarning($"SFXManager: No available audio source to play SFX '{sfxName}'. Skipping play request.");
+            // Debug.LogWarning($"SFXManager: No available audio source to play SFX '{sfxName}'. Skipping play request.");
             return;
         }
 
@@ -82,7 +82,7 @@ public class SFXManager : MonoBehaviour
                     availAudio.loop = true;
                     if (!availAudio.isPlaying)
                     {
-                        Debug.Log($"Playing looping SFX: {sfxName}");
+                        // Debug.Log($"Playing looping SFX: {sfxName}");
                         availAudio.Play();
                     }else
                     {
@@ -93,7 +93,7 @@ public class SFXManager : MonoBehaviour
                 else
                 {
                     // StopAllCoroutines(); // stop any ongoing fade coroutines to prevent volume conflicts
-                    Debug.Log($"Playing one-shot SFX: {sfxName}");
+                    // Debug.Log($"Playing one-shot SFX: {sfxName}");
                     availAudio.loop = false;
                     availAudio.pitch = pitcchVariation;
                     availAudio.PlayOneShot(clip);
@@ -103,7 +103,6 @@ public class SFXManager : MonoBehaviour
                 }
             }
         }
-        Debug.LogWarning($"SFXManager: No audio clip found with name {sfxName}");
     }
 
     public async void StopSFX(string sfxName)
@@ -113,8 +112,6 @@ public class SFXManager : MonoBehaviour
         {
             if (audioSource.loop || !fadingCoroutines[audioSource])
             {
-                Debug.Log($"Stopping looping SFX: {sfxName}");
-                
                 Task fade = FadeOutSFXAsync(audioSource, 0.5f);
                 await fade;
                 ResetAudioSource(audioSource);
@@ -122,7 +119,6 @@ public class SFXManager : MonoBehaviour
             }
             else if (!audioSource.loop)
             {
-                Debug.Log($"Stopping SFX: {sfxName}");
                 audioSource.Stop();
             }
         }

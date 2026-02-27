@@ -18,6 +18,7 @@ public class QuestPoint : MonoBehaviour
     private bool playerIsNear = false;
     private string questId;
     private QuestState currentQuestState;
+    private QuestManager questManager;
 
     private QuestIcon questIcon;
 
@@ -31,6 +32,7 @@ public class QuestPoint : MonoBehaviour
 
     private void Start() 
     {
+        questManager = QuestManager.Instance;
         if (string.IsNullOrEmpty(questId) && questInfoForPoint != null)
         {
             questId = questInfoForPoint.id;
@@ -65,16 +67,34 @@ public class QuestPoint : MonoBehaviour
         }// otherwise, start or finish the quest immediately without dialogue
         else 
         {
+            // if (npcName.Contains(questInfoForPoint.npcName))
+            // {
+            //     // Debug.Log("NPC interact with correct NPC for quest point.");
+            // }
             // Debug.Log("Player near quest point, processing NPC interact.");
             // start or finish a quest
-            if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
+            // if(DialogueManager.GetQuestById(questId))
+            // Debug.Log($"NPC Interacted: {npcName}. ComponentNPC: {this.transform.parent.GetComponentInParent<NPC>().GetNPCName()}. ");
+            // Add in a check so that the quest that will be started/finished is actually the one assigned to the NPC
+            string npcNameFromParent = this.transform.parent.GetComponentInParent<NPCScript>().GetNPCName();
+            if ( npcName.Contains(npcNameFromParent))
             {
-                GameEventsManager.Instance.questEvents.StartQuest(questId);
+                // Debug.Log("NPC interact with correct NPC for quest point.");
+                if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
+                {
+                    GameEventsManager.Instance.questEvents.StartQuest(questId);
+                }
+                else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
+                {
+                    GameEventsManager.Instance.questEvents.FinishQuest(questId);
+                }
             }
-            else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
+            else
             {
-                GameEventsManager.Instance.questEvents.FinishQuest(questId);
+                // Debug.Log("NPC interact with wrong NPC for quest point.");
+                return;
             }
+
         }
     }
 
@@ -93,6 +113,7 @@ public class QuestPoint : MonoBehaviour
         // otherwise, start or finish the quest immediately without dialogue
         else 
         {
+        
             // start or finish a quest
             if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
             {
