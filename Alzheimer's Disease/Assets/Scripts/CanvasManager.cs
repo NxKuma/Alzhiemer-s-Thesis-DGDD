@@ -65,7 +65,8 @@ public class CanvasManager : MonoBehaviour
                 _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.InventoryAccess, EPlayerState.Roam });
             }else if(canvas.name.Contains("Quest"))
             {
-                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.QuestAccess});
+                // Keep quest UI canvas active while roaming so it can listen for input and open itself.
+                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.QuestAccess, EPlayerState.Roam });
             }else if(canvas.name.Contains("Puzzle"))
             {
                 _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.PuzzleSolving, EPlayerState.Roam});

@@ -46,10 +46,10 @@ public class QuestLogUI : MonoBehaviour
         Debug.Log($"Player is null?: {_player != null} \n Can player use menus?: {_player.CanUseMenus} \n Current player state: {_canvasManager.GetPlayerState()}");
         if (_player != null && !_player.CanUseMenus) return;
 
-        if (_canvasManager.GetPlayerState() != CanvasManager.EPlayerState.Roam && 
-            _canvasManager.GetPlayerState() != CanvasManager.EPlayerState.QuestAccess) return;
+        if (_canvasManager.GetPlayerState() != CanvasManager.EPlayerState.Roam 
+        && _canvasManager.GetPlayerState() != CanvasManager.EPlayerState.QuestAccess) return;
 
-        if (contentParent.activeInHierarchy)
+        if (_canvasGroup.alpha == 1f)
         {
             HideUI();
         }
