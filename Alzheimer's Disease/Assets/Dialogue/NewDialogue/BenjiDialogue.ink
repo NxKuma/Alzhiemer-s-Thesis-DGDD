@@ -9,6 +9,7 @@ INCLUDE globals.ink
 - 3: -> phase3start
 - 3.1: -> phase3check
 - 4: -> phase4start
+- 4.1: -> phase4check
 }
 
 === phase1 ===
@@ -26,12 +27,13 @@ Hey, Pa. #speaker:B?nj? #portrait:Character_Benji_Neutral
 === phase1GetRoller ===
 Hey, kid. #speaker:Anton #portrait:Character_Anton_Neutral
 Benji, Pa. #speaker:Benji #portrait:Character_Benji_Sad
-... #speaker:Anton #portrait:Character_Anton_Neutral #effect:vignette
-Sorry. #speaker:Anton #portrait:Character_Anton_Neutral #effect:none
-It's fine. #speaker:Benji #portrait:Character_Benji_Neutral
+... #speaker:Anton #portrait:Character_Anton_Neutral
+Sorry. #speaker:Anton #portrait:Character_Anton_Neutral
+\(sigh) #speaker:Benji #portrait:Character_Benji_Neutral
+It's fine.
 Don't worry about it.
 Did you need something?
-Yeah. #speaker:Anton #portrait:Character_Anton_Neutral
+I did, yeah. #speaker:Anton #portrait:Character_Anton_Neutral
 I was looking for some paints. 
 Oh. #speaker:Benj? #portrait:Character_Benji_Neutral
 I'm not sure where Ma put it. 
@@ -43,12 +45,13 @@ She asked for some too.
 Uhh... #speaker:Be??i #portrait:Character_Benji_Neutral
 I have a paint roller, is that okay?
 That should work. #speaker:Anton #portrait:Character_Anton_Neutral
-I was gonna bring it with us to the new house for our own redecorating. #speaker:Ben?i #portrait:Character_Benji_Neutral
-I'll just get it from her later when we finish packing.
+Alright. #speaker:Ben?i #portrait:Character_Benji_Neutral
+Just get it back to me after you're done with it, please.
+I'm planning to bring it with us to the new house for our own redecorating. 
 Actually...
 Pa, can you help us later with moving everything?
 + ... #speaker:Anton #portrait:Character_Anton_Sad 
-    Do you really have to go?
+    Do you really have to go? #effect:vignette
     We've talked about this, Pa. #speaker:B?nji #portrait:Character_Benji_Sad
     It'll be easier for me and Liza.
     And with a child on the way,
@@ -67,7 +70,7 @@ Pa, can you help us later with moving everything?
 We'll miss you. #speaker:Anton #portrait:Character_Anton_Sad #effect:vignette
 I'll miss you too, Pa. #speaker:Benji #portrait:Character_Benji_Sad
 We both will.
-But, we'll be sure to visit. #speaker:Benji #portrait:Character_Benji_Happy #effect:none
+But, we'll be sure to visit. #speaker:Benji #portrait:Character_Benji_Happy
 You better. #speaker:Anton #portrait:Character_Anton_Neutral
 And bring little Anthony with you!
 We haven't decided on a name yet, Pa! #speaker:Benji #portrait:Character_Anton_Neutral
@@ -82,21 +85,21 @@ But that's your name.
 We want him to have his own.
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 I guess that's good too.
-Thanks, Pa. #speaker:Benj? #portrait:Character_Benji_Happy
+Thanks, Pa. #speaker:Benj? #portrait:Character_Benji_Happy 
 ~ p1SonDone = true
 -> DONE
 
 === phase1RollerReceived ===
-Hey, Pa. #speaker:Benji #portrait:Character_Benji_Neutral
+Hey, Pa. #speaker:Benji #portrait:Character_Benji_Neutral #effect:none
 Need anything else?
 Not right now. #speaker:Anton #portrait:Character_Anton_Neutral
 Thanks.
 -> DONE
 
 === phase2start ===
-... #speaker:Anton #portrait:Character_Anton_Neutral #effect:vignette
+... #speaker:Anton #portrait:Character_Anton_Neutral
 Hey, uh-
-Hm? #speaker:B???? #portrait:Character_Benji_Neutral #effect:none
+Hm? #speaker:B???? #portrait:Character_Benji_Neutral
 Hey, kid. #speaker:Anton #portrait:Character_Anton_Neutral
 \(sigh) #speaker:Benji #portrait:Character_Benji_Sad
 Benji.
@@ -108,18 +111,21 @@ Know.
 That.
 I know that.
 Of course I know that.
-Mhm. #speaker:Benji #portrait:Character_Benji_Sad
-Aren't you supposed to be at school right now. #speaker:Anton #portrait:Character_Anton_Neutral
-What? #speaker:Ben?i #portrait:Character_Anton_Neutral
+Of course. #speaker:Benji #portrait:Character_Benji_Sad
+Actually... #speaker:Anton #portrait:Character_Anton_Neutral
+Aren't you supposed to be at school right now. 
+What? #speaker:Ben?i #portrait:Character_Benji_Neutral #effect:tense
 Pa, I graduated 4 years ago.
-I work in sales, now. Remember?
+I'm a grown, working adult.
+Sales, remember?
 Oh. #speaker:Anton #portrait:Character_Anton_Sad
 Right.
 Sorry.
 It's fine. #speaker:Be??i #portrait:Character_Anton_Sad
-... #speaker:Anton #portrait:Character_Anton_Sad
+... #speaker:Anton #portrait:Character_Anton_Sad #effect:none
 Do you need help with the dishes?
 I'm good for now. #speaker:B?n?? #portrait:Character_Benji_Sad
+...
 Oh, actually... #speaker:Be??i #portrait:Character_Benji_Neutral
 We're almost out of dish soap.
 Can you get some?
@@ -131,23 +137,22 @@ It's filled up.
     Not sure if we packed away after groceries.
     Okay. #speaker:Anton #portrait:Character_Anton_Neutral
 + [No.]
-    So bossy. #speaker:Anton #portrait:Character_Anton_Neutral #effect:vignette
+    So bossy. #speaker:Anton #portrait:Character_Anton_Neutral
     Why are you making this old man do so much? #speaker:Anton #portrait:Character_Anton_Neutral #effect:none
-    It's just a few items, Pa! #speaker:B??ji #portrait:Character_Benji_Neutral
+    It's just a few thing, Pa! #speaker:B??ji #portrait:Character_Benji_Neutral
     You can handle yourself.
     And I still have all the oily pots to wrestle with.
     So, please?
     Can you get the stuff?
     Hmp. #speaker:Anton #portrait:Character_Anton_Neutral
-    Excuses.
     Fine.
-Thank you, Pa. #speaker:B?nj? #portrait:Character_Benji_Neutral
-~ gamePhase = 2.1
 -
+Thank you, Pa. #speaker:B?nj? #portrait:Character_Benji_Happy
+~ gamePhase = 2.1
 -> DONE
 
 === phase2check ===
-Did you find the stuff yet? #speaker:B???i #portrait:Character_Benji_Neutral
+Did you find the stuff yet? #speaker:B???i #portrait:Character_Benji_Neutral #effect:none
 Uh... #speaker:Anton #portrait:Character_Anton_Neutral
 \(sigh)  #speaker:B???i #portrait:Character_Benji_Neutral
 The dish soap and the trashbags.
@@ -166,7 +171,7 @@ Uh.
         ... #speaker:Anton #portrait:Character_Anton_Neutral
         Sorry.
         It's fine. #speaker:B??ji #portrait:Character_Benji_Sad
-        Let me know when you find them. #effect:none
+        Let me know when you find them.
     }
 -
 -> DONE
@@ -185,7 +190,7 @@ Thanks, Pa. #speaker:Benj? #portrait:Character_Benji_Happy
 Are you about done with the dishes? #speaker:Anton #portrait:Character_Anton_Neutral
 Yeah, I am. #speaker:Benji #portrait:Character_Benji_Neutral
 I'll finish up here.
-You can sit on the couch or something.
+Go sit on the couch and watch TV or something.
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 ~ gamePhase = 3
 -> DONE
@@ -196,12 +201,12 @@ What? #speaker:????? #portrait:Character_Benji_Neutral
 Give me that! #speaker:Anton #portrait:Character_Anton_Angry
 Wha- #speaker:B???? #portrait:Character_Benji_Angry #effect:shake
 Pa! Hey! 
-Let go! #speaker:Anton #portrait:Character_Anton_Angry #effect:tense
+Let go! #speaker:Anton #portrait:Character_Anton_Angry #effect:shake
 I'm already in a bad mood.
-Don't make me fight you!
+So don't make me fight you!
 Okay! #speaker:B???i #portrait:Character_Benji_Angry
 Okay! I'm letting go!
-What's going on in here?! #speaker:Rosalyn #portrait:Character_Rosalyn_Angry
+What's going on in here?! #speaker:Rosalyn #portrait:Character_Rosalyn_Angry #effect:shake
 I don't know! #speaker:B??j? #portrait:Character_Benji_Angry
 He just stormed in, already angry!
 Mahal! #speaker:Rosalyn #portrait:Character_Rosalyn_Sad #effect:none
@@ -244,13 +249,13 @@ Let me know when you do. #speaker:Be??i #portrait:Character_Benji_Neutral
 
 === phase3BoxReceived ===
 I have the box. #speaker:Anton #portrait:Character_Anton_Neutral
-Thanks, Pa. #speaker:??nji #portrait:Character_Benji_Neutral
-...
+Thanks, Pa. #speaker:??nji #portrait:Character_Benji_Happy
+... #speaker:B??ji #portrait:Character_Benji_Neutral
 Say...
 Can you help Liza with the packing?
 ... #speaker:Anton #portrait:Character_Anton_Neutral
 What. #effect:tense
-I know you two are... #speaker:B???? #portrait:Character_Benji_Neutral #effect:none
+I know you two are... #speaker:B???? #portrait:Character_Benji_Neutral
 At odds...
 But it doesn't feel right to leave things as they are.
 Especially since we're leaving soon.
@@ -298,7 +303,7 @@ Hm? #speaker:Be??? #portrait:Character_Benji_Neutral
 Uh... #speaker:Anton #portrait:Character_Anton_Neutral
 I'm forgetting something.
 What is it? #speaker:B?nj? #portrait:Character_Benji_Neutral
-It's uh... #speaker:Anton #portrait:Character_Anton_Neutral #effect:vignette
+It's uh... #speaker:Anton #portrait:Character_Anton_Neutral #effect:tense
 It's fine. #effect:none
 I'll remember.
 ... #speaker:B???? #portrait:Character_Benji_Sad
@@ -313,7 +318,7 @@ I'll remember.
 = phase4RememberBenji
 I found the puzzle. #speaker:Anton #portrait:Character_Anton_Neutral
 Oh! #speaker:Benji #portrait:Character_Benji_Happy
-That's amazing, Pa!
+That's great, Pa!
 Thanks for finding it. #speaker:Benji #portrait:Character_Benji_Happy
 You should open it to check if it still has all its pieces. #speaker:Anton #portrait:Character_Anton_Neutral
 Right. #speaker:Benji #portrait:Character_Benji_Happy
@@ -336,11 +341,11 @@ Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 ...
 Seems like it's complete.
 And all the pieces are here.
-That's good to hear. #speaker:Benji #portrait:Character_Benji_Neutral 
+That's good to hear. #speaker:Benji #portrait:Character_Benji_Neutral #effect:none
 -> phase4PuzzleEnd
 
 = phase4ForgotBenji
-I missed this puzzle. #speaker:Anton #portrait:Character_Anton_Neutral
+I've missed this puzzle. #speaker:Anton #portrait:Character_Anton_Neutral
 Oh!
 You found it!
 I wonder if the pieces are still complete. #speaker:Anton #portrait:Character_Anton_Neutral
@@ -373,9 +378,8 @@ Thanks anyway.
 -> phase4PuzzleEnd
 
 = phase4PuzzleEnd
-Oh, you found it. #speaker:??? #portrait:Character_Liza_Neutral #effect:none
-I'll put it in the luggage, now.
-
+Oh, you found it. #speaker:L??? #portrait:Character_Liza_Neutral #effect:none
+If you're about done, I'll put it in the luggage, now.
 // TAKEN FROM LIZA'S FILE
 { dilPieces > 8:
     -> phase4RememberLiza
@@ -390,7 +394,7 @@ For helping out with the move.
 ... #speaker:Anton #portrait:Character_Anton_Neutral
 Mm.
 ... #speaker:Benj? #portrait:Character_Benji_Neutral
-Well...
+Well... #effect:none
 That's a start, I suppose.
 Really, though, Pa. #speaker:Benji #portrait:Character_Benji_Happy
 Thanks. #speaker:Benji #portrait:Character_Benji_Happy
@@ -420,7 +424,7 @@ Hey! #speaker:Anton #portrait:Character_Anton_Angry
 This again... #speaker:??? #portrait:Character_Liza_Neutral
 Don't touch that! #speaker:Anton #portrait:Character_Anton_Angry #effect:shake
 What now?! #speaker:??? #portrait:Character_Liza_Angry
-Let go of that puzzle box! #speaker:Anton #portrait:Character_Anton_Angry
+Let go of that puzzle box! #speaker:Anton #portrait:Character_Anton_Angry #effect:shake
 + [Take it back.]
 + [Take it back.]
 + [Take it back.]
@@ -437,9 +441,9 @@ From us! #effect:shake
 This is the last thing for the move! #speaker:??? #portrait:Character_Liza_Angry
 We're literally done after this!
 Stop being so stubborn!
-And let.
-Us.
-Go!
+And let. #effect:shake
+Us. #effect:shake
+Go! #effect:shake
 + [Protect your family.]
 -
 AH! #speaker:??? #portrait:Character_Liza_Angry #effect:shake
@@ -456,18 +460,19 @@ She was-
 Oh, thank god. #speaker:??? #portrait:Character_Benji_Sad
 She's okay.
 ...
-Maybe it's a good thing we're moving after all. #effect:vignette
+Maybe it's a good thing we're moving after all.
 ... #speaker:Rosa??? #portrait:Character_Rosalyn_Sad
 ... #speaker:Anton #portrait:Character_Anton_Sad
 ...You should get a caregiver, Ma. #speaker:??? #portrait:Character_Benji_Sad
 I don't want this to happen to you too. #speaker:??? #portrait:Character_Benji_Neutral
 I would never- #speaker:Anton #portrait:Character_Anton_Angry
-You just did, Pa. #speaker:B???? #portrait:Character_Benji_Neutral
+You just did, Pa. #speaker:B???? #portrait:Character_Benji_Angry
 You just did. #speaker:B???? #portrait:Character_Benji_Sad
 ...
 The truck's coming in an hour. #speaker:B???? #portrait:Character_Benji_Neutral
 Stay away from Liza for the time being.
+Please.
 ... #speaker:Anton #portrait:Character_Anton_Sad
-I'm sorry.
+I'm so sorry.
 ~ gamePhase = 5
 -> DONE
