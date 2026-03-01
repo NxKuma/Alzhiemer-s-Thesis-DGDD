@@ -404,6 +404,10 @@ public class PlacementManager : MonoBehaviour
                 return _phase2Placements;
             case PlacementPhase.Phase3:
                 return _phase3Placements;
+            case PlacementPhase.Phase4:
+                return _phase4Placements;
+            case PlacementPhase.Phase5:
+                return _phase5Placements;
             default:
                 return null;
         }
