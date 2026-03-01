@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9310c7c7d1da47b4187cc0b485b2f98e, type: 3}
   m_Name: BalikbayanBox
   m_EditorClassIdentifier: 
-  _itemName: Balkibayan Box
+  _itemName: Balikbayan Box
   _itemDescription: 'Balikbayan Box
 
 '
