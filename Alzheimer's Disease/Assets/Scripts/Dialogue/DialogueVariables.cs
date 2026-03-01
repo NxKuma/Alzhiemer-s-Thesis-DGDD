@@ -198,10 +198,19 @@ public class DialogueVariables
 
     private void VariableChanged(string name, Ink.Runtime.Object value)
     {
-        if(name.Equals("gamePhase"))
+        if (name.Equals("gamePhase", StringComparison.Ordinal))
         {
-            int intValue = (int)Mathf.Floor(((FloatValue)value).value);
-            GamePhaseChanged?.Invoke(intValue);
+            int? gamePhaseValue = value switch
+            {
+                IntValue intValue => intValue.value,
+                FloatValue floatValue => (int)Mathf.Floor(floatValue.value),
+                _ => null
+            };
+
+            if (gamePhaseValue.HasValue)
+            {
+                GamePhaseChanged?.Invoke(gamePhaseValue.Value);
+            }
         }
 
         Debug.Log("Variable changed: " + name + " = " + value);

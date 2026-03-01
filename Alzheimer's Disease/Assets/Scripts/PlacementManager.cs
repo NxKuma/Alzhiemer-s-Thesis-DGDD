@@ -191,11 +191,12 @@ public class PlacementManager : MonoBehaviour
 
         // Runtime safety: make sure keys exist even if OnValidate didn't run.
         AutoPopulatePlacementKeys();
-        // OnGamePhaseChanged(2);
+        OnGamePhaseChanged(1);
     }
 
     private void OnGamePhaseChanged(int newGamePhaseInt)
     {
+        // Debug.Log($"Received game phase change event: new phase int = {newGamePhaseInt}", this);
         PlacementPhase newPlacementPhase = (PlacementPhase)newGamePhaseInt;
         Debug.Log($"Game phase changed: {newPlacementPhase}. Updating placements.", this);
 
@@ -227,6 +228,11 @@ public class PlacementManager : MonoBehaviour
             {
                 gameObject.transform.SetParent(info.room);
             }
+
+            // if(gameObject.TryGetComponent(out ItemScript itemScript))
+            // {
+            //     if(itemScript.GetItemtype() == ItemScript.ItemType.PuzzlePiece && itemScript.)
+            // }
             gameObject.SetActive(info.isVisible);
 
             gameObject.transform.localPosition = info.position;

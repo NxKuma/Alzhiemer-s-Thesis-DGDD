@@ -38,7 +38,7 @@ public class ItemPoolManagerScript : MonoBehaviour
     public void UpdatePool(Item item)
     {
         // if (item is Puzz) return;
-        if(item.GetItemtype() == Item.eItemType.JigsawPuzzle) return;
+        // if(item.GetItemtype() == Item.eItemType.JigsawPuzzle) return;
 
         foreach (ItemScript iS in _itemPool)
         {
@@ -50,7 +50,7 @@ public class ItemPoolManagerScript : MonoBehaviour
     
     public void SetItemSpawnable(Item item)
     {
-        if(item.GetItemtype() == Item.eItemType.JigsawPuzzle) return;
+        // if(item.GetItemtype() == Item.eItemType.JigsawPuzzle) return;
 
         foreach (ItemScript iS in _itemPool)
         {
