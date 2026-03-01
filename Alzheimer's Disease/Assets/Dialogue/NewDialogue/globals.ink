@@ -8,7 +8,6 @@ VAR dilPieces = 0
 VAR p1HaveBrush = false
 VAR p1HaveBucket = false
 VAR p1HaveRoller = false
-VAR p1HaveBucket = false
 VAR p2HaveSoap = false
 VAR p2HaveTrash = false
 VAR p3HaveBox = false

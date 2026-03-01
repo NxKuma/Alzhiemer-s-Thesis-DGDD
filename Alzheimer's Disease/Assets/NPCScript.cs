@@ -3,101 +3,223 @@ using UnityEngine;
 public class NPCScript : MonoBehaviour
 {
     [SerializeField] private NPC _npcData;
+    [SerializeField] private float _meshYOffset = -1.2f;
     private GameObject _nPCModel;
     private Inventory _npcInventory;
     private GameEventsManager _gameEventsManager;
     private bool _hasInteracted = false;
+    private const string PreviewMeshName = "__NPC_PREVIEW_MESH";
 
     private void OnValidate()
     {  
         #if UNITY_EDITOR
         this.name = _npcData != null ? $"{_npcData.GetNPCName()}_NPC" : "NPC_NULL";
+
+        if (!Application.isPlaying)
+        {
+            BuildEditorPreviewMesh();
+        }
+
         UnityEditor.EditorUtility.SetDirty(this);
         #endif
     }
     
     void Awake()
     {
-        //Get the Model first 
-        _nPCModel = this.transform.GetChild(0).gameObject;
-        GameObject npcMesh = Instantiate(_npcData.GetNPCPrefab(), this.transform);
-        npcMesh.layer = LayerMask.NameToLayer("NPCFace");
+        RemovePreviewMesh();
+
+        if (_npcData == null || _npcData.GetNPCPrefab() == null)
+        {
+            Debug.LogWarning($"NPC data or prefab missing on {name}");
+            return;
+        }
+
+        if (!TryGetBaseModel(out _nPCModel))
+        {
+            Debug.LogWarning($"No base NPC model found on {name}");
+            return;
+        }
         string npcName = _npcData.GetNPCName();
 
-        //Make sure the Model is facing forward
-        if(npcName.Contains("Wife")) npcMesh.transform.rotation = Quaternion.Euler(0,45,0);
-        else npcMesh.transform.rotation = Quaternion.Euler(0,90,0);
+        GameObject npcMesh = Instantiate(_npcData.GetNPCPrefab(), transform, false);
+        npcMesh.layer = LayerMask.NameToLayer("NPCFace");
+        npcMesh.transform.localPosition = new Vector3(0f, _meshYOffset, 0f);
+        npcMesh.transform.localRotation = IsWife(npcName)
+            ? Quaternion.Euler(0f, 45f, 0f)
+            : Quaternion.Euler(0f, 90f, 0f);
 
-        //Lower the NPC model to align with the ground plane
-        this.transform.localPosition = new Vector3(this.transform.localPosition.x, -1.2f, this.transform.localPosition.z);
-
-        if(npcName.Contains("Daughter")) 
+        if (IsDaughter(npcName))
         {
-            npcMesh.transform.localScale = Vector3.one * _npcData.GetNPCSize();  
-            npcMesh.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material = _npcData.GetNPCMaterial();   
-        }
-        else {
-            npcMesh.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material = _npcData.GetNPCMaterial();   
-        
+            npcMesh.transform.localScale = Vector3.one * _npcData.GetNPCSize();
         }
 
-        // Reparent all children of the original NPC model under the new NPC mesh, adjusting their transforms as needed.
+        ApplyNpcMaterial(npcMesh, npcName);
+        ReparentLegacyChildren(npcMesh.transform);
+
+        _nPCModel.SetActive(false);
+
+        foreach (Transform child in npcMesh.transform)
+        {
+            if (child.GetComponent<Camera>() != null)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        SetupCollider(npcMesh, npcName);
+    }
+
+    private bool TryGetBaseModel(out GameObject baseModel)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            if (child.name == PreviewMeshName) continue;
+
+            baseModel = child.gameObject;
+            return true;
+        }
+
+        baseModel = null;
+        return false;
+    }
+
+    private void RemovePreviewMesh()
+    {
+        Transform preview = transform.Find(PreviewMeshName);
+        if (preview == null) return;
+
+        if (Application.isPlaying)
+        {
+            Destroy(preview.gameObject);
+            return;
+        }
+
+#if UNITY_EDITOR
+        GameObject previewObject = preview.gameObject;
+        UnityEditor.EditorApplication.delayCall += () =>
+        {
+            if (previewObject != null)
+            {
+                DestroyImmediate(previewObject);
+            }
+        };
+#endif
+    }
+
+#if UNITY_EDITOR
+    private void BuildEditorPreviewMesh()
+    {
+        if (_npcData == null || _npcData.GetNPCPrefab() == null)
+        {
+            RemovePreviewMesh();
+            return;
+        }
+
+        Transform existingPreview = transform.Find(PreviewMeshName);
+        GameObject previewMesh = existingPreview != null
+            ? existingPreview.gameObject
+            : Instantiate(_npcData.GetNPCPrefab(), transform, false);
+
+        previewMesh.name = PreviewMeshName;
+        previewMesh.layer = LayerMask.NameToLayer("NPCFace");
+        previewMesh.transform.localPosition = new Vector3(0f, _meshYOffset, 0f);
+
+        string npcName = _npcData.GetNPCName();
+        previewMesh.transform.localRotation = IsWife(npcName)
+            ? Quaternion.Euler(0f, 45f, 0f)
+            : Quaternion.Euler(0f, 90f, 0f);
+
+        if (IsDaughter(npcName))
+        {
+            previewMesh.transform.localScale = Vector3.one * _npcData.GetNPCSize();
+        }
+        else
+        {
+            previewMesh.transform.localScale = Vector3.one;
+        }
+
+        ApplyNpcMaterial(previewMesh, npcName);
+
+        foreach (Transform child in previewMesh.transform)
+        {
+            Camera childCamera = child.GetComponent<Camera>();
+            if (childCamera != null)
+            {
+                childCamera.enabled = false;
+            }
+        }
+    }
+#endif
+
+    private void ApplyNpcMaterial(GameObject npcMesh, string npcName)
+    {
+        int materialChildIndex = IsDaughter(npcName) ? 0 : 1;
+        if (npcMesh.transform.childCount <= materialChildIndex) return;
+
+        SkinnedMeshRenderer renderer = npcMesh.transform.GetChild(materialChildIndex).GetComponent<SkinnedMeshRenderer>();
+        if (renderer == null) return;
+
+        renderer.material = _npcData.GetNPCMaterial();
+    }
+
+    private void ReparentLegacyChildren(Transform npcMeshTransform)
+    {
         while (_nPCModel.transform.childCount > 0)
         {
             Transform child = _nPCModel.transform.GetChild(0);
-            child.transform.localPosition = new Vector3(child.transform.localPosition.x, child.transform.localPosition.y + 1f, child.transform.localPosition.z);
-            if(child.name.Contains("Face"))
+            child.SetParent(npcMeshTransform, false);
+
+            if (child.name.Contains("Face"))
             {
-                MeshRenderer rend = child.GetComponent<MeshRenderer>();
-                rend.enabled = false;
-            }else{  
-                child.transform.localScale = Vector3.one * 0.35f;
-                child.transform.localPosition = new Vector3(0f, 1.68f, 0f);
+                child.localPosition += Vector3.up;
+                MeshRenderer renderer = child.GetComponent<MeshRenderer>();
+                if (renderer != null) renderer.enabled = false;
+                continue;
             }
 
-            // Preserve the child's world transform (position/rotation/scale) when reparenting
-            // so it appears in the same place after being moved under `npcMesh`.
-            child.SetParent(npcMesh.transform, worldPositionStays: true);
-            
+            child.localScale = Vector3.one * 0.35f;
+            child.localPosition = new Vector3(0f, 1.68f, 0f);
         }
-        //Make the capsule invisible
-        _nPCModel.SetActive(false);
-        //Make sure no camera will be spawned
-        foreach(Transform child in npcMesh.transform)
-        {
-            if (child.GetComponent<Camera>() != null)
-                Destroy(child.gameObject);
-        }
+    }
 
-        // When reparenting, the NPC mesh may lose its collider, so we add a new one here. We use a SphereCollider sized to the combined bounds of the NPC mesh renderers to ensure it encompasses the whole model for interaction purposes.
-        // Add a SphereCollider sized to the NPC mesh bounds
+    private void SetupCollider(GameObject npcMesh, string npcName)
+    {
         Renderer[] renderers = npcMesh.GetComponentsInChildren<Renderer>(true);
-        if (renderers.Length > 0)
+        if (renderers.Length == 0) return;
+
+        Bounds combinedBounds = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++)
         {
-            // Bounds combinedBounds = renderers[0].bounds;
-            // foreach (var rend in renderers)
-            // {
-            //     combinedBounds.Encapsulate(rend.bounds);
-            // }
-
-            Bounds combinedBounds = npcMesh.GetComponentInChildren<SkinnedMeshRenderer>().bounds;
-
-            BoxCollider sc = npcMesh.GetComponent<BoxCollider>();
-            if (sc == null) sc = npcMesh.AddComponent<BoxCollider>();
-            
-            // Convert world-space bounds center to local space
-            Vector3 localCenter = npcMesh.transform.InverseTransformPoint(combinedBounds.center);
-            sc.center = localCenter;
-            
-            // Set the size of the BoxCollider to match the combined bounds
-            Vector3 localSize = npcMesh.transform.InverseTransformVector(combinedBounds.size);
-            // sc.size = new Vector3(Mathf.Abs(localSize.x), Mathf.Abs(localSize.y), Mathf.Abs(localSize.z)); // Ensure size is positive
-            Vector3 sizeToChange;
-            if(npcName.Contains("Wife")) sizeToChange = new Vector3(0.38f, 1.8f, 0.35f);
-            else if(npcName.Contains("Daughter")) sizeToChange = new Vector3(0.27f, 1.721977f, 0.25f);
-            else sizeToChange = new Vector3(0.33f, 1.932664f, 0.21f);
-            sc.size = sizeToChange;
+            combinedBounds.Encapsulate(renderers[i].bounds);
         }
+
+        BoxCollider collider = npcMesh.GetComponent<BoxCollider>();
+        if (collider == null) collider = npcMesh.AddComponent<BoxCollider>();
+
+        collider.center = npcMesh.transform.InverseTransformPoint(combinedBounds.center);
+
+        Vector3 fallbackSize = npcMesh.transform.InverseTransformVector(combinedBounds.size);
+        fallbackSize = new Vector3(Mathf.Abs(fallbackSize.x), Mathf.Abs(fallbackSize.y), Mathf.Abs(fallbackSize.z));
+        collider.size = GetColliderSizeOverride(npcName, fallbackSize);
+    }
+
+    private static Vector3 GetColliderSizeOverride(string npcName, Vector3 fallbackSize)
+    {
+        if (IsWife(npcName)) return new Vector3(0.38f, 1.8f, 0.35f);
+        if (IsDaughter(npcName)) return new Vector3(0.27f, 1.721977f, 0.25f);
+        if (!string.IsNullOrWhiteSpace(npcName)) return new Vector3(0.33f, 1.932664f, 0.21f);
+        return fallbackSize;
+    }
+
+    private static bool IsWife(string npcName)
+    {
+        return !string.IsNullOrWhiteSpace(npcName) && npcName.IndexOf("Wife", System.StringComparison.OrdinalIgnoreCase) >= 0;
+    }
+
+    private static bool IsDaughter(string npcName)
+    {
+        return !string.IsNullOrWhiteSpace(npcName) && npcName.IndexOf("Daughter", System.StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
     private void Start()

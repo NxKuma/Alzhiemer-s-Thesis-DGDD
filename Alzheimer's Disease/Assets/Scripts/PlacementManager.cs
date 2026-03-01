@@ -16,7 +16,9 @@ public enum PlacementPhase
 {
     Phase1 = 1,
     Phase2 = 2,
-    Phase3 = 3
+    Phase3 = 3,
+    Phase4 = 4,
+    Phase5 = 5
 }
 
 // Unity can't serialize Dictionary directly, so this stores keys/values in parallel lists
@@ -157,6 +159,8 @@ public class PlacementManager : MonoBehaviour
     [SerializeField] private PlacementDictionary _phase1Placements = new PlacementDictionary();
     [SerializeField] private PlacementDictionary _phase2Placements = new PlacementDictionary();
     [SerializeField] private PlacementDictionary _phase3Placements = new PlacementDictionary();
+    [SerializeField] private PlacementDictionary _phase4Placements = new PlacementDictionary();
+    [SerializeField] private PlacementDictionary _phase5Placements = new PlacementDictionary();
 
     [Header("Editor Placement Save")]
     [SerializeField] private PlacementPhase _editorTargetPhase = PlacementPhase.Phase1;
@@ -187,7 +191,7 @@ public class PlacementManager : MonoBehaviour
 
         // Runtime safety: make sure keys exist even if OnValidate didn't run.
         AutoPopulatePlacementKeys();
-        OnGamePhaseChanged(1);
+        // OnGamePhaseChanged(2);
     }
 
     private void OnGamePhaseChanged(int newGamePhaseInt)
@@ -225,8 +229,8 @@ public class PlacementManager : MonoBehaviour
             }
             gameObject.SetActive(info.isVisible);
 
-            gameObject.transform.position = info.position;
-            gameObject.transform.eulerAngles = info.rotation;
+            gameObject.transform.localPosition = info.position;
+            gameObject.transform.localEulerAngles = info.rotation;
 
         }
     }
@@ -309,6 +313,8 @@ public class PlacementManager : MonoBehaviour
         _phase1Placements?.EnsureKeys(keysToEnsure);
         _phase2Placements?.EnsureKeys(keysToEnsure);
         _phase3Placements?.EnsureKeys(keysToEnsure);
+        _phase4Placements?.EnsureKeys(keysToEnsure);
+        _phase5Placements?.EnsureKeys(keysToEnsure);
 
         #if UNITY_EDITOR
         // Mark scene dirty when auto-populating in editor.
@@ -363,8 +369,8 @@ public class PlacementManager : MonoBehaviour
             }
 
             Transform gameObjectTransform = gameObject.transform;
-            info.position = gameObjectTransform.position;
-            info.rotation = gameObjectTransform.eulerAngles;
+            info.position = gameObjectTransform.localPosition;
+            info.rotation = gameObjectTransform.localEulerAngles;
             info.room = gameObjectTransform.parent;
             info.isVisible = gameObject.activeSelf;
 
