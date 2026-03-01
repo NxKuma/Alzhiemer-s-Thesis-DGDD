@@ -187,6 +187,7 @@ public class PlacementManager : MonoBehaviour
 
         // Runtime safety: make sure keys exist even if OnValidate didn't run.
         AutoPopulatePlacementKeys();
+        OnGamePhaseChanged(1);
     }
 
     private void OnGamePhaseChanged(int newGamePhaseInt)
