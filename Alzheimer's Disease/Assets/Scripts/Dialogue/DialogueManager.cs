@@ -200,6 +200,11 @@ public class DialogueManager : MonoBehaviour
         return _instance;
     }
 
+    public DialogueVariables GetDialogueVariables()
+    {
+        return _dialogueVar;
+    }
+
     private void Start()
     {
         DialogueIsPlaying = false;
@@ -445,8 +450,8 @@ public class DialogueManager : MonoBehaviour
         }else{  
             newSpriteCompletion = (int)Mathf.Floor(completionInt);
         }
-        Debug.Log("Completion: " + completion/30f + ", Sprite Completion: " + newSpriteCompletion);
-        Debug.Log("Rounded: " + Mathf.Round(completion/30f) + ",\nCeil: " + Mathf.Ceil(completion/30f) + ",\nFloor: " + Mathf.Floor(completion/30f));
+        // Debug.Log("Completion: " + completion/30f + ", Sprite Completion: " + newSpriteCompletion);
+        // Debug.Log("Rounded: " + Mathf.Round(completion/30f) + ",\nCeil: " + Mathf.Ceil(completion/30f) + ",\nFloor: " + Mathf.Floor(completion/30f));
         switch (newSpriteCompletion)
         { 
             case 0:

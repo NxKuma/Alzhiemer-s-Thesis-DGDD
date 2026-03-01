@@ -12,6 +12,13 @@ public struct PlacementInfo
 
 }
 
+public enum PlacementPhase
+{
+    Phase1 = 1,
+    Phase2 = 2,
+    Phase3 = 3
+}
+
 // Unity can't serialize Dictionary directly, so this stores keys/values in parallel lists
 // and rebuilds a runtime Dictionary on load.
 [Serializable]
@@ -75,6 +82,34 @@ public class PlacementDictionary : ISerializationCallbackReceiver
         return _dict;
     }
 
+    public bool SetValue(GameObject gameObject, PlacementInfo info)
+    {
+        if (gameObject == null)
+        {
+            return false;
+        }
+
+        int index = _gameObjects.IndexOf(gameObject);
+        if (index < 0)
+        {
+            _gameObjects.Add(gameObject);
+            _placementValues.Add(info);
+        }
+        else
+        {
+            while (_placementValues.Count <= index)
+            {
+                _placementValues.Add(default);
+            }
+
+            _placementValues[index] = info;
+        }
+
+        EnsureBuilt();
+        _dict[gameObject] = info;
+        return true;
+    }
+
     public void OnBeforeSerialize()
     {
         // Lists are edited in the Inspector.
@@ -123,6 +158,9 @@ public class PlacementManager : MonoBehaviour
     [SerializeField] private PlacementDictionary _phase2Placements = new PlacementDictionary();
     [SerializeField] private PlacementDictionary _phase3Placements = new PlacementDictionary();
 
+    [Header("Editor Placement Save")]
+    [SerializeField] private PlacementPhase _editorTargetPhase = PlacementPhase.Phase1;
+
     private void OnValidate()
     {
         AutoPopulatePlacementKeys();
@@ -144,16 +182,52 @@ public class PlacementManager : MonoBehaviour
     void Start()
     {
         _dialogueManager = DialogueManager.GetInstance();
+        _dialogueManager.GetDialogueVariables().GamePhaseChanged += OnGamePhaseChanged;
         _itemPoolManager = ItemPoolManagerScript.Instance;
 
         // Runtime safety: make sure keys exist even if OnValidate didn't run.
         AutoPopulatePlacementKeys();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnGamePhaseChanged(int newGamePhaseInt)
     {
-        
+        PlacementPhase newPlacementPhase = (PlacementPhase)newGamePhaseInt;
+        Debug.Log($"Game phase changed: {newPlacementPhase}. Updating placements.", this);
+
+        PlacementDictionary targetPlacements = GetPlacementsForPhase(newPlacementPhase);
+        if (targetPlacements == null)
+        {
+            Debug.LogWarning($"No placement dictionary configured for phase {newPlacementPhase}.", this);
+            return;
+        }
+
+        Dictionary<GameObject, PlacementInfo> placements = targetPlacements.AsDictionary();
+        if (placements == null || placements.Count == 0)
+        {
+            Debug.LogWarning($"No placement keys found for phase {newPlacementPhase}. Auto-populate first.", this);
+            return;
+        }
+
+        foreach (KeyValuePair<GameObject, PlacementInfo> kvp in placements)
+        {
+            GameObject gameObject = kvp.Key;
+            PlacementInfo info = kvp.Value;
+
+            if (gameObject == null)
+            {
+                continue;
+            }
+
+            if (info.room != null)
+            {
+                gameObject.transform.SetParent(info.room);
+            }
+            gameObject.SetActive(info.isVisible);
+
+            gameObject.transform.position = info.position;
+            gameObject.transform.eulerAngles = info.rotation;
+
+        }
     }
 
     private void AutoPopulatePlacementKeys()
@@ -242,6 +316,90 @@ public class PlacementManager : MonoBehaviour
             UnityEditor.EditorUtility.SetDirty(this);
         }
         #endif
+    }
+
+    public PlacementPhase GetEditorTargetPhase()
+    {
+        return _editorTargetPhase;
+    }
+
+    public void SavePlacementsForEditorPhase()
+    {
+        SavePlacementsForPhase(_editorTargetPhase);
+    }
+
+    public void SavePlacementsForPhase(PlacementPhase phase)
+    {
+        AutoPopulatePlacementKeys();
+
+        PlacementDictionary targetPlacements = GetPlacementsForPhase(phase);
+        if (targetPlacements == null)
+        {
+            Debug.LogWarning($"No placement dictionary configured for phase {phase}.", this);
+            return;
+        }
+
+        Dictionary<GameObject, PlacementInfo> placements = targetPlacements.AsDictionary();
+        if (placements == null || placements.Count == 0)
+        {
+            Debug.LogWarning($"No placement keys found for phase {phase}. Auto-populate first.", this);
+            return;
+        }
+
+        List<GameObject> keys = new List<GameObject>(placements.Keys);
+
+        int savedCount = 0;
+        foreach (GameObject gameObject in keys)
+        {
+            if (gameObject == null)
+            {
+                continue;
+            }
+
+            if (!placements.TryGetValue(gameObject, out PlacementInfo info))
+            {
+                continue;
+            }
+
+            Transform gameObjectTransform = gameObject.transform;
+            info.position = gameObjectTransform.position;
+            info.rotation = gameObjectTransform.eulerAngles;
+            info.room = gameObjectTransform.parent;
+            info.isVisible = gameObject.activeSelf;
+
+            if (targetPlacements.SetValue(gameObject, info))
+            {
+                savedCount++;
+            }
+        }
+
+        #if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            UnityEditor.EditorUtility.SetDirty(this);
+            if (gameObject.scene.IsValid())
+            {
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            }
+        }
+        #endif
+
+        Debug.Log($"Saved {savedCount} placement entries for {phase}.", this);
+    }
+
+    private PlacementDictionary GetPlacementsForPhase(PlacementPhase phase)
+    {
+        switch (phase)
+        {
+            case PlacementPhase.Phase1:
+                return _phase1Placements;
+            case PlacementPhase.Phase2:
+                return _phase2Placements;
+            case PlacementPhase.Phase3:
+                return _phase3Placements;
+            default:
+                return null;
+        }
     }
 
     // public bool TryGetPlacement(GameObject gameObject, out PlacementInfo info)

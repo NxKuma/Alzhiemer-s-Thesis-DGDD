@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ink.Runtime;
 using System.IO;
+using System;
 
 public class DialogueVariables
 {
     private static Dictionary<string, Ink.Runtime.Object> variables;
 
     public bool isListening {get; private set;} = false;
+    public Action<int> GamePhaseChanged; // subscribers receive the new game phase as an int (cast from enum)
     private Dictionary<string, string> _setVariableCache = new Dictionary<string, string>(); 
     
     public bool ContainsVariable(string name)
@@ -196,6 +198,12 @@ public class DialogueVariables
 
     private void VariableChanged(string name, Ink.Runtime.Object value)
     {
+        if(name.Equals("gamePhase"))
+        {
+            int intValue = (int)Mathf.Floor(((FloatValue)value).value);
+            GamePhaseChanged?.Invoke(intValue);
+        }
+
         Debug.Log("Variable changed: " + name + " = " + value);
         if (variables.ContainsKey(name))
         {

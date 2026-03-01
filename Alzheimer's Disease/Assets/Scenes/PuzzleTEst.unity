@@ -4331,7 +4331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3982402520557615085, guid: 91603075eab8d4942a9925dd817c16c6, type: 3}
       propertyPath: m_Name
-      value: Balkibayan Box
+      value: Balikbayan Box
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12882,6 +12882,38 @@ PrefabInstance:
     - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
       propertyPath: _phase3Placements._placementValues.Array.size
       value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
+      propertyPath: _phase1Placements._placementValues.Array.data[0].room
+      value: 
+      objectReference: {fileID: 2140431810}
+    - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
+      propertyPath: _phase1Placements._placementValues.Array.data[0].isVisible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
+      propertyPath: _phase1Placements._placementValues.Array.data[0].position.x
+      value: -32.60637
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
+      propertyPath: _phase1Placements._placementValues.Array.data[0].position.y
+      value: 3.069996
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
+      propertyPath: _phase1Placements._placementValues.Array.data[0].position.z
+      value: 17.5271
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
+      propertyPath: _phase1Placements._placementValues.Array.data[0].rotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
+      propertyPath: _phase1Placements._placementValues.Array.data[0].rotation.y
+      value: 77.60755
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
+      propertyPath: _phase1Placements._placementValues.Array.data[0].rotation.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6563521609862781040, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
       propertyPath: m_LocalPosition.x
