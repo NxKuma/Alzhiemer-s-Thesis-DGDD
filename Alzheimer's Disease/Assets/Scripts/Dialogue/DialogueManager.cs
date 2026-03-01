@@ -54,6 +54,7 @@ public class DialogueManager : MonoBehaviour
 
     private const string SPEAKER_TAG = "speaker";
     private const string PORTRAIT_TAG = "portrait";
+    private const string EFFECT_TAG = "effect";
     private Sprite _NPCImage;
 
     private Story _currentStory;
@@ -370,6 +371,21 @@ public class DialogueManager : MonoBehaviour
                         
                     }
                     Debug.Log("portrait= " + tagValue); //https://youtu.be/tVrxeUIEV9E?si=vu2NrIrVzmKJOjED&t=687
+                    break;
+                case EFFECT_TAG:
+                    if (tagValue == "shake")
+                    {
+                        //call shake once
+                    } else if (tagValue == "vignette")
+                    {
+                        // turn on vignette
+                    } else if (tagValue == "tense")
+                    {
+                        // turn on tense music
+                    } else if (tagValue == "none")
+                    {
+                        // turn the other 3 off
+                    } 
                     break;
                 default:
                     Debug.LogWarning("Tag is parsed, but not handled: " + tag);

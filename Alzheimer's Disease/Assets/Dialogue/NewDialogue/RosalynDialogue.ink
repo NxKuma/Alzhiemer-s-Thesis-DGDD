@@ -1,7 +1,8 @@
+
 INCLUDE globals.ink
 
 { gamePhase:
-- 0: -> lunch
+- 0: //tutorial
 - 1: -> phase1
 - 1.1: -> phase1check
 - 2: -> phase2start
@@ -14,7 +15,7 @@ INCLUDE globals.ink
 }
 
 === lunch ===
-Anton, Mahal! It's time for lunch. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+Anton, Mahal! It's time for lunch. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy #effect:vignette
 I'm here. #speaker:Anton #portrait:Character_Anton_Neutral
 Hi, Pa. #speaker:Benji #portrait:Character_Benji_Neutral
 Good evening, po. #speaker:L??? #portrait:Character__Liza_Neutral
@@ -37,7 +38,7 @@ Isn't that right, dear?
     I don't remember. 
     ... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     That's okay, Mahal. It's been a long time anyway.
-+ She's right. #speaker:Anton #portrait:Character_Anton_Neutral
++ She's right. #speaker:Anton #portrait:Character_Anton_Neutral #effect:vignette
     She used to run Barangay Calesa with an iron fist like she was never pregnant at all!
     Walking around like she owns the place.
     Scolding the local ruffians.
@@ -46,11 +47,12 @@ Isn't that right, dear?
     You haven't been doing your daily patrols around the Barangay as of late.
     ... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     ... #speaker:Benj? #portrait:Character_Benji_Sad
-    ..? #speaker:L??a #portrait:Character_Liza_Neutral
+    ..? #speaker:L??a #portrait:Character_Liza_Neutral 
     Mahal, we don't live in Barangay Calesa anymore, remember? #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
-    ...Huh? #speaker:Anton #portrait:Character_Anton_Sad
+    ...Huh? #speaker:Anton #portrait:Character_Anton_Sad #effect:none
 - 
-\(sighs) It's okay, Pa. Don't worry about it too much. #speaker:Benj? #portrait:Character_Benji_Sad
+\(sighs)  #speaker:Benj? #portrait:Character_Benji_Sad
+It's okay, Pa. Don't worry about it too much.
 Let's just eat, okay? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 ...Okay #speaker:Anton #portrait:Character_Anton_Sad
 ... #speaker:Benji #portrait:Character_Benji_Sad
@@ -74,8 +76,10 @@ Since Benji and I won't be around as much anymore.
 We're worried about you. #speaker:Be?ji #portrait:Character_Benji_Neutral
 We'll be fine. #speaker:Anton #portrait:Character_Anton_Neutral
 It just means you have to visit often! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
-\(chuckles) We will. #speaker:Benji #portrait:Character_Benji_Happy
-Come now. Let's finish lunch. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+\(chuckles)  #speaker:Benji #portrait:Character_Benji_Happy
+We will.
+Come now.  #speaker:Rosalyn #portrait:Character_Rosalyn_Happy #effect:none
+Let's finish lunch.
 ~ gamePhase = 1
 -> DONE
 
@@ -108,7 +112,9 @@ Mahal, can you be a dear and look for it? I'll just finish this up.
     Will do.#speaker:Anton #portrait:Character_Anton_Neutral
 -
 Thank you, Anton. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
-Oh, can you find a paint roller and a small brush while you're at it? I might need them.
+Oh, can you find a paint roller and brushes while you're at it?
+I might need them.
+Thank you, Mahal.
 // go to phase1check
 ~ gamePhase = 1.1
 -> DONE
@@ -120,7 +126,7 @@ Did you find the stuff? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     Let me know when you do. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 + [Yeah.] 
     Yeah, I have them. #speaker:Anton #portrait:Character_Anton_Neutral
-    { p1HaveBrush and p1HaveRoller and p1SonDone and p1DILDone and p1HaveBucket : 
+    { p1HaveBrush and p1HaveBucket and p1HaveRoller and p1SonDone and p1DILDone  : 
         -> phase1complete
     - else:
         Haha, very funny. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
@@ -130,13 +136,18 @@ Did you find the stuff? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 -> DONE
 
 === phase1complete ===
-Thank you, Anton. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
-I painted these doors for you. 
-So that you don't get lost again.
-Now you'll know which room is which.
-... #speaker:Anton #portrait:Character_Anton_Neutral
-Thank you, Rosa. 
-Of course, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+Thank you, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+How long will you be doing this? #speaker:Anton #portrait:Character_Anton_Neutral
+Hm... #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
+I want to paint every door in the house.
+So it would take quite a while, I think. 
+Would you like to help me? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+Hmp. #speaker:Anton #portrait:Character_Anton_Neutral
+You know I'm not good at those art things.
+You're much better at it than I am.
+I'll leave it to you.
+Haha! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+Thank you, Mahal.
 ~ gamePhase = 2
 -> DONE
 
@@ -166,9 +177,10 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
 ...
 + [Painting?]
     Why did you start painting again? #speaker:Anton #portrait:Character_Anton_Neutral
-    I wanted to get back into it. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+    I wanted to get back into it. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy #effect:vignette
     Little by little.
-    It's lovely. #speaker:Anton #portrait:Character_Anton_Neutral
+    ... #speaker:Anton #portrait:Character_Anton_Neutral
+    It's lovely. 
     Thank you! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     Just... #speaker:Anton #portrait:Character_Anton_Neutral
     Why doors?
@@ -177,18 +189,18 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
     It's a...
     Special project.
     And I really hope you'll like it.
-    ? #speaker:Anton #portrait:Character_Anton_Neutral
+    ...? #speaker:Anton #portrait:Character_Anton_Neutral
     I just said it's lovely didn't I?
     \(chuckles) #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     I know, Mahal.
-    But,
-    I hope you'll like it for other reasons...
+    But... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+    I hope you'll like it for other reasons... #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     What are you on about? #speaker:Anton #portrait:Character_Anton_Neutral
     I'll tell you all about it later when I'm finished. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     Mkay?
     ... #speaker:Anton #portrait:Character_Anton_Neutral
     Fine.
-    And what about you, Mahal? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+    And what about you, Mahal? #speaker:Rosalyn #portrait:Character_Rosalyn_Happy #effect:none
     Such a chatterbox all of a sudden!
     Hmp. #speaker:Anton #portrait:Character_Anton_Neutral
     If you wanted me to shut up, you could have just said so.
@@ -196,14 +208,13 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
     I like hearing you talk. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     I much prefer you being all chatty.
     At least, compared to the silence in the house... #speaker:Rosalyn #portraitCharacter_Rosalyn_Sad
-    Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 + [Locks?]
     What's with all the locks on the door? #speaker:Anton #portrait:Character_Anton_Neutral
     Ah... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     Those are...
     For your sake...
     ... #speaker:Anton #portrait:Character_Anton_Neutral
-    What?
+    What? #effect:tense
     I um- #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     I read online that some Alzheimer's patients.
     Have a tendency to wander out of the house.
@@ -211,12 +222,13 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
     Or how to get back.
     So...
     Locks.
-    Of course I would know how to get back to my own house! #speaker:Anton #portrait:Character_Anton_Angry
+    Of course I would know how to get back to my own house! #speaker:Anton #portrait:Character_Anton_Angry #effect:shake
     How long do you think we've been living here?!
     I'm sure you can, Mahal! #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     This is just...
     A precaution...
-    Because you don't trust me with myself. #speaker:Anton #portrait:Character_Anton_Neutral
+    ... #speaker:Anton #portrait:Character_Anton_Neutral
+    Because you don't trust me with myself. 
     Mahal, it's not like that. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     Sure it isn't. #speaker:Anton #portrait:Character_Anton_Neutral
     Anton. #speaker:Rosalyn #portrait:Character_Rosa_Sad
@@ -226,19 +238,19 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
     Not at all. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     I just want to make sure you're safe.
     By keeping me locked up in the house? #speaker:Anton #portrait:Character_Anton_Neutral
-    By making sure we know where you are. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
+    By making sure we know where you are. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     ... #speaker:Anton #portrait:Character_Anton_Neutral
     I'm going now. #speaker:Anton #portrait:Character_Anton_Sad
     ... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
     Okay. 
     Take care, Mahal.
 -
-Hm. #speaker:Anton #portrait:Character_Anton_Neutral
+Hm. #speaker:Anton #portrait:Character_Anton_Neutral #effect:none
 ~ p2WifeDone = true
 -> DONE
 
 === phase2DishSoapReceived ===
-The door looks beautiful. #speaker:Anton #portrait:Character_Anton_Neutral
+The door looks good. #speaker:Anton #portrait:Character_Anton_Neutral
 Aw! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 Thank you, Mahal.
 -> DONE
@@ -250,22 +262,21 @@ Hm.
 -> DONE
 
 === phase3check ===
-{ p3HaveTape and p3WifeDone:
-    -> phase3TapeReceived
+{ p3HaveBox and p3WifeDone:
+    -> phase3BoxReceived
   - else:
-    -> phase3GetTape
+    -> phase3GetBox
 }
 
-=== phase3GetTape ===
+=== phase3GetBox ===
 Rosa? #speaker:Anton #portrait:Character_Anton_Neutral
 Hm? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
-Oh. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
+Oh! #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 Yes, mahal?
-We need some tape for the boxes. #speaker:Anton #portrait:Character_Anton_Neutral
+We need one more box for them. #speaker:Anton #portrait:Character_Anton_Neutral
 Do you have any?
-Tape? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
+We should have more... #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
 Here you go.
-Take the box with you since they need it too.
 Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
 You're welcome. #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
 ... #speaker:Anton #portrait:Character_Anton_Neutral
@@ -279,7 +290,7 @@ Annoyed.
 Liza keeps suggesting that we get a caregiver for you.
 I know she means well.
 But I can handle myself! #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
-We can take care of ourselves!
+We can handle ourselves!
 We'll be okay.
 Right, Mahal?
 ... #speaker:Anton #portrait:Character_Anton_Neutral
@@ -290,7 +301,7 @@ Thank you, Mahal.
 I love you.
 I love you too. #speaker:Anton #portrait:Character_Anton_Neutral
 Now... #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
-Don't you need to give that tape to someone? 
+Don't you need to give that box to someone? 
 Oh. #speaker:Anton #portrait:Character_Anton_Neutral
 Right.
 I'll go do that.
@@ -299,9 +310,11 @@ You're welcome, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 ~ p3WifeDone = true
 -> DONE
 
-=== phase3TapeReceived ===
-Did you give the tape yet? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
-Not yet. #speaker:Anton #portrait:Character_Anton_Neutral
+=== phase3BoxReceived ===
+Did you give the box yet? #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
+Box? #speaker:Anton #portrait:Character_Anton_Neutral
+Oh.
+Not yet.
 Go do that, Mahal. #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
 I'll be okay here. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 -> DONE
@@ -310,6 +323,7 @@ I'll be okay here. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 It's almost time... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
 Rosa? #speaker:Anton #portrait:Character_Anton_Neutral
 I'll be okay... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+... #speaker:Anton #portrait:Character_Anton_Neutral
 -> DONE
 
 === phase5 ===
@@ -350,13 +364,13 @@ What would you like for dinner?
 -> DONE
 
 = phase5BadEnd
-Tell them not to bother. #speaker:Anton #portrait:Character_Anton_Neutral
+Tell them not to bother. #speaker:Anton #portrait:Character_Anton_Neutral #effect:tense
 If we're just a nuisance to them anyway.
 Anton. #speaker:Ros?ly? #portrait:Character_Rosalyn_Angry
-What?! #speaker:Anton #portrait:Character_Anton_Angry
+What? #speaker:Anton #portrait:Character_Anton_Angry
 If it's such a chore being around us, then they don't need to be around.
-\(sigh) 
-Anton... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+\(sigh) #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
+Anton... 
 You know this is why they left. right? 
 You keep fighting us.
 You make it hard for us to take care of you.
@@ -393,4 +407,5 @@ I truly am sorry.
 Hm.
 ... #speaker:Rosal?? #portrait:Character_Rosalyn_Sad
 ... #speaker:Anton #portrait:Character_Anton_Sad
+// transition to end here
 -> DONE
