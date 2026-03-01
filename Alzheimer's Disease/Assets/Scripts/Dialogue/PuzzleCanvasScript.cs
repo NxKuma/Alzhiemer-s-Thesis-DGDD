@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using System;
+using UnityEngine.SceneManagement;
 
 public class PuzzleCAnvasScript : MonoBehaviour
 {
@@ -24,6 +26,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
     // Saved layouts per NPC: list of (slotName -> pieceName)
     private class SlotSave { public string slotName; public string pieceName; }
     private Dictionary<string, List<SlotSave>> _savedLayouts = new Dictionary<string, List<SlotSave>>();
+    public Action<float> onPuzzleSubmitted;
 
     private static void ReparentAndNormalize(Transform child, Transform newParent)
     {
@@ -100,6 +103,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
                 _ = _sFXManager.PlaySFX("button");
                 _dialogueManager.SetSpriteCompletion(CheckPuzzleAccuracy());
                 _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Dialouging);
+                onPuzzleSubmitted?.Invoke(CheckPuzzleAccuracy()); // arbitrary threshold for "solved"
             }
         }
       
@@ -241,14 +245,36 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private float CheckPuzzleAccuracy()
     {
         float correctNessPercentage = 0f;
-        foreach(GameObject piece in _puzzlePiecesList)
+
+        if(SceneManager.GetActiveScene().name == "Backstory")
         {
-            if (piece.transform.parent.name.Contains(piece.name.Split('_')[1]))
-            {
-                correctNessPercentage += 1f;
-            } // piece is in correct slot
+            foreach(Transform piece in _puzzleSlotsParent)
+            {   
+                string childName = piece.name;
+                if(piece.childCount > 0)
+                {
+                    string pieceName = piece.GetChild(0).GetChild(0).GetComponent<Image>().sprite.name.Split('_')[1];
+                    if(pieceName.Contains(childName))
+                    {
+                        Debug.Log($"Piece {piece.name} is correct!");
+                        correctNessPercentage += 1f;
+                    } // piece is in correct slot    
+                } 
+            }
         }
-        return (correctNessPercentage / 9f)*100f; // there are 9 pieces in total
+        else
+        {    
+            foreach(GameObject piece in _puzzlePiecesList)
+            {
+                    Debug.Log($"Piece {piece.name} is correct!");
+                if (piece.transform.parent.name.Contains(piece.name.Split('_')[1]))
+                {
+                    
+                    correctNessPercentage += 1f;
+                } // piece is in correct slot
+            }
+        }
+        return (correctNessPercentage / _puzzleSlotsParent.childCount)*100f; // there are 9 pieces in total
     }
 
     private void RandomizeChildOrder(Transform parent)
@@ -263,7 +289,7 @@ public class PuzzleCAnvasScript : MonoBehaviour
         // Fisher-Yates shuffle
         for (int i = children.Count - 1; i > 0; i--)
         {
-            int randomIndex = Random.Range(0, i + 1);
+            int randomIndex = UnityEngine.Random.Range(0, i + 1);
             // Swap by changing sibling index
             children[i].SetSiblingIndex(randomIndex);
             children[randomIndex].SetSiblingIndex(i);

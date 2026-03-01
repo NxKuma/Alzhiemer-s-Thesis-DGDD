@@ -14,9 +14,16 @@ public class BackstoryController : MonoBehaviour
     {
         _dialogueManager.EnterDialogueMode(_backstoryTextJSON);
         _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.PuzzleSolving);
+        _puzzleCanvasScript.onPuzzleSubmitted += TransitionToDialogue;;
         // GameEventsManager.Instance.playerEvents.DisablePlayerMovement();
     }
 
+    private void TransitionToDialogue(float puzzleCompletion)
+    {
+        Debug.Log("Puzzle submitted with completion: " + puzzleCompletion);
+        // Arbitrary threshold for "solved"
+        
+    }
     // Update is called once per frame
     void Update()
     {

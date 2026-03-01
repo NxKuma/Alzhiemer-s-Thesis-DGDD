@@ -77,6 +77,10 @@ public class QuestPoint : MonoBehaviour
             // Debug.Log($"NPC Interacted: {npcName}. ComponentNPC: {this.transform.parent.GetComponentInParent<NPC>().GetNPCName()}. ");
             // Add in a check so that the quest that will be started/finished is actually the one assigned to the NPC
             string npcNameFromParent = this.transform.parent.GetComponentInParent<NPCScript>().GetNPCName();
+            // Debug.Log($"NPC Interacted: {npcName}. ComponentNPC: {npcNameFromParent}. ");
+            // Debug.Log($"Quest State: {questManager.GetQuestById(questId).state}");
+            // Debug.Log($"This QuestState: {this.currentQuestState}");
+
             if ( npcName.Contains(npcNameFromParent))
             {
                 // Debug.Log("NPC interact with correct NPC for quest point.");
