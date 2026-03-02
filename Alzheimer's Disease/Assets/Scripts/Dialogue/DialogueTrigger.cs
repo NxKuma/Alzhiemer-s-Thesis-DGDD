@@ -94,7 +94,7 @@ public class DialogueTrigger : MonoBehaviour
                 Ray r = new Ray(origin, _interactorSource.forward);
                 Debug.DrawRay(r.origin, r.direction * _interactRange, Color.red, 2.0f);
                 int mask = LayerMask.GetMask("NPC");
-                float radius = 0.5f; // Adjust the radius as needed
+                float radius = 1f; // Adjust the radius as needed
                 if (Physics.SphereCast(_interactorSource.position, radius, _interactorSource.forward,
                        out RaycastHit hitInfo, _interactRange, mask))
                 {

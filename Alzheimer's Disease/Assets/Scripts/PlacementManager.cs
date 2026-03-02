@@ -187,12 +187,47 @@ public class PlacementManager : MonoBehaviour
     {
         _dialogueManager = DialogueManager.GetInstance();
         _dialogueManager.GetDialogueVariables().GamePhaseChanged += OnGamePhaseChanged;
+        _dialogueManager.GetDialogueVariables().ItemVisibilityChanged += OnItemVisibilityChanged;
+
         _itemPoolManager = ItemPoolManagerScript.Instance;
 
         // Runtime safety: make sure keys exist even if OnValidate didn't run.
         AutoPopulatePlacementKeys();
         OnGamePhaseChanged(1);
     }
+
+    private void OnItemVisibilityChanged(string itemName, bool isVisible)
+    {
+        int gamePhaseInt = int.Parse(itemName[1].ToString());
+        PlacementDictionary targetPlacements = GetPlacementsForPhase((PlacementPhase)gamePhaseInt);
+
+        foreach (KeyValuePair<GameObject, PlacementInfo> kvp in targetPlacements.AsDictionary())
+        {
+            GameObject gameObject = kvp.Key;
+            PlacementInfo info = kvp.Value;
+
+            switch(itemName)
+            {
+                case "p1SonDone":
+                    if(gameObject.name.Contains("Roller")) gameObject.SetActive(true);                   break;
+                case "p1DILDone":
+ 
+                    if(gameObject.name.Contains("Brush")) gameObject.SetActive(true);                   break;
+                case "p2WifeDone": 
+ 
+                    if(gameObject.name.Contains("Dish")) gameObject.SetActive(true);                   break;
+                case "p2DILDone":
+ 
+                    if(gameObject.name.Contains("Trash")) gameObject.SetActive(true);                   break;
+                case "p3WifeDone":
+ 
+                    if(gameObject.name.Contains("Box")) gameObject.SetActive(true);                   break;
+                default:
+                    continue;                    
+            }
+        }
+    }
+
 
     private void OnGamePhaseChanged(int newGamePhaseInt)
     {
@@ -223,6 +258,18 @@ public class PlacementManager : MonoBehaviour
             {
                 continue;
             }
+            if(gameObject.GetComponent<ItemScript>() != null)
+            {
+                ItemScript itemScript = gameObject.GetComponent<ItemScript>();
+                if(itemScript.GetItemResource().GetItemtype() == Item.eItemType.JigsawPuzzle && IsVisibleInPreviousPhases(gameObject, newPlacementPhase) )
+                {
+                    continue;
+                }
+            }
+
+            // if (gameObject.activeSelf) continue;
+
+            //Add Formatting here for puzzles when 
 
             if (info.room != null)
             {
@@ -239,6 +286,31 @@ public class PlacementManager : MonoBehaviour
             gameObject.transform.localEulerAngles = info.rotation;
 
         }
+    }
+
+    private bool IsVisibleInPreviousPhases(GameObject gameObject, PlacementPhase currentPhase)
+    {
+        if (gameObject == null)
+        {
+            return false;
+        }
+
+        int currentPhaseInt = (int)currentPhase;
+        for (int phaseInt = (int)PlacementPhase.Phase1; phaseInt < currentPhaseInt; phaseInt++)
+        {
+            PlacementDictionary previousPlacements = GetPlacementsForPhase((PlacementPhase)phaseInt);
+            if (previousPlacements == null)
+            {
+                continue;
+            }
+
+            if (previousPlacements.TryGetValue(gameObject, out PlacementInfo previousInfo) && previousInfo.isVisible)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void AutoPopulatePlacementKeys()

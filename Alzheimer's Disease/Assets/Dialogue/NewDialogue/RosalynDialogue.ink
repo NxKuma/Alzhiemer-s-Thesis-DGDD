@@ -152,7 +152,7 @@ Thank you, Mahal.
 -> DONE
 
 === phase2start ===
-She seems busy. #speaker:Anton portrait:Character_Anton_Neutral
+She seems busy. #speaker:Anton #portrait:Character_Anton_Neutral
 -> DONE
 
 === phase2check ===

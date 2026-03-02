@@ -11,6 +11,7 @@ public class DialogueVariables
 
     public bool isListening {get; private set;} = false;
     public Action<int> GamePhaseChanged; // subscribers receive the new game phase as an int (cast from enum)
+    public Action<string, bool> ItemVisibilityChanged; // subscribers receive the new visibility status of the item whose variable changed
     private Dictionary<string, string> _setVariableCache = new Dictionary<string, string>(); 
     
     public bool ContainsVariable(string name)
@@ -48,7 +49,7 @@ public class DialogueVariables
             Debug.LogWarning("Tried to set an Ink bool with an empty name.");
             return;
         }
-
+        Debug.Log($"SetBool called for variable '{name}' with value {value}. isListening={isListening}");
         if(!isListening) _setVariableCache[name] = value.ToString();
         else variables[name] = new BoolValue(value);
         // Debug.Log("Variable changed: " + name + " = " + value);
@@ -203,7 +204,7 @@ public class DialogueVariables
             int? gamePhaseValue = value switch
             {
                 IntValue intValue => intValue.value,
-                FloatValue floatValue => (int)Mathf.Floor(floatValue.value),
+                FloatValue floatValue => floatValue.value % 1 == 0 ? (int)Mathf.Floor(floatValue.value) : null,
                 _ => null
             };
 
@@ -212,6 +213,22 @@ public class DialogueVariables
                 GamePhaseChanged?.Invoke(gamePhaseValue.Value);
             }
         }
+
+        if (name.StartsWith("p", StringComparison.Ordinal))
+        {
+            string itemName = name;
+            bool isVisible = value switch
+            {
+                BoolValue boolValue => boolValue.value,
+                IntValue intValue => intValue.value != 0,
+                FloatValue floatValue => Mathf.Abs(floatValue.value) > Mathf.Epsilon,
+                _ => false
+            };
+
+            ItemVisibilityChanged?.Invoke(itemName, isVisible);
+        }
+
+
 
         Debug.Log("Variable changed: " + name + " = " + value);
         if (variables.ContainsKey(name))

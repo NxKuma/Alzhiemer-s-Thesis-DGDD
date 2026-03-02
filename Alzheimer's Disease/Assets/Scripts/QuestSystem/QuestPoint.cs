@@ -93,12 +93,6 @@ public class QuestPoint : MonoBehaviour
                     GameEventsManager.Instance.questEvents.FinishQuest(questId);
                 }
             }
-            else
-            {
-                // Debug.Log("NPC interact with wrong NPC for quest point.");
-                return;
-            }
-
         }
     }
 

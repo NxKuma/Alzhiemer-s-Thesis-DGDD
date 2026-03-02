@@ -80,18 +80,6 @@ public class EffectsManager : MonoBehaviour
         Debug.LogError("EffectsManager: No main camera found in the scene. Please ensure there is a camera tagged 'MainCamera'.");
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Update()
-    {
-        //Testing Only - Remove later
-        if(Input.GetKeyDown(KeyCode.V))
-        {
-            TriggerVignetteEffect();
-            TriggerCameraShake();
-        }
-    }
-
     public void TriggerVignetteEffect(bool isOn = true)
     {        
         StartCoroutine(VignetteEffectCoroutine(isOn));
