@@ -13,6 +13,7 @@ public class QuestLogButton : MonoBehaviour, ISelectHandler
     private TextMeshProUGUI buttonText;
     private UnityAction onSelectAction;
     private SFXManager sFXManager;
+    private CanvasManager _canvasManager;
     private Navigation _defaultNavigation;
     // because we're instantiating the button and it may be disabled when we
     // instantiate it, we need to manually initialize anything here.
@@ -25,13 +26,14 @@ public class QuestLogButton : MonoBehaviour, ISelectHandler
         this.buttonText.text = displayName;
         this.onSelectAction = selectAction;
         sFXManager = SFXManager.Instance;
+        _canvasManager = CanvasManager.Instance;
         _defaultNavigation = button.navigation; // cache the default navigation settings for when we want to re-enable selection
     }
 
     public void OnSelect(BaseEventData eventData)
     {
         onSelectAction();
-        _ = sFXManager.PlaySFX("TurnPage");
+        if(_canvasManager.GetPlayerState() == CanvasManager.EPlayerState.QuestAccess) _ = sFXManager.PlaySFX("TurnPage");
     }
 
     // NEW: centralize "can this entry be navigated/selected?"
