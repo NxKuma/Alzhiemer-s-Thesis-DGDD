@@ -85,7 +85,7 @@ But that's your name.
 We want him to have his own.
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral
 I guess that's good too.
-Thanks, Pa. #speaker:Benj? #portrait:Character_Benji_Happy 
+Thanks, Pa. #speaker:Benj? #portrait:Character_Benji_Happy #effect:none
 ~ p1SonDone = true
 -> DONE
 

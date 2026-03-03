@@ -35,10 +35,10 @@ public class Music : MonoBehaviour
         intenseMusic.Play();
     }
 
-    public void SwapTrack()
+    public void SwapTrack(bool isCalmToIntense)
     {
         StopAllCoroutines(); // stop any ongoing fade coroutines to prevent conflicts
-        StartCoroutine(FadeTrack());
+        StartCoroutine(FadeTrack(isCalmToIntense));
     }
 
 
@@ -63,6 +63,18 @@ public class Music : MonoBehaviour
             trackToFade.volume = Mathf.Lerp(startVolume, 0f, elapsedTime / duration);
             trackToPlay.volume = Mathf.Lerp(0f, targetVolume, elapsedTime / duration);
             yield return null;
+        }
+    }
+
+    public string GetCurrentTrack()
+    {
+        if (calmMusic.volume > intenseMusic.volume)
+        {
+            return "calm";
+        }
+        else
+        {
+            return "intense";
         }
     }
 

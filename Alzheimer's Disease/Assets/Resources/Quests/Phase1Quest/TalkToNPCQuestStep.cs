@@ -7,18 +7,13 @@ public class TalkToNPC : QuestStep
     [Tooltip("Name of a bool in globals.ink (ex: p1q1s1done). If true, this quest step auto-completes.")]
     [SerializeField] private string _inkBoolVariableName;
 
-    [Tooltip("If set to >= 0, this step auto-completes when the given Ink float variable reaches this value (ex: gamePhase >= 2.5).")]
-    [SerializeField] private float _autoCompleteWhenInkFloatAtLeast = -1f;
-
-    private string _inkIntVariableName = "gamePhase";
-
-    [Tooltip("If true, when auto-completed via phase/int threshold, also sets _inkBoolVariableName=true (if provided).")]
-    [SerializeField] private bool _setBoolWhenAutoCompletedByPhase = true;
-
     private GameEventsManager _gameEventsManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        if(_npcName.Contains("Daughter")) _npcName = "Daughter-in-Law";
+
         string status = "I need to talk to my " + _npcName;
         ChangeState("", status);
 
@@ -59,29 +54,12 @@ public class TalkToNPC : QuestStep
             return false;
         }
 
-        // 1) If a specific "talked" bool is configured, it wins.
-        if (!string.IsNullOrWhiteSpace(_inkBoolVariableName) && dialogueManager.GetGlobalInkBool(_inkBoolVariableName, false))
+        if (string.IsNullOrWhiteSpace(_inkBoolVariableName))
         {
-            return true;
+            return false;
         }
 
-        // 2) Optionally treat it as already done when game phase (or any int var) has advanced.
-        if (_autoCompleteWhenInkFloatAtLeast >= 0f && !string.IsNullOrWhiteSpace(_inkIntVariableName))
-        {
-            // If the variable doesn't exist, this returns NaN, and the comparison fails, which is what we want (don't auto-complete).
-            float currentValue = dialogueManager.GetGlobalInkFloat(_inkIntVariableName, float.NaN);
-            if (!float.IsNaN(currentValue) && currentValue >= _autoCompleteWhenInkFloatAtLeast)
-            {
-                if (_setBoolWhenAutoCompletedByPhase)
-                {
-                    MarkTalkedToNpcInInk();
-                }
-                return true;
-            }
-        }
-
-
-        return false;
+        return dialogueManager.GetGlobalInkBool(_inkBoolVariableName, false);
     }
 
     private void MarkTalkedToNpcInInk()

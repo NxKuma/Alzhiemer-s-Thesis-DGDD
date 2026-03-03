@@ -133,5 +133,10 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
+    public bool IsVignetteEffectActive()
+    {
+        return _vignetteEffect != null && _vignetteEffect.intensity.value > 0.01f;
+    }
+
 
 }

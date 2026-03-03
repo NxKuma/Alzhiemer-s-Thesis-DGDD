@@ -13,19 +13,24 @@ public class GetTheItemQuestStep: QuestStep
         string status = "I need to get the " + _itemRequired.GetItemName() + ".";
         ChangeState("", status);
         _triggerHandler = TriggerHandler.Instance;
-        if (_triggerHandler != null)
+        if (_triggerHandler != null && _triggerHandler.PlayerInventory != null)
         {
             _triggerHandler.PlayerInventory.ItemAdded += ItemCollected;
             _triggerHandler.PlayerInventory.ItemDropped += ItemDropped;
-        }
-        if (_triggerHandler.PlayerInventory.GetItemList().Contains(_itemRequired))
-        {
-            if(TriggerAreaScript.GetItemStatus(_itemRequired) == ItemStatus.Hidden)
+
+            bool hasRequiredItem = _triggerHandler.PlayerInventory.GetItemList().Contains(_itemRequired);
+            ItemStatus itemStatus = TriggerAreaScript.GetItemStatus(_itemRequired);
+            bool isCompletedByCurrentState = hasRequiredItem && itemStatus == ItemStatus.Hidden;
+
+            SyncInkCompletion(isCompletedByCurrentState);
+
+            if (isCompletedByCurrentState)
             {  
                 status = "I already have the " + _itemRequired.GetItemName() + ".";
                 ChangeState("", status);
                 FinishQuestStep();
-            }else if(TriggerAreaScript.GetItemStatus(_itemRequired) == ItemStatus.Dropped)
+            }
+            else if (hasRequiredItem && itemStatus == ItemStatus.Dropped)
             {
                 status = "I think I misplaced the " + _itemRequired.GetItemName() + "...";
                 ChangeState("", status);
@@ -47,8 +52,7 @@ public class GetTheItemQuestStep: QuestStep
         Debug.Log("Item Collected: " + item.GetItemName());
         if (item != _itemRequired) return;
 
-        DialogueManager dialogueManager = DialogueManager.GetInstance();
-        dialogueManager.SetGlobalInkBool(_inkVariableToSetOnCompletion, true);
+        SyncInkCompletion(true);
         string status = "I have collected the " + _itemRequired.GetItemName() + ".";
         ChangeState("", status);
 
@@ -61,8 +65,7 @@ public class GetTheItemQuestStep: QuestStep
     {
         if (item != _itemRequired) return;
 
-        DialogueManager dialogueManager = DialogueManager.GetInstance();
-        dialogueManager.SetGlobalInkBool(_inkVariableToSetOnCompletion, false);
+        SyncInkCompletion(false);
         // Mark this step as unfinished again.
         SetFinishedState(false);
         string status = "I think I misplaced the " + _itemRequired.GetItemName() + "...";
@@ -75,6 +78,22 @@ public class GetTheItemQuestStep: QuestStep
     }
 
     public Item GetItemRequired() => _itemRequired;
+
+    private void SyncInkCompletion(bool isCompleted)
+    {
+        if (string.IsNullOrWhiteSpace(_inkVariableToSetOnCompletion))
+        {
+            return;
+        }
+
+        DialogueManager dialogueManager = DialogueManager.GetInstance();
+        if (dialogueManager == null)
+        {
+            return;
+        }
+
+        dialogueManager.SetGlobalInkBool(_inkVariableToSetOnCompletion, isCompleted);
+    }
 
     protected override void SetQuestStepState(string state)
     {

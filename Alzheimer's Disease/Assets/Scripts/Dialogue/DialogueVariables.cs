@@ -12,7 +12,8 @@ public class DialogueVariables
     public bool isListening {get; private set;} = false;
     public Action<int> GamePhaseChanged; // subscribers receive the new game phase as an int (cast from enum)
     public Action<string, bool> ItemVisibilityChanged; // subscribers receive the new visibility status of the item whose variable changed
-    private Dictionary<string, string> _setVariableCache = new Dictionary<string, string>(); 
+    private Dictionary<string, Ink.Runtime.Object> _setVariableCache = new Dictionary<string, Ink.Runtime.Object>();
+    private Story _listeningStory;
     
     public bool ContainsVariable(string name)
     {
@@ -50,8 +51,7 @@ public class DialogueVariables
             return;
         }
         Debug.Log($"SetBool called for variable '{name}' with value {value}. isListening={isListening}");
-        if(!isListening) _setVariableCache[name] = value.ToString();
-        else variables[name] = new BoolValue(value);
+        SetVariable(name, new BoolValue(value));
         // Debug.Log("Variable changed: " + name + " = " + value);
     }
 
@@ -86,8 +86,7 @@ public class DialogueVariables
             return;
         }
 
-        if(!isListening) _setVariableCache[name] = value.ToString();
-        else variables[name] = new IntValue(value);
+        SetVariable(name, new IntValue(value));
         // Debug.Log("Variable changed: " + name + " = " + value);
     }
 
@@ -129,8 +128,7 @@ public class DialogueVariables
             return;
         }
 
-        if(!isListening) _setVariableCache[name] = value.ToString();
-        else variables[name] = new FloatValue(value);
+        SetVariable(name, new FloatValue(value));
 
     }
 
@@ -158,6 +156,14 @@ public class DialogueVariables
 
     public void StartListening(Story story)
     {
+        if (story == null)
+        {
+            Debug.LogWarning("StartListening was called with a null story.");
+            return;
+        }
+
+        _listeningStory = story;
+
         // VariablesToStory() must be called before subscribing to the event
         VariablesToStory(story);
         story.variablesState.variableChangedEvent += VariableChanged;
@@ -165,26 +171,11 @@ public class DialogueVariables
         if(_setVariableCache.Count > 0)
         {
             Debug.Log("Applying cached variable changes to story:");
-            foreach (KeyValuePair<string, string> kvp in _setVariableCache)
+            foreach (KeyValuePair<string, Ink.Runtime.Object> kvp in _setVariableCache)
             {
-                Debug.Log($"Evaluating: {kvp.Key} = {kvp.Value}");
-                // Attempt to parse the value as int or float before setting as string
-                if (int.TryParse(kvp.Value, out int intValue))
-                {
-                    Debug.Log($"Setting int variable: {kvp.Key} = {intValue}");
-                    story.variablesState.SetGlobal(kvp.Key, new IntValue(intValue)); 
-                    // SetInt(kvp.Key, intValue);
-                }
-                else if (float.TryParse(kvp.Value, out float floatValue))
-                {
-                    story.variablesState.SetGlobal(kvp.Key, new FloatValue(floatValue)); 
-                    // SetFloat(kvp.Key, floatValue);
-                }
-                else if (bool.TryParse(kvp.Value, out bool boolValue))
-                {
-                    story.variablesState.SetGlobal(kvp.Key, new BoolValue(boolValue)); 
-                    // SetBool(kvp.Key, new BoolValue(boolValue));
-                }
+                Debug.Log($"Applying cached variable: {kvp.Key} = {kvp.Value}");
+                story.variablesState.SetGlobal(kvp.Key, kvp.Value);
+                variables[kvp.Key] = kvp.Value;
             }
             _setVariableCache.Clear();
         }
@@ -194,10 +185,45 @@ public class DialogueVariables
     public void StopListening(Story story)
     {
         isListening = false;
-        story.variablesState.variableChangedEvent -= VariableChanged;
+        if (story != null)
+        {
+            story.variablesState.variableChangedEvent -= VariableChanged;
+        }
+        _listeningStory = null;
     }
 
     private void VariableChanged(string name, Ink.Runtime.Object value)
+    {
+        Debug.Log("Variable changed: " + name + " = " + value);
+        variables[name] = value;
+        NotifyVariableUpdated(name, value);
+
+
+    }
+
+    private void VariablesToStory(Story story)
+    {
+        foreach (KeyValuePair<string, Ink.Runtime.Object> var in variables)
+        {
+            story.variablesState.SetGlobal(var.Key, var.Value);
+        }
+    }
+
+    private void SetVariable(string name, Ink.Runtime.Object value)
+    {
+        variables[name] = value;
+
+        if (isListening && _listeningStory != null)
+        {
+            _listeningStory.variablesState.SetGlobal(name, value);
+            return;
+        }
+
+        NotifyVariableUpdated(name, value);
+        _setVariableCache[name] = value;
+    }
+
+    private void NotifyVariableUpdated(string name, Ink.Runtime.Object value)
     {
         if (name.Equals("gamePhase", StringComparison.Ordinal))
         {
@@ -226,25 +252,6 @@ public class DialogueVariables
             };
 
             ItemVisibilityChanged?.Invoke(itemName, isVisible);
-        }
-
-
-
-        Debug.Log("Variable changed: " + name + " = " + value);
-        if (variables.ContainsKey(name))
-        {
-            variables.Remove(name);
-            variables.Add(name, value);
-        }
-
-
-    }
-
-    private void VariablesToStory(Story story)
-    {
-        foreach (KeyValuePair<string, Ink.Runtime.Object> var in variables)
-        {
-            story.variablesState.SetGlobal(var.Key, var.Value);
         }
     }
 }

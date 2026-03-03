@@ -64,6 +64,8 @@ public class DialogueManager : MonoBehaviour
     private static DialogueVariables _dialogueVar;
     private CanvasManager _canvasManager;
     private SFXManager _sFXManager;
+    private Music _musicManager;
+    private EffectsManager _effectsManager;
 
     public bool TryGetGlobalInkBool(string variableName, out bool value)
     {
@@ -90,12 +92,6 @@ public class DialogueManager : MonoBehaviour
         }
 
         _dialogueVar.SetBool(variableName, value);
-
-        // If a dialogue is currently playing, update the active story immediately too.
-        if (_currentStory != null)
-        {
-            _currentStory.variablesState.SetGlobal(variableName, new BoolValue(value));
-        }
     }
 
     public bool TryGetGlobalInkInt(string variableName, out int value)
@@ -124,11 +120,6 @@ public class DialogueManager : MonoBehaviour
         
 
         _dialogueVar.SetInt(variableName, value);
-
-        if (_currentStory != null)
-        {
-            _currentStory.variablesState.SetGlobal(variableName, new IntValue(value));
-        }
     }
 
     public bool TryGetGlobalInkFloat(string variableName, out float value)
@@ -156,11 +147,6 @@ public class DialogueManager : MonoBehaviour
         }
 
         _dialogueVar.SetFloat(variableName, value);
-
-        if (_currentStory != null)
-        {
-            _currentStory.variablesState.SetGlobal(variableName, new FloatValue(value));
-        }
     }
 
     private void Awake()
@@ -222,6 +208,8 @@ public class DialogueManager : MonoBehaviour
         }
         _canvasManager = CanvasManager.Instance;
         _sFXManager = SFXManager.Instance;
+        _effectsManager = EffectsManager.Instance;
+        _musicManager = Music.Instance;
         
     }
 
@@ -376,15 +364,19 @@ public class DialogueManager : MonoBehaviour
                     if (tagValue == "shake")
                     {
                         //call shake once
+                        _effectsManager.TriggerCameraShake();
                     } else if (tagValue == "vignette")
                     {
                         // turn on vignette
+                        _effectsManager.TriggerVignetteEffect();
                     } else if (tagValue == "tense")
                     {
                         // turn on tense music
+                        if(_musicManager.GetCurrentTrack().Contains("calm")) _musicManager.SwapTrack(true);
                     } else if (tagValue == "none")
                     {
-                        // turn the other 3 off
+                        if(_effectsManager.IsVignetteEffectActive()) _effectsManager.TriggerVignetteEffect(false);
+                        if(_musicManager.GetCurrentTrack().Contains("intense")) _musicManager.SwapTrack(false);
                     } 
                     break;
                 default:

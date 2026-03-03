@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemRequired: {fileID: 11400000, guid: 19ca40bd79c361543837f8c462feac69, type: 2}
-  _inkVariableToSetOnCompletion: p3HaveTape
+  _inkVariableToSetOnCompletion: p3HaveBox
