@@ -4515,6 +4515,14 @@ PrefabInstance:
       propertyPath: '_choices.Array.data[2]'
       value: 
       objectReference: {fileID: 1853338568}
+    - target: {fileID: 6634918963150384907, guid: 0a91a75e97f8a57499e97d4ce2166db1, type: 3}
+      propertyPath: _globalsInkFile.includes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6634918963150384907, guid: 0a91a75e97f8a57499e97d4ce2166db1, type: 3}
+      propertyPath: '_globalsInkFile.includes.Array.data[0]'
+      value: 
+      objectReference: {fileID: 102900000, guid: a9bd5acf36808214da0d4a6f30753fac, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

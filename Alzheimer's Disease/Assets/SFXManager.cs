@@ -22,6 +22,7 @@ public class SFXManager : MonoBehaviour
 
     void Start()
     {  
+        Screen.SetResolution(1920, 1080, true);
         foreach (AudioSource source in _audioSource)
         {
             fadingCoroutines[source] = false;
