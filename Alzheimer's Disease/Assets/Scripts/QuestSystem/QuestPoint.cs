@@ -22,6 +22,21 @@ public class QuestPoint : MonoBehaviour
 
     private QuestIcon questIcon;
 
+    private static string NormalizeNpcName(string npcName)
+    {
+        if (string.IsNullOrWhiteSpace(npcName))
+        {
+            return string.Empty;
+        }
+
+        return npcName
+            .Replace("_NPC", "", System.StringComparison.OrdinalIgnoreCase)
+            .Replace("_", " ")
+            .Replace("-", " ")
+            .Trim()
+            .ToLowerInvariant();
+    }
+
     private void Awake()
     {
         if (questInfoForPoint != null)
@@ -81,7 +96,10 @@ public class QuestPoint : MonoBehaviour
             // Debug.Log($"Quest State: {questManager.GetQuestById(questId).state}");
             // Debug.Log($"This QuestState: {this.currentQuestState}");
 
-            if ( npcName.Contains(npcNameFromParent))
+            string interactedNpc = NormalizeNpcName(npcName);
+            string ownerNpc = NormalizeNpcName(npcNameFromParent);
+
+            if (string.Equals(interactedNpc, ownerNpc, System.StringComparison.Ordinal))
             {
                 // Debug.Log("NPC interact with correct NPC for quest point.");
                 if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)

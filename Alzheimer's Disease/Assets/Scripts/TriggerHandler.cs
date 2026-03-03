@@ -23,8 +23,8 @@ public class TriggerHandler : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         PlayerInventory = new Inventory();
-
-    }
+        PlayerInventory.ItemComplete += item => TriggerAreaScript.SetItemStatus(item, ItemStatus.Complete);
+    }   
 
 
     public void PlayerInRoom(TriggerAreaScript area)
@@ -42,7 +42,7 @@ public class TriggerHandler : MonoBehaviour
             ItemStatus status = TriggerAreaScript.GetItemStatus(item);
 
             // Roll chance to drop/spawn
-            if (_ran < 0.15f && status == ItemStatus.Hidden)
+            if (_ran < 0.35f && status == ItemStatus.Hidden)
             {
                 area.DropItem(item);
                 PlayerInventory.Inventory_DropItem(item);
@@ -51,7 +51,7 @@ public class TriggerHandler : MonoBehaviour
                 Debug.Log($"{item.GetItemName()} is already {status}, skipping in {area.GetAreaName()}.");
 
 
-            if (_ran >= 0.2f && status == ItemStatus.Dropped && status != ItemStatus.Spawned)
+            if (_ran >= 0.1f && status == ItemStatus.Dropped && status != ItemStatus.Spawned)
             {
                 area.SpawnItem(item);
                 Debug.Log("Spawning...");

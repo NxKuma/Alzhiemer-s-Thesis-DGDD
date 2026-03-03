@@ -8,11 +8,40 @@ public class TalkToNPC : QuestStep
     [SerializeField] private string _inkBoolVariableName;
 
     private GameEventsManager _gameEventsManager;
+
+    private static string NormalizeNpcName(string npcName)
+    {
+        if (string.IsNullOrWhiteSpace(npcName))
+        {
+            return string.Empty;
+        }
+
+        return npcName
+            .Replace("_NPC", "", System.StringComparison.OrdinalIgnoreCase)
+            .Replace("_", " ")
+            .Replace("-", " ")
+            .Trim()
+            .ToLowerInvariant();
+    }
+
+    private bool IsTargetNpc(string interactedNpcName)
+    {
+        string targetName = NormalizeNpcName(_npcName);
+        string currentName = NormalizeNpcName(interactedNpcName);
+
+        if (string.IsNullOrEmpty(targetName) || string.IsNullOrEmpty(currentName))
+        {
+            return false;
+        }
+
+        return string.Equals(currentName, targetName, System.StringComparison.Ordinal);
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
-        if(_npcName.Contains("Daughter")) _npcName = "Daughter-in-Law";
+        if (!string.IsNullOrWhiteSpace(_npcName) && _npcName.Contains("Daughter")) _npcName = "Daughter-in-Law";
 
         string status = "I need to talk to my " + _npcName;
         ChangeState("", status);
@@ -36,14 +65,12 @@ public class TalkToNPC : QuestStep
 
     private void NPCInteracted(string npcName)
     {
-        
-        if (!npcName.Contains(_npcName)) return;
-        else{
-            MarkTalkedToNpcInInk();
-            string status = _npcName + ". hmmm I remember talking to them.";
-            ChangeState("", status);
-            FinishQuestStep();
-        }
+        if (!IsTargetNpc(npcName)) return;
+
+        MarkTalkedToNpcInInk();
+        string status = _npcName + ". hmmm I remember talking to them.";
+        ChangeState("", status);
+        FinishQuestStep();
     }
 
     private bool HasAlreadyTalkedToNpc()

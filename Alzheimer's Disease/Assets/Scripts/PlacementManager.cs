@@ -209,19 +209,15 @@ public class PlacementManager : MonoBehaviour
             switch(itemName)
             {
                 case "p1SonDone":
-                    if(gameObject.name.Contains("Roller")) gameObject.SetActive(true);                   break;
+                    if(gameObject.name.Contains("Roller")) gameObject.SetActive(true); break;
                 case "p1DILDone":
- 
-                    if(gameObject.name.Contains("Brush")) gameObject.SetActive(true);                   break;
+                    if(gameObject.name.Contains("Brush")) gameObject.SetActive(true); break;
                 case "p2WifeDone": 
- 
-                    if(gameObject.name.Contains("Dish")) gameObject.SetActive(true);                   break;
+                    if(gameObject.name.Contains("Dish")) gameObject.SetActive(true); break;
                 case "p2DILDone":
- 
-                    if(gameObject.name.Contains("Trash")) gameObject.SetActive(true);                   break;
+                    if(gameObject.name.Contains("Trash")) gameObject.SetActive(true); break;
                 case "p3WifeDone":
- 
-                    if(gameObject.name.Contains("Box")) gameObject.SetActive(true);                   break;
+                    if(gameObject.name.Contains("Balik")) gameObject.SetActive(true); break;
                 default:
                     continue;                    
             }
