@@ -95,8 +95,15 @@ public class PuzzleCAnvasScript : MonoBehaviour
             Hide();
         }
 
+        bool canSubmitPuzzle = _dialogueManager != null
+            && _dialogueManager.DialogueIsPlaying
+            && _canvasManager != null
+            && _canvasManager.GetPlayerState() == CanvasManager.EPlayerState.PuzzleSolving
+            && _canvasGroup != null
+            && _canvasGroup.alpha > 0f
+            && _canvasGroup.blocksRaycasts;
 
-        if(IsPointerOverRect(_nextIcon.GetComponent<RectTransform>()))
+        if (canSubmitPuzzle && IsPointerOverRect(_nextIcon.GetComponent<RectTransform>()))
         {
             if(Input.GetMouseButtonDown(0))
             {
@@ -130,6 +137,8 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private void Show()
     {
         _canvasGroup.alpha = 1f;
+        _canvasGroup.interactable = true;
+        _canvasGroup.blocksRaycasts = true;
         // Move pieces that belong to this NPC into the visible puzzle area and restore any saved layout
         if(!_isVisible) MovePiecesForNPC(_nPCName);
         RestoreLayoutForNPC(_nPCName);
@@ -146,6 +155,8 @@ public class PuzzleCAnvasScript : MonoBehaviour
     private void Hide()
     {
         _canvasGroup.alpha = 0f;
+        _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
         if(Cursor.lockState != CursorLockMode.Confined){  
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

@@ -44,8 +44,6 @@ public class CanvasManager : MonoBehaviour
         Instance = this;
     }
 
-    
-
     private void OnDestroy()
     {
         if (Instance == this)

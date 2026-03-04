@@ -32,7 +32,7 @@ public class QuestLogUI : MonoBehaviour
 
     // private void OnEnable()
     // {
-        
+
     // }
 
     // private void OnDisable()
@@ -40,6 +40,14 @@ public class QuestLogUI : MonoBehaviour
     //     GameEventsManager.Instance.inputEvents.onQuestLogTogglePressed -= QuestLogTogglePressed;
     //     GameEventsManager.Instance.questEvents.onQuestStateChange -= QuestStateChange;
     // }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape) && _canvasManager.GetPlayerState() == CanvasManager.EPlayerState.QuestAccess)
+        {
+            QuestLogTogglePressed();
+        }
+    }
 
     private void QuestLogTogglePressed()
     {

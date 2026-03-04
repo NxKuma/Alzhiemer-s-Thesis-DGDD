@@ -83,6 +83,12 @@ public class TriggerAreaScript : MonoBehaviour
         //     return InstantiateItemAt(item, candidate);
         // }
 
+        if (_spawnPoints == null || _spawnPoints.Length == 0)
+        {
+            Debug.LogWarning($"No spawn points configured for {_areaName}. Cannot spawn {item.GetItemName()}.");
+            return false;
+        }
+
         int randomIndex = Random.Range(0, _spawnPoints.Length); 
         Vector3 spawnPos = _spawnPoints[randomIndex].position;
         return InstantiateItemAt(item, spawnPos);
@@ -130,14 +136,20 @@ public class TriggerAreaScript : MonoBehaviour
         _= sFXManager.PlaySFX("drop_item");
     }
 
-    public void SpawnItem(Item item)
+    public bool TrySpawnItem(Item item)
     {
         if (GetItemStatus(item) == ItemStatus.Spawned)
         {
             Debug.Log($"{item.GetItemName()} is already {GetItemStatus(item)}, skipping spawn.");
-            return;
+            return false;
         }
-        SpawnItemInArea(item);
+
+        return SpawnItemInArea(item);
+    }
+
+    public void SpawnItem(Item item)
+    {
+        _ = TrySpawnItem(item);
     }
 
     #region GETTERS

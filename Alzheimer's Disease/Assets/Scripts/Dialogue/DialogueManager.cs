@@ -224,14 +224,10 @@ public class DialogueManager : MonoBehaviour
         if(!_choicesAvailable)
         {
             _nextIcon.GetComponent<CanvasGroup>().alpha = 1f;
-            if(IsPointerOverRect(_nextIcon.GetComponent<RectTransform>()))
+            if((IsPointerOverRect(_nextIcon.GetComponent<RectTransform>()) && Input.GetMouseButtonDown(0)) || (Input.GetKeyDown(KeyCode.Space) && _canvasManager.GetPlayerState() == CanvasManager.EPlayerState.Dialouging))
             {
-                if(Input.GetMouseButtonDown(0))
-                {
-                    _ = _sFXManager.PlaySFX("button");
-                    ContinueStory();
-
-                }
+                _ = _sFXManager.PlaySFX("button");
+                ContinueStory();
             }
         }
         else

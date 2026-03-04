@@ -7,9 +7,10 @@ public class TriggerHandler : MonoBehaviour
 
     [SerializeField] private Transform _playerBounds;
     [SerializeField] private TriggerAreaScript[] _triggerAreas;
+    [SerializeField, Range(0f, 1f)] private float _dropChance = 0.35f;
+    [SerializeField, Range(0f, 1f)] private float _spawnChance = 0.90f;
 
     private TriggerAreaScript _currentArea;
-    private float _ran;
 
     void Awake()
     {
@@ -30,7 +31,6 @@ public class TriggerHandler : MonoBehaviour
     public void PlayerInRoom(TriggerAreaScript area)
     {
         _currentArea = area;
-        _ran = Random.value;
 
         foreach (Item item in PlayerInventory.GetItemList())
         {
@@ -41,20 +41,25 @@ public class TriggerHandler : MonoBehaviour
             // Check current status of the item
             ItemStatus status = TriggerAreaScript.GetItemStatus(item);
 
-            // Roll chance to drop/spawn
-            if (_ran < 0.35f && status == ItemStatus.Hidden)
+            // Drop only hidden items
+            if (status == ItemStatus.Hidden && Random.value < _dropChance)
             {
                 area.DropItem(item);
                 PlayerInventory.Inventory_DropItem(item);
-                Debug.Log("Dropping...");
-            }else
-                Debug.Log($"{item.GetItemName()} is already {status}, skipping in {area.GetAreaName()}.");
+                Debug.Log($"Dropped {item.GetItemName()} in {area.GetAreaName()}.");
 
+                // Refresh status after drop transition
+                status = TriggerAreaScript.GetItemStatus(item);
+            }
 
-            if (_ran >= 0.1f && status == ItemStatus.Dropped && status != ItemStatus.Spawned)
+            // Spawn only dropped items, and only log success when spawn actually happens
+            if (status == ItemStatus.Dropped && Random.value < _spawnChance)
             {
-                area.SpawnItem(item);
-                Debug.Log("Spawning...");
+                bool spawned = area.TrySpawnItem(item);
+                if (spawned)
+                    Debug.Log($"Spawned {item.GetItemName()} in {area.GetAreaName()}.");
+                else
+                    Debug.Log($"Spawn attempt failed for {item.GetItemName()} in {area.GetAreaName()}.");
             }
         }
     }

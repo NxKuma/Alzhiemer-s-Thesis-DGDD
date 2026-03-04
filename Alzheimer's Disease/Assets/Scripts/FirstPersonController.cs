@@ -476,7 +476,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 isZoomed = false;
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, sprintFOV, sprintFOVStepTime * Time.deltaTime);
-
+                enableCrouch = false;
                 // Drain sprint remaining while sprinting
                 if (!unlimitedSprint)
                 {
@@ -491,6 +491,7 @@ public class FirstPersonController : MonoBehaviour
             else
             {
                 // Regain sprint while not sprinting
+                enableCrouch = true;
                 sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
             }
 
@@ -536,16 +537,19 @@ public class FirstPersonController : MonoBehaviour
             if (Input.GetKeyDown(crouchKey) && !holdToCrouch)
             {
                 Crouch();
+                enableSprint = false;
             }
 
             if (Input.GetKeyDown(crouchKey) && holdToCrouch)
             {
                 isCrouched = false;
+
                 Crouch();
             }
             else if (Input.GetKeyUp(crouchKey) && holdToCrouch)
             {
                 isCrouched = true;
+                enableSprint = false;
                 Crouch();
             }
         }
@@ -606,6 +610,7 @@ public class FirstPersonController : MonoBehaviour
 
                     if (isCrouched)
                     {
+                        enableSprint = false;
                         Crouch();
                     }
 
@@ -747,6 +752,7 @@ public class FirstPersonController : MonoBehaviour
         playerCanMove = _masterSwitch;
         enableHeadBob = _masterSwitch;
         cameraCanMove = _masterSwitch;
+        enableJump = _masterSwitch;
     }
     #endregion
 }

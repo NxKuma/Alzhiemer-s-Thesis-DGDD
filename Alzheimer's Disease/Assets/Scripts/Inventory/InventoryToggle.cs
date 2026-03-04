@@ -119,7 +119,7 @@ public class InventoryToggle : MonoBehaviour
     {
         if (_fps != null && !_fps.CanUseMenus) return;
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) || (Input.GetKeyDown(KeyCode.Escape) && _isOpen))
         {
             ToggleInventory();
             Cursor.lockState = CursorLockMode.Confined;
