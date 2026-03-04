@@ -361,6 +361,8 @@ Together.
 ... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
 So... #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 What would you like for dinner?
+...
+~ gamePhase = 6
 -> DONE
 
 = phase5BadEnd
@@ -407,5 +409,5 @@ I truly am sorry.
 Hm.
 ... #speaker:Rosal?? #portrait:Character_Rosalyn_Sad
 ... #speaker:Anton #portrait:Character_Anton_Sad
-// transition to end here
+~ gamePhase = 6
 -> DONE
