@@ -18,7 +18,7 @@ INCLUDE globals.ink
 Anton, Mahal! It's time for lunch. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy #effect:vignette
 I'm here. #speaker:Anton #portrait:Character_Anton_Neutral
 Hi, Pa. #speaker:Benji #portrait:Character_Benji_Neutral
-Good evening, po. #speaker:L??? #portrait:Character__Liza_Neutral
+Good evening, po. #speaker:L??? #portrait:Character_Liza_Neutral
 What's for lunch? #speaker:Anton #portrait:Character_Anton_Neutral
 Pork Adobo. Courtesy of our dear Liza. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
 Hm. #speaker:Anton #portrait:Character_Anton_Neutral

@@ -4,12 +4,15 @@ public class GetTheItemQuestStep: QuestStep
 {
     [SerializeField] private Item _itemRequired;
     [SerializeField] private string _inkVariableToSetOnCompletion;
+    [SerializeField] QuestStep _prerequisiteTalkToNPCStep;
     private TriggerHandler _triggerHandler;
+    private bool _hasPrerequisite = false;
 
     protected override bool DestroyOnFinish => false;
 
     void Start()
     {
+        _hasPrerequisite = _prerequisiteTalkToNPCStep != null;
         string status = "I need to get the " + _itemRequired.GetItemName() + ".";
         ChangeState("", status);
         _triggerHandler = TriggerHandler.Instance;

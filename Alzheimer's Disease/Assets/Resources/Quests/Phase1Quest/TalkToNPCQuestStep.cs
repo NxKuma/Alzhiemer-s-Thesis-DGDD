@@ -67,7 +67,6 @@ public class TalkToNPC : QuestStep
     {
         if (!IsTargetNpc(npcName)) return;
 
-        MarkTalkedToNpcInInk();
         string status = _npcName + ". hmmm I remember talking to them.";
         ChangeState("", status);
         FinishQuestStep();
@@ -87,22 +86,6 @@ public class TalkToNPC : QuestStep
         }
 
         return dialogueManager.GetGlobalInkBool(_inkBoolVariableName, false);
-    }
-
-    private void MarkTalkedToNpcInInk()
-    {
-        if (string.IsNullOrWhiteSpace(_inkBoolVariableName))
-        {
-            return;
-        }
-
-        DialogueManager dialogueManager = DialogueManager.GetInstance();
-        if (dialogueManager == null)
-        {
-            return;
-        }
-
-        dialogueManager.SetGlobalInkBool(_inkBoolVariableName, true);
     }
 
     protected override void SetQuestStepState(string state)

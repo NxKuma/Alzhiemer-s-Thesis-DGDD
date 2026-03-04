@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemRequired: {fileID: 11400000, guid: 19ca40bd79c361543837f8c462feac69, type: 2}
   _inkVariableToSetOnCompletion: p3HaveBox
+  _prerequisiteTalkToNPCStep: {fileID: -8172023709867866629, guid: 6f9e36d4c3c62c247bf1c20f6dbdce5d, type: 3}

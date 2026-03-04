@@ -54199,7 +54199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
       propertyPath: _phase2Placements._placementValues.Array.data[14].isVisible
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
       propertyPath: _phase2Placements._placementValues.Array.data[15].isVisible
@@ -54259,7 +54259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
       propertyPath: _phase2Placements._placementValues.Array.data[23].isVisible
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
       propertyPath: _phase2Placements._placementValues.Array.data[24].isVisible
@@ -54319,7 +54319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
       propertyPath: _phase2Placements._placementValues.Array.data[32].isVisible
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5630924202489925247, guid: 27a0d2f8c6b6e8f4b968c8242e3d0a88, type: 3}
       propertyPath: _phase2Placements._placementValues.Array.data[33].isVisible

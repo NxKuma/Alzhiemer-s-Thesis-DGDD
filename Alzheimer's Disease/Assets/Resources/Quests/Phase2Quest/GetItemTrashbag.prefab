@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemRequired: {fileID: 11400000, guid: ac0fe968bd082714584b3d6de0e5d4fe, type: 2}
   _inkVariableToSetOnCompletion: p2HaveTrash
+  _prerequisiteTalkToNPCStep: {fileID: -8172023709867866629, guid: b181d07a8d5665342ab32957d0e6bea7, type: 3}
