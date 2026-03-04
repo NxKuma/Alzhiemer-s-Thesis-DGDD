@@ -7,7 +7,7 @@ public class TriggerHandler : MonoBehaviour
 
     [SerializeField] private Transform _playerBounds;
     [SerializeField] private TriggerAreaScript[] _triggerAreas;
-    [SerializeField, Range(0f, 1f)] private float _dropChance = 0.35f;
+    [SerializeField, Range(0f, 1f)] private float _dropChance = 0.45f;
     [SerializeField, Range(0f, 1f)] private float _spawnChance = 0.90f;
 
     private TriggerAreaScript _currentArea;
@@ -51,10 +51,9 @@ public class TriggerHandler : MonoBehaviour
                 // Refresh status after drop transition
                 status = TriggerAreaScript.GetItemStatus(item);
             }
-
-            // Spawn only dropped items, and only log success when spawn actually happens
-            if (status == ItemStatus.Dropped && Random.value < _spawnChance)
+            else if (status == ItemStatus.Dropped && Random.value < _spawnChance)
             {
+            // Spawn only dropped items, and only log success when spawn actually happens
                 bool spawned = area.TrySpawnItem(item);
                 if (spawned)
                     Debug.Log($"Spawned {item.GetItemName()} in {area.GetAreaName()}.");
