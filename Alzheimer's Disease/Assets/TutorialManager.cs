@@ -89,7 +89,7 @@ public class TutorialManager : MonoBehaviour
             case 1: // WASD
                 if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) CompleteStep();
                 break;
-            case 2: // Left Click
+            case 2: // pickup
                 break;
             case 3: // E Interact
                 break;
@@ -153,18 +153,31 @@ public class TutorialManager : MonoBehaviour
     {
         switch (_currentStep)
         {
-            case 0: // Step 0: Look (Rotation only)
+            case 0: // Step 0: Look only
+                // Using your FPC logic: We stop movement/jump, but enable rotation
+                _player.StopStartPlayer(false); 
+                _player.cameraCanMove = true;
                 _player.SetTutorialRestrictions(false, true, false, false);
                 break;
+                
             case 1: // Step 1: Walk (Movement + Look)
+                _player.StopStartPlayer(true); 
                 _player.SetTutorialRestrictions(true, true, false, false);
                 break;
-            case 2: // Step 2: Pick up (Movement + Look + Interact)
-            case 3: // Step 3: Interaction (Movement + Look + Interact)
+                
+            case 2: // Step 2: Pick up (Movement + Look + Pickup, but NO Doors)
+                // We set interaction to FALSE so the DoorInteraction script stays disabled
+                _player.StopStartPlayer(true);
+                _player.SetTutorialRestrictions(true, true, false, false); 
+                break;
+                
+            case 3: // Step 3: Interaction (Movement + Look + Doors)
+                _player.StopStartPlayer(true);
                 _player.SetTutorialRestrictions(true, true, true, false);
                 break;
-            case 4: // Step 4: Inventory (Unlock Everything)
-            case 5: // Step 5: Quests (Unlock Everything)
+                
+            default: // Inventory / Quests
+                _player.StopStartPlayer(true);
                 _player.SetTutorialRestrictions(true, true, true, true);
                 break;
         }
@@ -192,7 +205,16 @@ public class TutorialManager : MonoBehaviour
         _isTransitioning = false;
     }
 
-    private void LockAllInputs() { /* Logic to disable FPC keys */ }
+    private void LockAllInputs()
+    {
+        if (_player != null)
+        {
+            // Your StopStartPlayer(false) disables camera, movement, headbob, and jump
+            _player.StopStartPlayer(false);
+            // Explicitly set the internal tutorial flags to false
+            _player.SetTutorialRestrictions(false, false, false, false);
+        }
+    }
 
     public int GetCurrentStep() {
         return _currentStep;

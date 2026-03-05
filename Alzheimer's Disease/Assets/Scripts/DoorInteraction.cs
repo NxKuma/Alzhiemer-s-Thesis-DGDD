@@ -43,6 +43,12 @@ public class DoorInteraction : MonoBehaviour
     }
 
     private void HandleDoorInteraction() {
+        if (TutorialManager.Instance != null && TutorialManager.Instance.GetCurrentStep() < 3)
+        {
+            if (InteractionUI != null) InteractionUI.GetComponent<CanvasGroup>().alpha = 0f;
+            return;
+        }
+
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
