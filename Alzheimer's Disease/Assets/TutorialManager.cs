@@ -91,13 +91,13 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 2: // pickup
                 break;
-            case 3: // E Interact
-                break;
-            case 4: // I Inventory
+            case 3: // I Inventory
                 if (CanvasManager.Instance.GetPlayerState() == CanvasManager.EPlayerState.InventoryAccess) CompleteStep();
                 break;
-            case 5: // Q Quest
+            case 4: // Q Quest
                 if (CanvasManager.Instance.GetPlayerState() == CanvasManager.EPlayerState.QuestAccess) CompleteStep();
+                break;
+            case 5: // E Interact
                 break;
         }
     }
@@ -119,7 +119,7 @@ public class TutorialManager : MonoBehaviour
         int oldStep = _currentStep;
         _isTransitioning = true;
 
-        if (oldStep == 4 || oldStep == 5)
+        if (oldStep == 3 || oldStep == 4)
         {
             while (CanvasManager.Instance.GetPlayerState() != CanvasManager.EPlayerState.Roam)
             {
@@ -154,7 +154,6 @@ public class TutorialManager : MonoBehaviour
         switch (_currentStep)
         {
             case 0: // Step 0: Look only
-                // Using your FPC logic: We stop movement/jump, but enable rotation
                 _player.StopStartPlayer(false); 
                 _player.cameraCanMove = true;
                 _player.SetTutorialRestrictions(false, true, false, false);
@@ -166,17 +165,11 @@ public class TutorialManager : MonoBehaviour
                 break;
                 
             case 2: // Step 2: Pick up (Movement + Look + Pickup, but NO Doors)
-                // We set interaction to FALSE so the DoorInteraction script stays disabled
                 _player.StopStartPlayer(true);
                 _player.SetTutorialRestrictions(true, true, false, false); 
                 break;
                 
-            case 3: // Step 3: Interaction (Movement + Look + Doors)
-                _player.StopStartPlayer(true);
-                _player.SetTutorialRestrictions(true, true, true, false);
-                break;
-                
-            default: // Inventory / Quests
+            default: // Inventory / Quests / Interact
                 _player.StopStartPlayer(true);
                 _player.SetTutorialRestrictions(true, true, true, true);
                 break;
@@ -209,9 +202,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (_player != null)
         {
-            // Your StopStartPlayer(false) disables camera, movement, headbob, and jump
             _player.StopStartPlayer(false);
-            // Explicitly set the internal tutorial flags to false
             _player.SetTutorialRestrictions(false, false, false, false);
         }
     }
