@@ -10,6 +10,7 @@ public class CanvasManager : MonoBehaviour
     private Canvas _activeCanvas;
     private EPlayerState _playerState = EPlayerState.Roam ;
     private Dictionary<Canvas, EPlayerState[]> _canvasDictionary = new Dictionary<Canvas, EPlayerState[]>();
+    private bool _isInitialized;
     
     public event System.Action<EPlayerState> OnCanvasStateChanged; // subscribers will be notified when the canvas state changes
     private SFXManager sFXManager;
@@ -52,35 +53,58 @@ public class CanvasManager : MonoBehaviour
         }
     }
 
+    private void EnsureInitialized()
+    {
+        if (sFXManager == null)
+        {
+            sFXManager = SFXManager.Instance;
+        }
+
+        if (_isInitialized)
+        {
+            return;
+        }
+
+        _canvasDictionary.Clear();
+
+        if (_majorCanvasList != null)
+        {
+            foreach (Canvas canvas in _majorCanvasList)
+            {
+                if (canvas == null)
+                {
+                    continue;
+                }
+
+                if (canvas.name.Contains("UI"))
+                {
+                    _canvasDictionary[canvas] = new EPlayerState[] { EPlayerState.Roam };
+                }
+                else if (canvas.name.Contains("Inventory"))
+                {
+                    _canvasDictionary[canvas] = new EPlayerState[] { EPlayerState.InventoryAccess, EPlayerState.Roam };
+                }
+                else if (canvas.name.Contains("Quest"))
+                {
+                    _canvasDictionary[canvas] = new EPlayerState[] { EPlayerState.QuestAccess, EPlayerState.Roam };
+                }
+                else if (canvas.name.Contains("Puzzle"))
+                {
+                    _canvasDictionary[canvas] = new EPlayerState[] { EPlayerState.PuzzleSolving, EPlayerState.Roam };
+                }
+                else if (canvas.name.Contains("Dialogue"))
+                {
+                    _canvasDictionary[canvas] = new EPlayerState[] { EPlayerState.Dialouging };
+                }
+            }
+        }
+
+        _isInitialized = true;
+    }
+
     void Start()
     {
-        sFXManager = SFXManager.Instance;
-        foreach(Canvas canvas in _majorCanvasList)
-        {
-            if(canvas.name.Contains("UI"))
-            {
-                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.Roam });
-            }else if(canvas.name.Contains("Inventory"))
-            {
-                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.InventoryAccess, EPlayerState.Roam });
-            }else if(canvas.name.Contains("Quest"))
-            {
-                // Keep quest UI canvas active while roaming so it can listen for input and open itself.
-                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.QuestAccess, EPlayerState.Roam });
-            }else if(canvas.name.Contains("Puzzle"))
-            {
-                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.PuzzleSolving, EPlayerState.Roam});
-
-            }else if(canvas.name.Contains("Dialogue"))
-            {
-                _canvasDictionary.Add(canvas, new EPlayerState[] { EPlayerState.Dialouging });
-            }
-            
-            /*else if(canvas.name.Contains("Pause"))
-            {
-                _canvasDictionary.Add(EPlayerState.Paused, canvas);
-            }*/
-        }
+        EnsureInitialized();
 
         SetPlayerState((int)EPlayerState.Roam);
     }
@@ -88,6 +112,8 @@ public class CanvasManager : MonoBehaviour
 
     private void CheckState()
     {
+        EnsureInitialized();
+
         if (_playerState != EPlayerState.PuzzleSolving && _playerState != EPlayerState.Dialouging 
             && _playerState != EPlayerState.InventoryAccess && _playerState != EPlayerState.QuestAccess)
         {
@@ -98,14 +124,25 @@ public class CanvasManager : MonoBehaviour
             if(_player != null) _player.SetCrosshair(false);
 
             List<String> sfxList = new List<string> {"OpenInventory", "puzzle", "Quest", "DaughterInLaw", "Son", "Wife"};
-            if(!sfxList.Contains(sFXManager.GetCurrentPlayingSFX()) && sFXManager.GetCurrentPlayingSFX() != null)
+            string currentSfx = sFXManager != null ? sFXManager.GetCurrentPlayingSFX() : null;
+            if(!string.IsNullOrEmpty(currentSfx) && !sfxList.Contains(currentSfx))
             {
-                sFXManager.StopSFX(sFXManager.GetCurrentPlayingSFX());
+                sFXManager.StopSFX(currentSfx);
             }
             
         }
+        if (_majorCanvasList == null)
+        {
+            return;
+        }
+
         foreach (Canvas canvas in _majorCanvasList)
         {
+            if (canvas == null)
+            {
+                continue;
+            }
+
             bool isTutorialCanvas = canvas.name.Contains("Tutorial");
             
             if (_canvasDictionary.TryGetValue(canvas, out var validStates) &&
@@ -126,6 +163,8 @@ public class CanvasManager : MonoBehaviour
 
     public void SetPlayerState(int PlayerState)
     {  
+        EnsureInitialized();
+
         _playerState = (EPlayerState)PlayerState;
         Debug.Log("CanvasManager: Player State set to " + _playerState.ToString());
         CheckState();

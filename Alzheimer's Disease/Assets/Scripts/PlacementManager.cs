@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public struct PlacementInfo
@@ -227,6 +228,7 @@ public class PlacementManager : MonoBehaviour
 
     private void OnGamePhaseChanged(int newGamePhaseInt)
     {
+        if(newGamePhaseInt > 5) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         // Debug.Log($"Received game phase change event: new phase int = {newGamePhaseInt}", this);
         PlacementPhase newPlacementPhase = (PlacementPhase)newGamePhaseInt;
         Debug.Log($"Game phase changed: {newPlacementPhase}. Updating placements.", this);

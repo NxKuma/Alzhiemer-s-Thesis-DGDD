@@ -4,17 +4,15 @@ using UnityEngine;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
-using Ink.UnityIntegration;
 using UnityEngine.UI;
 using System.Linq;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using System;
 
 public class DialogueManager : MonoBehaviour
 {
-    [Header("Globals Ink File")]
-    [SerializeField] private InkFile _globalsInkFile;
+    [Header("Load Globals JSON")]
+    [SerializeField] private TextAsset _loadGlobalsJSON;
 
     [Header("Dialogue UI")]
     [SerializeField] private GameObject _dialoguePanel;
@@ -161,8 +159,10 @@ public class DialogueManager : MonoBehaviour
 
         if (_dialogueVar == null)
         {
-            _dialogueVar = new DialogueVariables(_globalsInkFile.filePath);
+            _dialogueVar = new DialogueVariables(_loadGlobalsJSON);
         }
+
+        CacheManagers();
 
         foreach (NPC npc in _npcs)
         {
@@ -194,6 +194,8 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
+        CacheManagers();
+
         DialogueIsPlaying = false;
         _choicesAvailable = false;
         _dialoguePanel.GetComponent<CanvasGroup>().alpha = 0f;
@@ -206,15 +208,20 @@ public class DialogueManager : MonoBehaviour
             _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
             index++;
         }
-        _canvasManager = CanvasManager.Instance;
-        _sFXManager = SFXManager.Instance;
-        _effectsManager = EffectsManager.Instance;
-        _musicManager = Music.Instance;
-        
+    }
+
+    private void CacheManagers()
+    {
+        if (_canvasManager == null) _canvasManager = CanvasManager.Instance;
+        if (_sFXManager == null) _sFXManager = SFXManager.Instance;
+        if (_effectsManager == null) _effectsManager = EffectsManager.Instance;
+        if (_musicManager == null) _musicManager = Music.Instance;
     }
 
     private void Update()
     {
+        CacheManagers();
+
         // Return immediately if no dialogue to save resources.
         if (!DialogueIsPlaying)
         {
@@ -224,9 +231,12 @@ public class DialogueManager : MonoBehaviour
         if(!_choicesAvailable)
         {
             _nextIcon.GetComponent<CanvasGroup>().alpha = 1f;
-            if((IsPointerOverRect(_nextIcon.GetComponent<RectTransform>()) && Input.GetMouseButtonDown(0)) || (Input.GetKeyDown(KeyCode.Space) && _canvasManager.GetPlayerState() == CanvasManager.EPlayerState.Dialouging))
+            if((IsPointerOverRect(_nextIcon.GetComponent<RectTransform>()) && Input.GetMouseButtonDown(0)) || (Input.GetKeyDown(KeyCode.Space) && _canvasManager != null && _canvasManager.GetPlayerState() == CanvasManager.EPlayerState.Dialouging))
             {
-                _ = _sFXManager.PlaySFX("button");
+                if (_sFXManager != null)
+                {
+                    _ = _sFXManager.PlaySFX("button");
+                }
                 ContinueStory();
             }
         }
@@ -238,6 +248,8 @@ public class DialogueManager : MonoBehaviour
 
     public void EnterDialogueMode(TextAsset inkJSON)
     {
+        CacheManagers();
+
         _currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
         _dialoguePanel.GetComponent<CanvasGroup>().alpha = 1f;
@@ -291,14 +303,25 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleTags(List<string> currentTags)
     {
+        if (currentTags == null || currentTags.Count == 0)
+        {
+            return;
+        }
+
         // loop through each tag and handle accordingly
         foreach (string tag in currentTags)
         {
             // parse tag
+            if (string.IsNullOrWhiteSpace(tag))
+            {
+                continue;
+            }
+
             string[] splitTag = tag.Split(':');
             if (splitTag.Length != 2)
             {
                 Debug.LogError("Tag could not be appropriately parsed: " + tag);
+                continue;
             }
             string tagKey = splitTag[0].Trim();
             string tagValue = splitTag[1].Trim();
@@ -311,8 +334,22 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case PORTRAIT_TAG:
                     // SetCurrentNPC()
+                    if (_spriteLists == null || _spriteLists.Length == 0)
+                    {
+                        Debug.LogWarning("Portrait tag received, but no sprites are loaded.");
+                        break;
+                    }
+
+                    string[] portraitParts = tagValue.ToLower().Split('_');
+                    string portraitNameSegment = portraitParts.Length > 1 ? portraitParts[1] : string.Empty;
+
                     foreach (Sprite sp in _spriteLists)
                     {
+                        if (sp == null)
+                        {
+                            continue;
+                        }
+
                         string spName = sp.name.ToLower();
                         string tagValueLower = tagValue.ToLower();
                         string sfxName = String.Empty;
@@ -344,7 +381,7 @@ public class DialogueManager : MonoBehaviour
                                 break;
                             }
                             
-                            if (spName.Contains(_spriteCompletion.ToString()) && spName.Contains(tagValueLower.Split('_')[1])) // Check if the sprite name contains the tag value and "30" (ignoring case and after splitting by '_')
+                            if (!string.IsNullOrEmpty(portraitNameSegment) && spName.Contains(_spriteCompletion.ToString()) && spName.Contains(portraitNameSegment)) // Check if the sprite name contains the tag value and "30" (ignoring case and after splitting by '_')
                             {
                                 Debug.Log("portrait= " + tagValue + ", sprite = " + sp.name);
                                 // _ = _sFXManager.PlaySFX(sfxName);
@@ -357,22 +394,29 @@ public class DialogueManager : MonoBehaviour
                     Debug.Log("portrait= " + tagValue); //https://youtu.be/tVrxeUIEV9E?si=vu2NrIrVzmKJOjED&t=687
                     break;
                 case EFFECT_TAG:
+                    CacheManagers();
                     if (tagValue == "shake")
                     {
                         //call shake once
-                        _effectsManager.TriggerCameraShake();
+                        if (_effectsManager != null)
+                        {
+                            _effectsManager.TriggerCameraShake();
+                        }
                     } else if (tagValue == "vignette")
                     {
                         // turn on vignette
-                        _effectsManager.TriggerVignetteEffect();
+                        if (_effectsManager != null)
+                        {
+                            _effectsManager.TriggerVignetteEffect();
+                        }
                     } else if (tagValue == "tense")
                     {
                         // turn on tense music
-                        if(_musicManager.GetCurrentTrack().Contains("calm")) _musicManager.SwapTrack(true);
+                        if(_musicManager != null && _musicManager.GetCurrentTrack() != null && _musicManager.GetCurrentTrack().Contains("calm")) _musicManager.SwapTrack(true);
                     } else if (tagValue == "none")
                     {
-                        if(_effectsManager.IsVignetteEffectActive()) _effectsManager.TriggerVignetteEffect(false);
-                        if(_musicManager.GetCurrentTrack().Contains("intense")) _musicManager.SwapTrack(false);
+                        if(_effectsManager != null && _effectsManager.IsVignetteEffectActive()) _effectsManager.TriggerVignetteEffect(false);
+                        if(_musicManager != null && _musicManager.GetCurrentTrack() != null && _musicManager.GetCurrentTrack().Contains("intense")) _musicManager.SwapTrack(false);
                     } 
                     break;
                 default:
@@ -430,7 +474,20 @@ public class DialogueManager : MonoBehaviour
 
     public void SetCurrentNPC(Sprite npcImage)
     {
-        _dialoguePanel.transform.GetChild(0).GetComponent<Image>().sprite = npcImage;
+        if (_dialoguePanel == null || _dialoguePanel.transform.childCount == 0)
+        {
+            Debug.LogWarning("Dialogue panel is not ready; cannot set NPC portrait.");
+            return;
+        }
+
+        Image portraitImage = _dialoguePanel.transform.GetChild(0).GetComponent<Image>();
+        if (portraitImage == null)
+        {
+            Debug.LogWarning("Dialogue portrait image component is missing.");
+            return;
+        }
+
+        portraitImage.sprite = npcImage;
     }
 
     private bool IsPointerOverRect(RectTransform rect)

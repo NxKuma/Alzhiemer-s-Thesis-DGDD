@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Ink.Runtime;
-using System.IO;
 using System;
 
 public class DialogueVariables
@@ -132,17 +130,14 @@ public class DialogueVariables
 
     }
 
-    public DialogueVariables(string globalsFilePath)
+    public DialogueVariables(TextAsset loadGlobalsJSON)
     {
         if (variables != null)
         {
             return;
         }
 
-        // compile the story
-        string inkFileContents = File.ReadAllText(globalsFilePath);
-        Ink.Compiler compiler = new Ink.Compiler(inkFileContents);
-        Story globalVariablesStory = compiler.Compile();
+        Story globalVariablesStory = new Story(loadGlobalsJSON.text);
 
         // initialize the story
         variables = new Dictionary<string, Ink.Runtime.Object>();
