@@ -177,7 +177,6 @@ Uh.
 -> DONE
 
 === phase2TrashBagsReceived ===
-#test here if enough pieces
 { sonPieces > 6:
     -> recognized
     - else:

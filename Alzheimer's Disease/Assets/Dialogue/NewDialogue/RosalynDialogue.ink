@@ -207,7 +207,7 @@ Thank you. #speaker:Anton #portrait:Character_Anton_Neutral
     You know that's not what I meant! #speaker:Rosalyn #portrait:Character_Rosalyn_Neutral
     I like hearing you talk. #speaker:Rosalyn #portrait:Character_Rosalyn_Happy
     I much prefer you being all chatty.
-    At least, compared to the silence in the house... #speaker:Rosalyn #portraitCharacter_Rosalyn_Sad
+    At least, compared to the silence in the house... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
 + [Locks?]
     What's with all the locks on the door? #speaker:Anton #portrait:Character_Anton_Neutral
     Ah... #speaker:Rosalyn #portrait:Character_Rosalyn_Sad
