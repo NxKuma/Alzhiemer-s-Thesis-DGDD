@@ -89,15 +89,15 @@ public class TutorialManager : MonoBehaviour
             case 1: // WASD
                 if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) CompleteStep();
                 break;
-            case 2: // Left Click
+            case 2: // pickup
                 break;
-            case 3: // E Interact
-                break;
-            case 4: // I Inventory
+            case 3: // I Inventory
                 if (CanvasManager.Instance.GetPlayerState() == CanvasManager.EPlayerState.InventoryAccess) CompleteStep();
                 break;
-            case 5: // Q Quest
+            case 4: // Q Quest
                 if (CanvasManager.Instance.GetPlayerState() == CanvasManager.EPlayerState.QuestAccess) CompleteStep();
+                break;
+            case 5: // E Interact
                 break;
         }
     }
@@ -119,7 +119,7 @@ public class TutorialManager : MonoBehaviour
         int oldStep = _currentStep;
         _isTransitioning = true;
 
-        if (oldStep == 4 || oldStep == 5)
+        if (oldStep == 3 || oldStep == 4)
         {
             while (CanvasManager.Instance.GetPlayerState() != CanvasManager.EPlayerState.Roam)
             {
@@ -153,18 +153,24 @@ public class TutorialManager : MonoBehaviour
     {
         switch (_currentStep)
         {
-            case 0: // Step 0: Look (Rotation only)
+            case 0: // Step 0: Look only
+                _player.StopStartPlayer(false); 
+                _player.cameraCanMove = true;
                 _player.SetTutorialRestrictions(false, true, false, false);
                 break;
+                
             case 1: // Step 1: Walk (Movement + Look)
+                _player.StopStartPlayer(true); 
                 _player.SetTutorialRestrictions(true, true, false, false);
                 break;
-            case 2: // Step 2: Pick up (Movement + Look + Interact)
-            case 3: // Step 3: Interaction (Movement + Look + Interact)
-                _player.SetTutorialRestrictions(true, true, true, false);
+                
+            case 2: // Step 2: Pick up (Movement + Look + Pickup, but NO Doors)
+                _player.StopStartPlayer(true);
+                _player.SetTutorialRestrictions(true, true, false, false); 
                 break;
-            case 4: // Step 4: Inventory (Unlock Everything)
-            case 5: // Step 5: Quests (Unlock Everything)
+                
+            default: // Inventory / Quests / Interact
+                _player.StopStartPlayer(true);
                 _player.SetTutorialRestrictions(true, true, true, true);
                 break;
         }
@@ -192,7 +198,14 @@ public class TutorialManager : MonoBehaviour
         _isTransitioning = false;
     }
 
-    private void LockAllInputs() { /* Logic to disable FPC keys */ }
+    private void LockAllInputs()
+    {
+        if (_player != null)
+        {
+            _player.StopStartPlayer(false);
+            _player.SetTutorialRestrictions(false, false, false, false);
+        }
+    }
 
     public int GetCurrentStep() {
         return _currentStep;

@@ -255,8 +255,14 @@ public class FirstPersonController : MonoBehaviour
 
         if (!_canInteract) 
         {
-            crosshairObject.sprite = crosshairImage;
-            return; 
+            if (TutorialManager.Instance != null && TutorialManager.Instance.GetCurrentStep() == 2)
+            {
+            }
+            else
+            {
+                crosshairObject.sprite = crosshairImage;
+                return; 
+            }
         }
 
         // interaction distance (hardcoded so no new serialized fields are required)

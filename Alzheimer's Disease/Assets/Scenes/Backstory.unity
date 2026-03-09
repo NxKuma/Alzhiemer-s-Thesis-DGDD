@@ -941,6 +941,18 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5482790391564949379, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482790391564949379, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482790391564949379, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 5803617414617416482, guid: 0397d5c23de54d64cb5d47806e9b7006, type: 3}
       propertyPath: m_Name
       value: 3-1
