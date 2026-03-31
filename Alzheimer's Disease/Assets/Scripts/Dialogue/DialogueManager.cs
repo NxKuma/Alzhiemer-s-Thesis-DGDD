@@ -58,6 +58,7 @@ public class DialogueManager : MonoBehaviour
     private Story _currentStory;
     private bool _choicesAvailable;
     public bool DialogueIsPlaying { get; private set; }
+    private bool _uiInitialized;
 
     private static DialogueVariables _dialogueVar;
     private CanvasManager _canvasManager;
@@ -163,6 +164,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         CacheManagers();
+        InitializeDialogueUI();
 
         foreach (NPC npc in _npcs)
         {
@@ -195,19 +197,43 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         CacheManagers();
+        InitializeDialogueUI();
+    }
+
+    private void InitializeDialogueUI()
+    {
+        if (_uiInitialized)
+        {
+            return;
+        }
 
         DialogueIsPlaying = false;
         _choicesAvailable = false;
-        _dialoguePanel.GetComponent<CanvasGroup>().alpha = 0f;
-        Debug.Log("Dialogue Panel Active?: " + _dialoguePanel.activeSelf);
 
-        _choicesText = new TextMeshProUGUI[_choices.Length];
-        int index = 0;
-        foreach (GameObject choice in _choices)
+        if (_dialoguePanel != null)
         {
-            _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-            index++;
+            CanvasGroup panelGroup = _dialoguePanel.GetComponent<CanvasGroup>();
+            if (panelGroup != null)
+            {
+                panelGroup.alpha = 0f;
+            }
+
+            Debug.Log("Dialogue Panel Active?: " + _dialoguePanel.activeSelf);
         }
+
+        if (_choices != null)
+        {
+            _choicesText = new TextMeshProUGUI[_choices.Length];
+            for (int i = 0; i < _choices.Length; i++)
+            {
+                if (_choices[i] != null)
+                {
+                    _choicesText[i] = _choices[i].GetComponentInChildren<TextMeshProUGUI>();
+                }
+            }
+        }
+
+        _uiInitialized = true;
     }
 
     private void CacheManagers()
@@ -249,11 +275,38 @@ public class DialogueManager : MonoBehaviour
     public void EnterDialogueMode(TextAsset inkJSON)
     {
         CacheManagers();
+        InitializeDialogueUI();
+
+        if (inkJSON == null || string.IsNullOrWhiteSpace(inkJSON.text))
+        {
+            Debug.LogError("EnterDialogueMode failed: Ink JSON is null or empty.");
+            return;
+        }
+
+        if (_dialogueVar == null)
+        {
+            _dialogueVar = new DialogueVariables(_loadGlobalsJSON);
+        }
 
         _currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
-        _dialoguePanel.GetComponent<CanvasGroup>().alpha = 1f;
-        _dialoguePanel.transform.GetChild(0).GetComponent<Image>().sprite = _NPCImage;
+        if (_dialoguePanel != null)
+        {
+            CanvasGroup panelGroup = _dialoguePanel.GetComponent<CanvasGroup>();
+            if (panelGroup != null)
+            {
+                panelGroup.alpha = 1f;
+            }
+
+            if (_dialoguePanel.transform.childCount > 0)
+            {
+                Image portraitImage = _dialoguePanel.transform.GetChild(0).GetComponent<Image>();
+                if (portraitImage != null)
+                {
+                    portraitImage.sprite = _NPCImage;
+                }
+            }
+        }
 
         _dialogueVar.StartListening(_currentStory);
 
@@ -263,7 +316,10 @@ public class DialogueManager : MonoBehaviour
         if(_controller != null) _controller.StopStartPlayer(false);
 
         // Default Values for Name and Portrait
-        _displayNameText.text = "???";
+        if (_displayNameText != null)
+        {
+            _displayNameText.text = "???";
+        }
         // _portraitAnimator
 
         ContinueStory();
@@ -271,16 +327,33 @@ public class DialogueManager : MonoBehaviour
 
     private void ExitDialogueMode()
     {
-        _dialogueVar.StopListening(_currentStory);
+        if (_dialogueVar != null)
+        {
+            _dialogueVar.StopListening(_currentStory);
+        }
 
         DialogueIsPlaying = false;
-        _dialoguePanel.GetComponent<CanvasGroup>().alpha = 0f;
-        _dialogueText.text = "";
+        if (_dialoguePanel != null)
+        {
+            CanvasGroup panelGroup = _dialoguePanel.GetComponent<CanvasGroup>();
+            if (panelGroup != null)
+            {
+                panelGroup.alpha = 0f;
+            }
+        }
+
+        if (_dialogueText != null)
+        {
+            _dialogueText.text = "";
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         if(_controller != null) _controller.StopStartPlayer(true);
-        _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Roam);
+        if (_canvasManager != null)
+        {
+            _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.Roam);
+        }
         if(SceneManager.GetActiveScene().name == "Backstory") SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -428,6 +501,17 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices()
     {
+        if (_currentStory == null)
+        {
+            return;
+        }
+
+        if (_choices == null || _choicesText == null)
+        {
+            Debug.LogError("DisplayChoices failed: choice UI references are not initialized.");
+            return;
+        }
+
         List<Choice> currentChoices = _currentStory.currentChoices;
         if (currentChoices.Count > 0)
         {

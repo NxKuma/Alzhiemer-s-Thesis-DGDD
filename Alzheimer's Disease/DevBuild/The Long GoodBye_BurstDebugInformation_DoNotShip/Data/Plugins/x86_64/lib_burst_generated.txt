@@ -10,6 +10,7 @@ Library: C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheim
 --linker-options=PdbAltPath="The Long GoodBye_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Temp\Burst
+--debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.0.42f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Library\Burst
 --output=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -119,6 +120,7 @@ Library: C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheim
 --linker-options=PdbAltPath="The Long GoodBye_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Temp\Burst
+--debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.0.42f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Library\Burst
 --output=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -230,6 +232,7 @@ Library: C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheim
 --linker-options=PdbAltPath="The Long GoodBye_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Temp\Burst
+--debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.0.42f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Library\Burst
 --output=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -250,6 +253,7 @@ Library: C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheim
 --linker-options=PdbAltPath="The Long GoodBye_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Temp\Burst
+--debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.0.42f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Library\Burst
 --output=C:\Users\Neil Espiritu\Documents\GitHub\Alzhiemer-s-Thesis-DGDD\Alzheimer's Disease\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated

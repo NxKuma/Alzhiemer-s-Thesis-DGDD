@@ -15,13 +15,18 @@ public class DialogueVariables
     
     public bool ContainsVariable(string name)
     {
-        return !string.IsNullOrWhiteSpace(name) && variables.ContainsKey(name);
+        return !string.IsNullOrWhiteSpace(name) && variables != null && variables.ContainsKey(name);
     }
 
     public bool TryGetBool(string name, out bool value)
     {
         value = default;
         if (string.IsNullOrWhiteSpace(name))
+        {
+            return false;
+        }
+
+        if (variables == null)
         {
             return false;
         }
@@ -61,6 +66,11 @@ public class DialogueVariables
             return false;
         }
 
+        if (variables == null)
+        {
+            return false;
+        }
+
         if (!variables.TryGetValue(name, out Ink.Runtime.Object inkValue) || inkValue == null)
         {
             return false;
@@ -92,6 +102,11 @@ public class DialogueVariables
     {
         value = default;
         if (string.IsNullOrWhiteSpace(name))
+        {
+            return false;
+        }
+
+        if (variables == null)
         {
             return false;
         }
@@ -132,15 +147,25 @@ public class DialogueVariables
 
     public DialogueVariables(TextAsset loadGlobalsJSON)
     {
-        if (variables != null)
+        if (variables == null)
         {
+            variables = new Dictionary<string, Ink.Runtime.Object>();
+        }
+
+        if (variables.Count > 0)
+        {
+            return;
+        }
+
+        if (loadGlobalsJSON == null || string.IsNullOrWhiteSpace(loadGlobalsJSON.text))
+        {
+            Debug.LogWarning("DialogueVariables initialized without globals Ink JSON. Globals dictionary will start empty.");
             return;
         }
 
         Story globalVariablesStory = new Story(loadGlobalsJSON.text);
 
         // initialize the story
-        variables = new Dictionary<string, Ink.Runtime.Object>();
         foreach (string name in globalVariablesStory.variablesState)
         {
             Ink.Runtime.Object value = globalVariablesStory.variablesState.GetVariableWithName(name);
@@ -198,6 +223,11 @@ public class DialogueVariables
 
     private void VariablesToStory(Story story)
     {
+        if (variables == null)
+        {
+            return;
+        }
+
         foreach (KeyValuePair<string, Ink.Runtime.Object> var in variables)
         {
             story.variablesState.SetGlobal(var.Key, var.Value);
@@ -206,6 +236,11 @@ public class DialogueVariables
 
     private void SetVariable(string name, Ink.Runtime.Object value)
     {
+        if (variables == null)
+        {
+            variables = new Dictionary<string, Ink.Runtime.Object>();
+        }
+
         variables[name] = value;
 
         if (isListening && _listeningStory != null)

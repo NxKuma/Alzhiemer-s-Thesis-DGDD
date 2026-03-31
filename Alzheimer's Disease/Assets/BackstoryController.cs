@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 
 public class BackstoryController : MonoBehaviour
 {
@@ -12,10 +13,42 @@ public class BackstoryController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _dialogueManager.EnterDialogueMode(_backstoryTextJSON);
-        _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.PuzzleSolving);
-        _puzzleCanvasScript.onPuzzleSubmitted += TransitionToDialogue;;
+        StartCoroutine(BeginBackstoryDialogueNextFrame());
+        if (_puzzleCanvasScript != null)
+        {
+            _puzzleCanvasScript.onPuzzleSubmitted += TransitionToDialogue;
+        }
         // GameEventsManager.Instance.playerEvents.DisablePlayerMovement();
+    }
+
+    private IEnumerator BeginBackstoryDialogueNextFrame()
+    {
+        // Wait one frame so manager Start methods complete before we enter dialogue.
+        yield return null;
+
+        if (_dialogueManager == null)
+        {
+            _dialogueManager = DialogueManager.GetInstance();
+        }
+
+        if (_dialogueManager == null)
+        {
+            Debug.LogError("BackstoryController could not find DialogueManager instance.");
+            yield break;
+        }
+
+        if (_backstoryTextJSON == null)
+        {
+            Debug.LogError("BackstoryController is missing the backstory Ink JSON TextAsset reference.");
+            yield break;
+        }
+
+        _dialogueManager.EnterDialogueMode(_backstoryTextJSON);
+
+        if (_canvasManager != null)
+        {
+            _canvasManager.SetPlayerState((int)CanvasManager.EPlayerState.PuzzleSolving);
+        }
     }
 
     private void TransitionToDialogue(float puzzleCompletion)
@@ -28,5 +61,13 @@ public class BackstoryController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnDestroy()
+    {
+        if (_puzzleCanvasScript != null)
+        {
+            _puzzleCanvasScript.onPuzzleSubmitted -= TransitionToDialogue;
+        }
     }
 }
