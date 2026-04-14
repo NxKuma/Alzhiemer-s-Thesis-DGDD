@@ -758,6 +758,16 @@ public class FirstPersonController : MonoBehaviour
         cameraCanMove = _masterSwitch;
         enableJump = _masterSwitch;
     }
+
+    public void SetEnableHeadBob(bool _boolValue)
+    {
+        enableHeadBob = _boolValue;
+    }
+
+    public bool GetHeadBobEnable()
+    {
+        return enableHeadBob;
+    }
     #endregion
 }
 

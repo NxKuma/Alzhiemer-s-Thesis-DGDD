@@ -169,5 +169,50 @@ public class SFXManager : MonoBehaviour
         audioSource.volume = 1f; // reset volume for next time
     }
 
+    public void SetMusicVolume(float volume)
+    {
+        foreach (AudioSource source in _audioSource)
+        {
+            if (source.loop) // Assuming looping sources are music
+            {
+                source.volume = volume;
+            }
+        }
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        foreach (AudioSource source in _audioSource)
+        {
+            if (!source.loop) // Assuming non-looping sources are SFX
+            {
+                source.volume = volume;
+            }
+        }
+    }
+
+    public float GetMusicVolume()
+    {
+        foreach (AudioSource source in _audioSource)
+        {
+            if (source.loop) // Assuming looping sources are music
+            {
+                return source.volume;
+            }
+        }
+        return 1f; // default volume if no music sources found
+    }
+
+    public float GetSFXVolume()
+    {
+        foreach (AudioSource source in _audioSource)
+        {
+            if (!source.loop) // Assuming non-looping sources are SFX
+            {
+                return source.volume;
+            }
+        }
+        return 1f; // default volume if no SFX sources found
+    }
 
 }
