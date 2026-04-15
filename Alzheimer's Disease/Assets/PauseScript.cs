@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PauseScript : MonoBehaviour
 {
@@ -10,22 +11,24 @@ public class PauseScript : MonoBehaviour
     private Slider _musicVolumeSlider;
     private Toggle _headBobbleToggle;
 
-    private InputField _musicVolumeInputField;
-    private InputField _sfxVolumeInputField;
+    private TMP_InputField _musicVolumeInputField;
+    private TMP_InputField _sfxVolumeInputField;
     
     void Awake() {
-        _quitButton = GetComponentInChildren<Button>();
-        _sfxVolumeSlider = GetComponentsInChildren<Slider>()[1];
-        _musicVolumeSlider = GetComponentsInChildren<Slider>()[0];
-        _headBobbleToggle = GetComponentInChildren<Toggle>();    
+        _quitButton = this.gameObject.transform.GetChild(0).GetComponentInChildren<Button>();
+        _musicVolumeSlider = this.gameObject.transform.GetChild(0).GetComponentsInChildren<Slider>()[0];
+        _sfxVolumeSlider = this.gameObject.transform.GetChild(0).GetComponentsInChildren<Slider>()[1];
+        _headBobbleToggle = this.gameObject.transform.GetChild(0).GetComponentInChildren<Toggle>();    
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _sfxManager = SFXManager.Instance;
-        _musicVolumeInputField = _musicVolumeSlider.GetComponentInChildren<InputField>();
-        _sfxVolumeInputField = _sfxVolumeSlider.GetComponentInChildren<InputField>();
+        _musicVolumeInputField = _musicVolumeSlider.gameObject.transform.GetComponentInChildren<TMP_InputField>();
+        _sfxVolumeInputField = _sfxVolumeSlider.gameObject.transform.GetComponentInChildren<TMP_InputField>();
+        Debug.Log("Music Input Field: " + _musicVolumeInputField.name);
+        Debug.Log("SFX Input Field: " + _sfxVolumeInputField.name);
         _musicVolumeSlider.value = _sfxManager.GetMusicVolume() * 100f;
         _sfxVolumeSlider.value = _sfxManager.GetSFXVolume() * 100f; 
 
@@ -34,8 +37,8 @@ public class PauseScript : MonoBehaviour
         _musicVolumeInputField.text = _musicVolumeSlider.value.ToString();
         _sfxVolumeInputField.text = _sfxVolumeSlider.value.ToString();
         
-        _sfxVolumeSlider.onValueChanged.AddListener((slidervalue) => _sfxManager.SetMusicVolume(slidervalue / 100f));
-        _musicVolumeSlider.onValueChanged.AddListener((slidervalue) => _sfxManager.SetSFXVolume(slidervalue / 100f));
+        _sfxVolumeSlider.onValueChanged.AddListener((slidervalue) => _sfxManager.SetSFXVolume(slidervalue / 100f));
+        _musicVolumeSlider.onValueChanged.AddListener((slidervalue) => _sfxManager.SetMusicVolume(slidervalue / 100f));
         _headBobbleToggle.onValueChanged.AddListener((isOn) => _fps.SetEnableHeadBob(isOn));
 
     }

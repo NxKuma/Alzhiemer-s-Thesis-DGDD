@@ -96,6 +96,10 @@ public class CanvasManager : MonoBehaviour
                 {
                     _canvasDictionary[canvas] = new EPlayerState[] { EPlayerState.Dialouging };
                 }
+                else if (canvas.name.Contains("Pause"))
+                {
+                    _canvasDictionary[canvas] = new EPlayerState[] { EPlayerState.Paused };
+                }
             }
         }
 
