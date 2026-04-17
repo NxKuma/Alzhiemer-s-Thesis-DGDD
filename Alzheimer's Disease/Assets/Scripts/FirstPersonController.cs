@@ -749,12 +749,13 @@ public class FirstPersonController : MonoBehaviour
             joint.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, jointOriginalPos.x, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, jointOriginalPos.z, Time.deltaTime * bobSpeed));
         }
     }
+    bool permanent_headbob_disable = false;
 
     #region Public Methods
     public void StopStartPlayer(bool _masterSwitch)
     {
         playerCanMove = _masterSwitch;
-        enableHeadBob = _masterSwitch;
+        if(!permanent_headbob_disable) enableHeadBob = _masterSwitch;
         cameraCanMove = _masterSwitch;
         enableJump = _masterSwitch;
     }
@@ -762,6 +763,14 @@ public class FirstPersonController : MonoBehaviour
     public void SetEnableHeadBob(bool _boolValue)
     {
         enableHeadBob = _boolValue;
+        if (!_boolValue)
+        {
+            permanent_headbob_disable = true;
+            joint.localPosition = jointOriginalPos;
+        }else
+        {
+            permanent_headbob_disable = false;
+        }
     }
 
     public bool GetHeadBobEnable()

@@ -37,4 +37,12 @@ public class InputManager : MonoBehaviour
             GameEventsManager.Instance.inputEvents.QuestLogTogglePressed();
         }
     }
+
+    public void EscapePressed(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            GameEventsManager.Instance.inputEvents.EscapePressed();
+        }
+    }
 }

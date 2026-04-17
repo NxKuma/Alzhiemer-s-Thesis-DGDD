@@ -78,4 +78,15 @@ public class Music : MonoBehaviour
         }
     }
 
+    public float GetMusicVolume()
+    {
+        return calmMusic.volume; // Assuming both tracks have the same volume level
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+
+        calmMusic.volume = volume;
+    }
+
 }

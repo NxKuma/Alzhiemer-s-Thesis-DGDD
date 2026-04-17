@@ -109,9 +109,11 @@ public class CanvasManager : MonoBehaviour
     void Start()
     {
         EnsureInitialized();
+        // GameEventsManager.Instance.inputEvents.onEscapePressed += PauseToggle;
 
         SetPlayerState((int)EPlayerState.Roam);
     }
+
 
 
     private void CheckState()

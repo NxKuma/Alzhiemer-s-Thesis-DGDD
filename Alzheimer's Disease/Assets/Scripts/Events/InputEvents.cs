@@ -36,4 +36,14 @@ public class InputEvents
             onQuestLogTogglePressed();
         }
     }
+
+    public event Action onEscapePressed;
+    public void EscapePressed()
+    {
+        if (onEscapePressed != null) 
+        {
+            onEscapePressed();
+        }
+        
+    }
 }
