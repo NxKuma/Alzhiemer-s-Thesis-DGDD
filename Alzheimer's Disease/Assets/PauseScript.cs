@@ -25,6 +25,10 @@ public class PauseScript : MonoBehaviour
         _headBobbleToggle = this.gameObject.transform.GetChild(0).GetComponentInChildren<Toggle>();    
     }
 
+    public void QuitGame() {
+        Application.Quit();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -42,7 +46,7 @@ public class PauseScript : MonoBehaviour
         _sfxVolumeSlider.value = _sfxManager.GetSFXVolume(); 
 
         _headBobbleToggle.isOn = _fps.GetHeadBobEnable();
-        _quitButton.onClick.AddListener(() => Application.Quit());
+        // _quitButton.onClick.AddListener(() => Application.Quit());
         _musicVolumeInputField.text = (_musicVolumeSlider.value*100f).ToString("F0");
         _sfxVolumeInputField.text = (_sfxVolumeSlider.value*100f).ToString("F0");
 
