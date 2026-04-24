@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TriggerHandler : MonoBehaviour
 {
@@ -9,8 +10,10 @@ public class TriggerHandler : MonoBehaviour
     [SerializeField] private TriggerAreaScript[] _triggerAreas;
     [SerializeField, Range(0f, 1f)] private float _dropChance = 0.45f;
     [SerializeField, Range(0f, 1f)] private float _spawnChance = 0.90f;
+    [SerializeField, Min(1)] private int _forceSpawnAfterFailedChecks = 3;
 
     private TriggerAreaScript _currentArea;
+    private readonly Dictionary<Item, int> _spawnMissStreak = new Dictionary<Item, int>();
 
     void Awake()
     {
@@ -51,17 +54,75 @@ public class TriggerHandler : MonoBehaviour
                 // Refresh status after drop transition
                 status = TriggerAreaScript.GetItemStatus(item);
             }
-            else if (status == ItemStatus.Dropped && Random.value < _spawnChance)
+            else if (status == ItemStatus.Dropped)
             {
-            // Spawn only dropped items, and only log success when spawn actually happens
+                int missStreak = GetSpawnMissStreak(item);
+                bool forceSpawn = missStreak >= _forceSpawnAfterFailedChecks;
+                bool rolledSpawn = Random.value < _spawnChance;
+
+                if (!forceSpawn && !rolledSpawn)
+                {
+                    IncrementSpawnMissStreak(item);
+                    Debug.Log($"Spawn roll missed for {item.GetItemName()} in {area.GetAreaName()} ({GetSpawnMissStreak(item)}/{_forceSpawnAfterFailedChecks} before force spawn).");
+                    continue;
+                }
+
+                // Spawn dropped items and force spawn after enough missed checks.
                 bool spawned = area.TrySpawnItem(item);
                 if (spawned)
+                {
+                    ResetSpawnMissStreak(item);
                     Debug.Log($"Spawned {item.GetItemName()} in {area.GetAreaName()}.");
+                }
                 else
-                    Debug.Log($"Spawn attempt failed for {item.GetItemName()} in {area.GetAreaName()}.");
+                {
+                    IncrementSpawnMissStreak(item);
+                    area.TrySpawnItem(item);
+                    Debug.Log($"Spawn attempt # {_spawnMissStreak[item]} failed for {item.GetItemName()} in {area.GetAreaName()}.");
+                }
+            }
+            else
+            {
+                // Item is not waiting to spawn, so clear any stale miss streak.
+                ResetSpawnMissStreak(item);
             }
         }
     }
 
     public TriggerAreaScript GetCurrentArea() => _currentArea;
+
+    private int GetSpawnMissStreak(Item item)
+    {
+        if (item == null)
+        {
+            return 0;
+        }
+
+        if (_spawnMissStreak.TryGetValue(item, out int count))
+        {
+            return count;
+        }
+
+        return 0;
+    }
+
+    private void IncrementSpawnMissStreak(Item item)
+    {
+        if (item == null)
+        {
+            return;
+        }
+
+        _spawnMissStreak[item] = GetSpawnMissStreak(item) + 1;
+    }
+
+    private void ResetSpawnMissStreak(Item item)
+    {
+        if (item == null)
+        {
+            return;
+        }
+
+        _spawnMissStreak.Remove(item);
+    }
 }
